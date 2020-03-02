@@ -4,6 +4,7 @@
 Jason Gong, Charles Shi, Seiji Shaw and Andrew Ding
 
 **Team Member Strengths and Weaknesses:**
+
 **Andrew Ding**
 
 Strengths:
@@ -56,7 +57,6 @@ Meeting up with friends in college is hard. Grabbing a meal together can be even
 Users would have to log-in in order to modify their data and group options. This is an important feature because of privacy and security reasons. We wouldn’t want users to be able to change the friends and lunch groups of other users.
 
 This may be a hard implementation because it would require us to implement some kind of secure login system. We are not quite sure how to make this section yet. I am predicting that we’d need to implement some form of SQL database with all usernames and passwords, as well as some form of encryption on the front and backend so that passwords are never stored as plain textfiles.
-
 
 **User and restaurant profile database:**
 In order to keep track of the lunch dates, the app must know what users there are, and which one of them are in a “lunch date” together at what restaurant.
