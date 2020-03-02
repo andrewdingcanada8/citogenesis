@@ -83,7 +83,7 @@ This may be hard because it requires storing each user’s availability periods 
 
 ### Idea 2: Citogenesis
 
-Circular reporting, informally known as citogenesites, occurs when a work cites multiple sources that ultimately stem from a single source. While often used as a technique to justify and spread fake news and propaganda, this phenomenon also occurs naturally due to a lack of quality-control of sources on the internet. In particular, Wikipedia has exhibited a cyclical sort of circular reporting that occurs in two stages:
+Circular reporting, informally known as citogenesis, occurs when a work cites multiple sources that ultimately stem from a single source. While often used as a technique to justify and spread fake news and propaganda, this phenomenon also occurs naturally due to a lack of quality-control of sources on the internet. In particular, Wikipedia has exhibited a cyclical sort of circular reporting that occurs in two stages:
 A user (regardless of intent) writes a false statement on Wikipedia
 Another external source reads Wikipedia entry and writes an article without citing Wikipedia
 Moderator on Wikipedia attaches source produced in step (2) to false statement produced in step (1)
@@ -104,6 +104,7 @@ Working with citations only may cut off available relevant sources to a particul
 Since we do not intend to modify nor access Wikipedia’s codebase, we must find an alternate way to annotate Wikipedia’s webpages. While developing a browser plugin is a possibility, we would like this project to be platform-independent to be as accessible as possible to all users. Thus, we decided implementing this project as a proxy-webpage that can annotate Wikipedia pages would be best.
 
 Challenges: 
+
 -learning Wikipedia’s page API 
 -figuring out how to change webpage HTML to support statement annotations
 
@@ -113,6 +114,7 @@ These problems can be both solved by dedicating the time to learn Wikipedia’s 
 Users have indicated that they would like to read a version of a Wikipedia page that is totally factually correct. Thus, this feature involves setting an “original source threshold” to filter out poorly-supported statements.
 
 Challenges:
+
 -Filtering out statements without compromising typical Wikipedia page format
 
 We are not bound to Wikipedia’s page layout to present the filtered information. Thus, designing a flexible page format that can is readable regardless of the number of statements may be a solution to this problem.
@@ -121,7 +123,8 @@ We are not bound to Wikipedia’s page layout to present the filtered informatio
 Users indicate that they would not like to mouse over every statement to check the validity of their sources. Highlighting is a quick way of giving visual feedback without any cumbersome mouse movements and/or clicks.
 
 Challenges:
--To complete this challenge, the algorithm must be fast enough to annotate each statement by the time the user has to read it. Since many users skim Wikipedia articles quickly, this must be within the first few seconds of page load. 
+
+-The algorithm must be fast enough to annotate each statement by the time the user has to read it. Since many users skim Wikipedia articles quickly, this must be within the first few seconds of page load. 
 
 This is heavily dependent on the speed of the internet connection of the server, as well as efficiency of the algorithm implementation. Writing in a timeout for long-pending HTTP requests may be necessary to achieve the response times needed to make this annotation usable.
 
