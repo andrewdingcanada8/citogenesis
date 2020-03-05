@@ -81,6 +81,8 @@ Users will be able to discover which of their friends is able to eat at what tim
 
 This may be hard because it requires storing each user’s availability periods and finding intersects with the user’s friends. There will also need to be an algorithm to find the best times of the week to eat given a selected number of friends.
 
+Rejected - a lot of good features but a core algorithm is lacking
+
 ### Idea 2: Citogenesis
 
 Circular reporting, informally known as citogenesis, occurs when a work cites multiple sources that ultimately stem from a single source. While often used as a technique to justify and spread fake news and propaganda, this phenomenon also occurs naturally due to a lack of quality-control of sources on the internet. In particular, Wikipedia has exhibited a cyclical sort of circular reporting that occurs in two stages:
@@ -128,7 +130,7 @@ Challenges:
 
 This is heavily dependent on the speed of the internet connection of the server, as well as efficiency of the algorithm implementation. Writing in a timeout for long-pending HTTP requests may be necessary to achieve the response times needed to make this annotation usable.
 
-
+Approved - very original with lots of room for design choices
 
 ### Idea 3: Steam Birds
 
@@ -154,6 +156,10 @@ The challenge with this will be to arrange the connection and make sure that a s
 **Visual Design:**
 It’s a game that needs to look good, as people will not like a bad design. We've polled some underclassmen and they said one of their top reasons for liking a game was visual design.
 This means that we will have to work a lot on rendering
+
+Approved - main focus should be on AI and multiplayer components
+
+Note: you do not need to resubmit a final project idea. 
 
 **Mentor TA:** _Put your mentor TA's name and email here once you're assigned one!_
 
