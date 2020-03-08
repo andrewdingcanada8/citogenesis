@@ -81,7 +81,7 @@ Users will be able to discover which of their friends is able to eat at what tim
 
 This may be hard because it requires storing each user’s availability periods and finding intersects with the user’s friends. There will also need to be an algorithm to find the best times of the week to eat given a selected number of friends.
 
-Rejected - a lot of good features but a core algorithm is lacking
+Approved - the graph algorithm must be strong
 
 ### Idea 2: Citogenesis
 
