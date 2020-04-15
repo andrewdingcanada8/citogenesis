@@ -1,5 +1,0 @@
-INPUT
-mdb data/timdb/test/wrong_table.sqlite3
-OUTPUT
-ERROR:
-END

@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/gibberish-stars.csv
-OUTPUT
-ERROR:
-END

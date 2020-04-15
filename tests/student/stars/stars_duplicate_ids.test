@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/duplicate-ids.csv
-OUTPUT
-ERROR:
-END

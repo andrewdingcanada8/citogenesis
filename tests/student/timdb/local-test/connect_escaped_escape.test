@@ -1,7 +1,0 @@
-INPUT
-mdb data/timdb/timdb.sqlite3
-connect " Cesarine Prinz\\t" "Pauline de Munnik"
-OUTPUT
-db set to data/timdb/timdb.sqlite3
- Cesarine Prinz\t -> Pauline de Munnik : Artistenrevue
-END

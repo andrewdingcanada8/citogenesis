@@ -1,5 +1,0 @@
-INPUT
-mdb data/stars/stardata.csv
-OUTPUT
-ERROR:
-END

@@ -1,7 +1,0 @@
-INPUT
-mdb data/timdb/smallTimdb.sqlite3
-connect "Betty White" "Cate Blanchett"
-OUTPUT
-db set to data/timdb/smallTimdb.sqlite3
-Betty White -/- Cate Blanchett
-END

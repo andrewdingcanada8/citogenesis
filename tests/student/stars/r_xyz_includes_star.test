@@ -1,7 +1,0 @@
-INPUT
-stars data/stars/ten-star.csv
-radius 0 -2.28262 0.64697 0.29354
-OUTPUT
-Read 10 stars from data/stars/ten-star.csv
-118721
-END

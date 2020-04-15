@@ -1,7 +1,0 @@
-INPUT
-mdb data/timdb/timdb.sqlite3
-connect "Brad Pitt" "Taylor Swift" "Michael Jordan"
-OUTPUT
-db set to data/timdb/timdb.sqlite3
-ERROR:
-END

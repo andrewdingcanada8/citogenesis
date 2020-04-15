@@ -1,5 +1,0 @@
-INPUT
-mdb data/timdb/timdb.sqlite3
-OUTPUT
-db set to data/timdb/timdb.sqlite3
-END

@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/double-for-id.csv
-OUTPUT
-ERROR:
-END

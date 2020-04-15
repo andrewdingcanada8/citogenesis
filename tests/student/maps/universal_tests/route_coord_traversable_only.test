@@ -1,7 +1,0 @@
-INPUT
-map data/maps/testMaps.sqlite3
-route 41.82 -71.3 41.8206 -71.4
-OUTPUT
-map set to data/maps/testMaps.sqlite3
-/n/1 -> /n/2 : /w/1
-END

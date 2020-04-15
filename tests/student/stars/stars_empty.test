@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/empty.csv
-OUTPUT
-ERROR:
-END

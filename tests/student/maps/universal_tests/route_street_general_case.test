@@ -1,8 +1,0 @@
-INPUT
-map data/maps/testMaps.sqlite3
-route "Chihiro Ave" "Sootball Ln" "Yubaba St" "Kamaji Pl"
-OUTPUT
-map set to data/maps/testMaps.sqlite3
-/n/1 -> /n/4 : /w/3
-/n/4 -> /n/5 : /w/6
-END

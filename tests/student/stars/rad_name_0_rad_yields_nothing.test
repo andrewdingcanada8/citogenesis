@@ -1,6 +1,0 @@
-INPUT
-stars data/stars/five-star-plus.csv
-radius 0 "Bob"
-OUTPUT
-Read 6 stars from data/stars/five-star-plus.csv
-END

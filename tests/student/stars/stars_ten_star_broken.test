@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/ten-star-broken1.csv
-OUTPUT
-ERROR:
-END

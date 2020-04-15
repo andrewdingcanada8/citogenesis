@@ -1,5 +1,0 @@
-INPUT
-mdb data/timdb/timdb.sqlite3 data/timdb/smallTimdb.sqlite3
-OUTPUT
-ERROR:
-END

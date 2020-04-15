@@ -1,7 +1,0 @@
-INPUT
-mdb data/timdb/testTimdb.sqlite3
-connect "Loner Man" "Kyle Reyes"
-OUTPUT
-db set to data/timdb/testTimdb.sqlite3
-Loner Man -/- Kyle Reyes
-END

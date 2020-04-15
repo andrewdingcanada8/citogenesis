@@ -1,9 +1,0 @@
-INPUT
-mdb data/timdb/testTimdb.sqlite3
-connect "Person" "Pam Car"
-connect "Pam Car" "Person"
-OUTPUT
-db set to data/timdb/testTimdb.sqlite3
-Person -> Pam Car : Everyone can Act
-Pam Car -/- Person
-END

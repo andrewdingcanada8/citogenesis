@@ -1,5 +1,0 @@
-INPUT
-mdb data/timdb/test/additional_cols.sqlite3
-OUTPUT
-db set to data/timdb/test/additional_cols.sqlite3
-END

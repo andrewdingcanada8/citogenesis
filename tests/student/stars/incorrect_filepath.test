@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/this_file_does_not_exist.csv
-OUTPUT
-ERROR:
-END

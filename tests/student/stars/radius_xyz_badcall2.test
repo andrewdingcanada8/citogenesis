@@ -1,7 +1,0 @@
-INPUT
-stars data/stars/ten-star.csv
-radius 12 3 4 56 7
-OUTPUT
-Read 10 stars from data/stars/ten-star.csv
-ERROR:
-END

@@ -1,7 +1,0 @@
-INPUT
-mdb data/timdb/testTimdb.sqlite3
-connect "Dam Sunn" "Sam Dunn"
-OUTPUT
-db set to data/timdb/testTimdb.sqlite3
-Dam Sunn -> Sam Dunn : Everyone can Act
-END

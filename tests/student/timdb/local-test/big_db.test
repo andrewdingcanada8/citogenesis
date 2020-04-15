@@ -1,7 +1,0 @@
-INPUT
-mdb data/timdb/timdb.sqlite3
-connect "Sigourney Weaver" "David S. Howard"
-OUTPUT
-db set to data/timdb/timdb.sqlite3
-Sigourney Weaver -/- David S. Howard
-END

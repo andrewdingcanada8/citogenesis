@@ -1,7 +1,0 @@
-INPUT
-stars data/stars/ten-star.csv
-neighbors 1 -0.01729 -1.81533 0.14824
-OUTPUT
-Read 10 stars from data/stars/ten-star.csv
-87666
-END

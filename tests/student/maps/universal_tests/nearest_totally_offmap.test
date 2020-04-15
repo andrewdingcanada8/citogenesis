@@ -1,7 +1,0 @@
-INPUT
-map data/maps/testMaps.sqlite3
-nearest 100 -100
-OUTPUT
-map set to data/maps/testMaps.sqlite3
-/n/2
-END

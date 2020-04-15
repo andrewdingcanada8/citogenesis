@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/header_swapped.csv
-OUTPUT
-ERROR:
-END
