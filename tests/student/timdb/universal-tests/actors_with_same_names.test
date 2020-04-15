@@ -1,0 +1,7 @@
+INPUT
+mdb data/timdb/testTimdb.sqlite3
+connect "Pam Car" "Common Name"
+OUTPUT
+db set to data/timdb/testTimdb.sqlite3
+Pam Car -> Common Name : Pam has a Name
+END

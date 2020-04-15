@@ -1,0 +1,11 @@
+INPUT
+mdb data/timdb/smallTimdb.sqlite3
+connect "Will Smith" "Stephen Root"
+mdb data/timdb/testTimdb.sqlite3
+connect "Will Smith" "Stephen Root"
+OUTPUT
+db set to data/timdb/smallTimdb.sqlite3
+Will Smith -> Stephen Root : Jersey Girl
+db set to data/timdb/testTimdb.sqlite3
+ERROR:
+END

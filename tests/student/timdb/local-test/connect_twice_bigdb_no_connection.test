@@ -1,0 +1,9 @@
+INPUT
+mdb data/timdb/timdb.sqlite3
+connect "David S. Howard" "Sigourney Weaver"
+connect "David S. Howard" "Sigourney Weaver"
+OUTPUT
+db set to data/timdb/timdb.sqlite3
+David S. Howard -/- Sigourney Weaver
+David S. Howard -/- Sigourney Weaver
+END

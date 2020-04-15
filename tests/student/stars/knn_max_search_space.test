@@ -1,0 +1,7 @@
+INPUT
+stars data/stars/five-star-plus.csv
+neighbors 1 "Spacy Name"
+OUTPUT
+Read 6 stars from data/stars/five-star-plus.csv
+5
+END

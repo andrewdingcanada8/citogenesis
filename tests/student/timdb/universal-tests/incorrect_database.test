@@ -1,0 +1,7 @@
+INPUT
+mdb data/timdb/wrong-file-type.txt
+mdb data/timdb/wrong-path/randomFile.sqlite3
+OUTPUT
+ERROR:
+ERROR:
+END

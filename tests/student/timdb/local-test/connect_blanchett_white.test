@@ -1,0 +1,7 @@
+INPUT
+mdb data/timdb/timdb.sqlite3
+connect "Cate Blanchett" "Betty White"
+OUTPUT
+db set to data/timdb/timdb.sqlite3
+Cate Blanchett -> Betty White : Ponyo
+END

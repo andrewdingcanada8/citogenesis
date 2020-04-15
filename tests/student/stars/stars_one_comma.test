@@ -1,0 +1,5 @@
+INPUT
+stars data/stars/comma.csv
+OUTPUT
+ERROR:
+END

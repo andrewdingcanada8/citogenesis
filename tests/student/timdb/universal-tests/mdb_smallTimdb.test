@@ -1,0 +1,5 @@
+INPUT
+mdb data/timdb/smallTimdb.sqlite3
+OUTPUT
+db set to data/timdb/smallTimdb.sqlite3
+END

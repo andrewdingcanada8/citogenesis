@@ -1,0 +1,5 @@
+INPUT
+map data/maps/padpaththatdoesn'texist
+OUTPUT
+ERROR:
+END

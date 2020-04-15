@@ -1,0 +1,5 @@
+INPUT
+stars data/stars/header-misspelled.csv
+OUTPUT
+ERROR:
+END

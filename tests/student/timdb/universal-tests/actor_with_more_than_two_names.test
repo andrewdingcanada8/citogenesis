@@ -1,0 +1,7 @@
+INPUT
+mdb data/timdb/testTimdb.sqlite3
+connect "Multiple Word Name" "Ned Turner"
+OUTPUT
+db set to data/timdb/testTimdb.sqlite3
+Multiple Word Name -> Ned Turner : Ned Turner's New Name
+END

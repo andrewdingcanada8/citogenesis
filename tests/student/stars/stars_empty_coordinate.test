@@ -1,0 +1,5 @@
+INPUT
+stars data/stars/empty-coordinate.csv
+OUTPUT
+ERROR:
+END

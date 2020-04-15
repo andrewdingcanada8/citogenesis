@@ -1,0 +1,5 @@
+INPUT
+Mdb data/timdb/timdb.sqlite3
+OUTPUT
+ERROR:
+END

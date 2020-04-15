@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.AStarTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s - in edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.AStarTest

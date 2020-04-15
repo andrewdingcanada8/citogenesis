@@ -1,0 +1,7 @@
+INPUT
+stars data/stars/five-star-plus.csv
+radius -9.0 -1 -1 -1
+OUTPUT
+Read 6 stars from data/stars/five-star-plus.csv
+ERROR:
+END

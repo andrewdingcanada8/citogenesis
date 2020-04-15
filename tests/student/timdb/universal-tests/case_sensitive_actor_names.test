@@ -1,0 +1,9 @@
+INPUT
+mdb data/timdb/testTimdb.sqlite3
+connect "Dam Sunn" "Seiji Shaw"
+connect "Dam Sunn" "seiji shaw"
+OUTPUT
+db set to data/timdb/testTimdb.sqlite3
+Dam Sunn -> Seiji Shaw : Everyone can Act
+Dam Sunn -/- seiji shaw
+END

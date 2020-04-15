@@ -1,0 +1,7 @@
+INPUT
+mdb data/timdb/smallTimdb.sqlite3
+connect "John Travolta" "John Travolta"
+OUTPUT
+db set to data/timdb/smallTimdb.sqlite3
+John Travolta must have received the golf ball from someone. And probably gave it to someone else too.
+END

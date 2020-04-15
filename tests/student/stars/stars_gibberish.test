@@ -1,0 +1,5 @@
+INPUT
+stars data/stars/gibberish.csv
+OUTPUT
+ERROR:
+END

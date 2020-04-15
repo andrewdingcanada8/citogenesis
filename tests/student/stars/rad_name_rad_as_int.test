@@ -1,0 +1,9 @@
+INPUT
+stars data/stars/five-star-plus.csv
+radius 10 "Bob"
+OUTPUT
+Read 6 stars from data/stars/five-star-plus.csv
+2
+3
+4
+END

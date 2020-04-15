@@ -1,0 +1,5 @@
+INPUT
+stars data/stars/non-num-coord.csv
+OUTPUT
+ERROR:
+END

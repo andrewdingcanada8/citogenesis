@@ -1,0 +1,5 @@
+INPUT
+stars data/stars/stop-at-body-end.csv
+OUTPUT
+ERROR:
+END

@@ -1,0 +1,10 @@
+body {
+    font-family: Impact, Charcoal, sans-serif;
+    background-color: lightblue;
+    font-size: 18px;
+}
+
+#output {
+    font-size: 20px;
+    color: red;
+}
