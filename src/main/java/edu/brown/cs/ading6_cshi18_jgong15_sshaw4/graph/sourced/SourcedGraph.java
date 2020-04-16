@@ -7,7 +7,8 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 /**
  * An implementation of {@link Graph} if there is an external source.
  * @param <T> the value type stored in the Graph's {@link Vertex}
- * @param <W> the value type stored i the Graph's {@link edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge}
+ * @param <W> the value type stored i the Graph's
+ * {@link edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge}
  */
 public class SourcedGraph<T, W> implements Graph<T, W> {
   private GraphSource<T, W> source;
