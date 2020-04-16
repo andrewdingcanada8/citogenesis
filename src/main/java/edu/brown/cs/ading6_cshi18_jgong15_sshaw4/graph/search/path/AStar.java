@@ -1,7 +1,6 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.path;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.GraphPathSearch;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.kdtree.DimensionException;

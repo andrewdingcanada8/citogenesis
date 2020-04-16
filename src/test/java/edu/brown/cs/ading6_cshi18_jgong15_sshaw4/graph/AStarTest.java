@@ -1,8 +1,8 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.AStar;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.Dijkstra;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.path.AStar;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.path.Dijkstra;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.kdtree.DimensionException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.kdtree.Point;
 import org.junit.Test;

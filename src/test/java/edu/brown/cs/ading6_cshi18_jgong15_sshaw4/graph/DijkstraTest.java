@@ -1,7 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.Dijkstra;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.path.Dijkstra;
 import org.junit.Test;
 
 import java.util.Collections;
