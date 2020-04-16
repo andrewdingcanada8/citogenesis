@@ -48,7 +48,7 @@ public class Tarjan<T, W> implements ComponentSearch<T, W> {
     }
 
     // if they are the same, we got an SCC root
-    if (lowlink.get(v) == disc.get(v)) {
+    if (lowlink.get(v).equals(disc.get(v))) {
       Set<Vertex<T, W>> scc = new HashSet<>();
       // pop stack to get all the nodes
       Vertex<T, W> w;
