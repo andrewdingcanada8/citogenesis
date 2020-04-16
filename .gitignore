@@ -1,0 +1,7 @@
+target/
+.mvn-classpath
+.classpath
+.idea/
+**.DS_Store**
+timdb.sqlite3
+maps.sqlite3
