@@ -62,6 +62,4 @@ public class TarjanTest {
     assertEquals(union.size(), sumComps);
   }
 
-  // TODO: implement shrinking behavior
-
 }
