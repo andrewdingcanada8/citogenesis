@@ -17,15 +17,17 @@ public class SimpleVertex implements Vertex<String, Object>, Cloneable {
     this.edges = Collections.emptySet();
   }
 
-  public static <T extends Vertex<String, Object>>  void dfs(T v, Set<T> visited) {
+  public static <T extends Vertex<String, Object>> void dfs(T v, Set<T> visited) {
     visited.add(v);
-    Set<Edge<String, Object>> es = new HashSet<>();
+    Set<Edge<String, Object>> es;
     try {
       es = v.getEdges();
     } catch (GraphException e) {
       throw new IllegalStateException("not supposed to be here...");
     }
-    es.stream().map(e -> e.getDest()).filter(nv -> !visited.contains(nv)).forEach(nv -> dfs((T)nv, visited));
+    es.stream().map(e -> e.getDest())
+        .filter(nv -> !visited.contains(nv))
+        .forEach(nv -> dfs((T)nv, visited));
   }
 
   @Override
@@ -61,7 +63,7 @@ public class SimpleVertex implements Vertex<String, Object>, Cloneable {
     Set<SimpleVertex> allVerts = new HashSet<>();
     dfs(this, allVerts);
     StringBuilder out = new StringBuilder();
-    allVerts.forEach(v -> out.append(v.getVal() + System.lineSeparator()));
+    allVerts.forEach(v -> out.append(v.getVal() + " "));
     return out.toString();
   }
 

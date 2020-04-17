@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 @RunWith(JUnitQuickcheck.class)
 public class TarjanTest {
 
-  @Property
+  @Property(trials = 50)
   public void outputSetsAreSCCs(@From(SimpleVertexGenerator.class) SimpleVertex v) throws GraphException {
     Set<Set<SimpleVertex>> comps = new Tarjan().search(v);
     // we know a component is an scc if

@@ -5,9 +5,6 @@ import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
-import org.eclipse.jetty.websocket.server.WebSocketHandler;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,6 +12,12 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class SimpleVertexGenerator extends Generator<SimpleVertex> {
+
+  // Questions for tim
+  // -Bias in graph construction? how to avoid it?
+  // -Shrinking strategies? Takes a while the way I do it.
+  // -How to ensure I've got good coverage...
+
 
   private static final int MAX_VERTS = 100;
 
@@ -34,15 +37,14 @@ public class SimpleVertexGenerator extends Generator<SimpleVertex> {
 
     // assign edges
     List<SimpleVertex> connectedVerts = verts.stream()
-        .peek(v -> {
-          // generate a random list of edges to connect
-          Set<Edge<String, Object>> neighbors =
+        .peek(v -> {    // generate a random list of edges to connect
+          Set<Edge<String, Object>> edges =
               IntStream.generate(() -> sourceOfRandomness.nextInt(numVerts))
                   .limit(sourceOfRandomness.nextInt(numVerts)) // generate random list of neighbor vertices
                   .mapToObj(verts::get)
                   .map(nv -> new SimpleEdge(0, v, nv)) //instantiate random as edge destinations
                   .collect(Collectors.toSet());
-          v.setEdges(neighbors);                          // attach to vertex
+          v.setEdges(edges);                          // attach to vertex
         }).collect(Collectors.toList());
 
     return connectedVerts.get(0);
@@ -63,10 +65,17 @@ public class SimpleVertexGenerator extends Generator<SimpleVertex> {
       // dfs for all reachable nodes
       Set<SimpleVertex> vertSet = new HashSet<>();
       SimpleVertex.dfs(cpVert, vertSet);
+      List<SimpleVertex> vertList = new ArrayList<>(vertSet);
+      List<SimpleVertex> pickList = new ArrayList<>(vertSet);
 
       // pick random node in the set and remove a random edge
-      List<SimpleVertex> vertList = new ArrayList<>(vertSet);
-      SimpleVertex cand = vertList.get(random.nextInt(vertList.size()));
+      SimpleVertex cand;
+      do{
+        cand = pickList.get(random.nextInt(vertList.size()));
+        pickList.remove(cand);
+      } while (cand.getEdges().isEmpty());
+
+
       List<Edge<String, Object>> edges = new ArrayList<>(cand.getEdges());
       edges.remove(random.nextInt(edges.size()));
       cand.setEdges(new HashSet<>(edges));
