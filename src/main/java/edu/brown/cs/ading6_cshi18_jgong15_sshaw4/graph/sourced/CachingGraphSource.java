@@ -5,6 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.SourceParseException;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.forgetful.SourcedForgetfulVertex;
 
 import java.util.Set;
 import java.util.concurrent.ExecutionException;

@@ -1,8 +1,9 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.algos;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.obj.SimpleVertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.obj.SimpleVertexGenerator;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 @RunWith(JUnitQuickcheck.class)
 public class TarjanTest {
 
-  @Property(trials = 50)
+  @Property(trials = 25)
   public void outputSetsAreSCCs(@From(SimpleVertexGenerator.class) SimpleVertex v) throws GraphException {
     Set<Set<SimpleVertex>> comps = new Tarjan().search(v);
     // we know a component is an scc if
