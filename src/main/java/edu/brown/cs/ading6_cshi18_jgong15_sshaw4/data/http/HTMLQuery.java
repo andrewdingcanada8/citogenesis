@@ -1,0 +1,34 @@
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http;
+
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+/**
+ * Provides abstraction for acquiring webpage HTML.
+ */
+public class HTMLQuery extends HttpQuery<String, String> {
+  private String curURL;
+  public HTMLQuery() {
+    curURL = "UNUSED";
+  }
+
+  @Override
+  protected HttpRequest getQuery(String url, HttpClient src) {
+    curURL = url;
+    return HttpRequest.newBuilder()
+        .uri(URI.create(url))
+        .build();
+  }
+
+  @Override
+  protected String processResult(HttpResponse<String> response) throws QueryException {
+    if (!response.headers().map().get("content-type").contains("text/html")) {
+      throw new QueryException(curURL + " is not an html page.");
+    }
+    return response.body();
+  }
+}
