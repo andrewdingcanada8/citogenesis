@@ -7,12 +7,21 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 
 public class HttpSource implements DataSource<HttpRequest, HttpResponse<String>, HttpClient> {
   private HttpClient client;
   public HttpSource() {
     client = HttpClient.newHttpClient();
   }
+
+  public HttpSource(int timeOutInSec) {
+    client = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(timeOutInSec))
+        .build();
+  }
+
+
   @Override
   public HttpResponse<String> runQuery(HttpRequest queryInput) throws DataSourceException {
     try {

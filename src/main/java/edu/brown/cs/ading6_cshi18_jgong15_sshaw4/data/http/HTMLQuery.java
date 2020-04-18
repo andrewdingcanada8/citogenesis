@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 /**
  * Provides abstraction for acquiring webpage HTML.
@@ -13,6 +14,11 @@ import java.net.http.HttpResponse;
 public class HTMLQuery extends HttpQuery<String, String> {
   private String curURL;
   public HTMLQuery() {
+    curURL = "UNUSED";
+  }
+
+  public HTMLQuery(int timeOutInSec) {
+    super(timeOutInSec);
     curURL = "UNUSED";
   }
 
@@ -26,7 +32,11 @@ public class HTMLQuery extends HttpQuery<String, String> {
 
   @Override
   protected String processResult(HttpResponse<String> response) throws QueryException {
-    if (!response.headers().map().get("content-type").contains("text/html")) {
+    List<String> contentTypes = response.headers().map().get("content-type");
+    boolean isHtml = contentTypes
+        .stream()
+        .anyMatch(str -> str.contains("text/html"));
+    if (!isHtml) {
       throw new QueryException(curURL + " is not an html page.");
     }
     return response.body();

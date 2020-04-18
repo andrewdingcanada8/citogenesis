@@ -11,4 +11,7 @@ public abstract class HttpQuery<Q, R>
   public HttpQuery() {
     super(new HttpSource());
   }
+  public HttpQuery(int timeOutInSec) {
+    super(new HttpSource(timeOutInSec));
+  }
 }
