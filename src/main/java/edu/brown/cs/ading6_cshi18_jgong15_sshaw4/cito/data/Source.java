@@ -11,9 +11,17 @@ public abstract class Source {
     this.depth = depth;
   }
 
-  public abstract double relevance(String keywords);
-
+  /**
+   * Return all hrefs.
+   * @return hrefs
+   */
   public abstract String[] getLinks();
+
+  /**
+   * Returns plaintext body content.
+   * @return plaintext
+   */
+  public abstract String getContent();
 
   public int getDepth() {
     return depth;
@@ -23,4 +31,13 @@ public abstract class Source {
     depth = d;
   }
 
+
+
+  // original HTML
+  // content - Body text - run relevance comparison
+  // source's URLdepth
+  // hrefs
+
+
+  // outsource relevance to another algorithm-only class
 }
