@@ -13,6 +13,7 @@ public abstract class Source {
 
   public abstract double relevance(String keywords);
 
+  public abstract String[] getLinks();
 
   public int getDepth() {
     return depth;
