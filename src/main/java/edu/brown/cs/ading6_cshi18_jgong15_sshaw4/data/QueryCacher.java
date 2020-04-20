@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
  * @param <Q> the type of the query, which is used as the type of the key in the proxy
  * @param <R> the type of the queried result
  */
-public class QueryCacher<Q, R> implements AbstractQuery<Q, R> {
+public class QueryCacher<Q, R> implements Query<Q, R> {
   private LoadingCache<Q, R> cache;
 
   /**
@@ -21,7 +21,7 @@ public class QueryCacher<Q, R> implements AbstractQuery<Q, R> {
    * @param querier the Object whose calls to query the cache stores
    * @param size the maximum number of calls stored in the cache to be constructed
    */
-  public QueryCacher(AbstractQuery<Q, R> querier, int size) {
+  public QueryCacher(Query<Q, R> querier, int size) {
     cache = CacheBuilder.newBuilder()
             .maximumSize(size)
             .build(

@@ -4,12 +4,11 @@ public abstract class Source {
 
   // TODO: integrate date functionality
   // TODO: integrate text-checking fuctionality
+  
 
-  private int depth;
+  public abstract String getHTML();
 
-  public Source(int depth) {
-    this.depth = depth;
-  }
+  public abstract String getURL();
 
   /**
    * Return all hrefs.
@@ -23,13 +22,6 @@ public abstract class Source {
    */
   public abstract String getContent();
 
-  public int getDepth() {
-    return depth;
-  }
-
-  public void setDepth(int d) {
-    depth = d;
-  }
 
 
 
