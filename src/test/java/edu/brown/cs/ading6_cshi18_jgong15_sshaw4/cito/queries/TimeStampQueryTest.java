@@ -1,5 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.WebTestUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import org.junit.After;
@@ -10,6 +11,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 
 public class TimeStampQueryTest {
 
@@ -18,6 +20,7 @@ public class TimeStampQueryTest {
   @Before
   public void setUp() {
     _query = new TimeStampQuery(5);
+    assumeTrue(WebTestUtils.checkURL("http://archive.org"));
   }
 
   @After
