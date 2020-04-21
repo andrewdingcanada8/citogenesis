@@ -11,22 +11,22 @@ public class SourceTest {
 
   @Test
   public void obtainLinksCorrectlyTest() {
-    String html = "<html><body><p><a href = \"blah.com\">blah</a></p></body></html>";
+    String html = "<html><body><p><a href = \"http://blah.com\">blah</a></p></body></html>";
     Source src = new WebSource("test.com", html, new GregorianCalendar());
     ArrayList<String> strs = new ArrayList<>();
-    strs.add("blah.com");
+    strs.add("http://blah.com");
     assertEquals(strs, src.getLinks());
   }
 
   @Test
   public void multipleLinksTest() {
     String html = "<html><body>"
-        + "<a href = \"halllo.edu\">froofs</a>"
-        + "<ul><li><a href = \"nested.txt\">Cozy</a></li></ul>";
+        + "<a href = \"https://halllo.edu\">froofs</a>"
+        + "<ul><li><a href = \"http://nested.txt\">Cozy</a></li></ul>";
     Source src = new WebSource("test.com", html, new GregorianCalendar());
     ArrayList<String> strs = new ArrayList<>();
-    strs.add("halllo.edu");
-    strs.add("nested.txt");
+    strs.add("https://halllo.edu");
+    strs.add("http://nested.txt");
     assertEquals(strs, src.getLinks());
   }
 
@@ -41,12 +41,12 @@ public class SourceTest {
   public void moreThanOneAttribute() {
     String html = "<html>"
         + "<body>"
-        + "<p><a id=\"id\" href=\"blah.com\" class=\"foo\">blah</a></p>"
+        + "<p><a id=\"id\" href=\"/blah\" class=\"foo\">blah</a></p>"
         + "</body>"
         + "</html>";
-    Source src = new WebSource("test.com", html, new GregorianCalendar());
+    Source src = new WebSource("http://test.com", html, new GregorianCalendar());
     ArrayList<String> strs = new ArrayList<>();
-    strs.add("blah.com");
+    strs.add("http://test.com/blah");
     assertEquals(strs, src.getLinks());
   }
 

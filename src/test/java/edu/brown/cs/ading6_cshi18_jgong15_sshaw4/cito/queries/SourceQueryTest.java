@@ -30,7 +30,7 @@ public class SourceQueryTest {
     Source google = _query.query("https://www.google.com");
     assertTrue(google.getLinks().stream().anyMatch(s -> s.contains("google")));
 
-    Source google2 = _query.query("https://www.google.com/index.html");
+    Source google2 = _query.query("https://www.google.com");
     assertEquals(google, google2);
   }
 

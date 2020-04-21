@@ -16,17 +16,24 @@ public class WebSource extends Source {
   private Calendar timestamp;
   private List<String> links;
 
+  /**
+   * Creates a new WebSource.
+   * @param url source url. http/https prefix is necessary or link-scraping will break.
+   * @param html source html
+   * @param timestamp publication timestamp
+   */
   public WebSource(String url, String html, Calendar timestamp) {
     this.html = html;
     this.url = url;
     this.timestamp = timestamp;
 
     // extract all links
-    Document doc = Jsoup.parse(html);
+    Document doc = Jsoup.parse(html, url);
     Elements anchors = doc.getElementsByTag("a");
     this.links = anchors.stream()
-        .map(e -> e.attr("href"))
-        .filter(str -> !str.equals("")).collect(Collectors.toList());
+        .map(e -> e.absUrl("href"))
+        .filter(str -> !str.equals(""))
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -58,16 +65,18 @@ public class WebSource extends Source {
       return false;
     }
     WebSource webSource = (WebSource) o;
-    return Objects.equals(html, webSource.html);
+    return Objects.equals(url, webSource.url);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(html);
+    return Objects.hash(url);
   }
 
   @Override
   public String toString() {
-    return url;
+    return "WebSource{"
+        + "url='" + url + '\''
+        + '}';
   }
 }
