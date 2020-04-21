@@ -6,11 +6,15 @@ import java.util.Objects;
 
 public abstract class SourcedVertex<T, W> implements Vertex<T, W> {
   private T val;
-  private GraphSource<T, W> source;
+  private SourcedGraph<T, W> graph;
 
-  public SourcedVertex(T val, GraphSource<T, W> source) {
+  public SourcedVertex(T val, SourcedGraph<T, W> graph) {
     this.val = val;
-    this.source = source;
+    this.graph = graph;
+  }
+
+  protected SourcedGraph<T, W> getGraph() {
+    return graph;
   }
 
   /**
@@ -23,10 +27,6 @@ public abstract class SourcedVertex<T, W> implements Vertex<T, W> {
     return val;
   }
 
-  public GraphSource<T, W> getSource() {
-    return source;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -36,12 +36,11 @@ public abstract class SourcedVertex<T, W> implements Vertex<T, W> {
       return false;
     }
     SourcedVertex<?, ?> that = (SourcedVertex<?, ?>) o;
-    return Objects.equals(val, that.val)
-        && Objects.equals(source, that.source);
+    return Objects.equals(val, that.val);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(val, source);
+    return Objects.hash(val);
   }
 }

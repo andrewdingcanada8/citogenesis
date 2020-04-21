@@ -15,6 +15,12 @@ public class SourceQuery implements Query<String, Source> {
     htmlQuery = new HTMLQuery();
     timeQuery = new TimeStampQuery();
   }
+
+  public SourceQuery(int timeOutInSec) {
+    htmlQuery = new HTMLQuery(timeOutInSec);
+    timeQuery = new TimeStampQuery(timeOutInSec);
+  }
+
   @Override
   public Source query(String url) throws QueryException {
     String html = htmlQuery.query(url);

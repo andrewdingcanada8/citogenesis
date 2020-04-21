@@ -9,7 +9,7 @@ import java.util.Objects;
  * Implementation of {@link Edge} to be used for a directed Graph with an external source.
  * This particular edge has every field set on construction. All logic to
  * populate those fields should be encoded
- * in an implementation of {@link GraphSource}.
+ * in an implementation of {@link SourcedGraph}.
  * @param <T> Value type stored in {@link Vertex}
  * @param <W> Value type stored in {@link SourcedEdge}
  */

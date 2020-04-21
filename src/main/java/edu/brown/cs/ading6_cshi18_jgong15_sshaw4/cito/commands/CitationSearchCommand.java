@@ -1,9 +1,5 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands;
 
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.GraphSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.RawStringArg;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.CommandRunner;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.InvalidInputException;
@@ -15,7 +11,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.run.WorldException;
 
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Set;
 
 public class CitationSearchCommand extends SimpleCommand {
   public CitationSearchCommand() {
