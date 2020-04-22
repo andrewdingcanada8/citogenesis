@@ -7,9 +7,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CalendarDeserializer implements JsonDeserializer<Calendar> {
-
-  private static final String TIME_KEY = "timestamp";
-
   @Override
   public Calendar deserialize(JsonElement jsonElement,
                               Type type,

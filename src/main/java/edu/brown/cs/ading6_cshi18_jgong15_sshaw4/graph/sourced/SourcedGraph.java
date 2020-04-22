@@ -1,15 +1,13 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
+
+import java.util.Set;
 
 public abstract class SourcedGraph<T, W> implements Graph<T, W> {
-  private GraphSource<T, W> source;
 
-  public SourcedGraph(GraphSource<T, W> source) {
-    this.source = source;
-  }
+  public abstract Set<Edge<T, W>> getEdges(SourcedVertex<T, W> val) throws GraphException;
 
-  public GraphSource<T, W> getSource() {
-    return source;
-  }
 }

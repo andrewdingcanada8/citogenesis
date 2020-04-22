@@ -19,8 +19,8 @@ public class TimeStampQueryTest {
 
   @Before
   public void setUp() {
-    _query = new TimeStampQuery(5);
     assumeTrue(WebTestUtils.checkURL("http://archive.org"));
+    _query = new TimeStampQuery(WebTestUtils.HTTP_TIMEOUT);
   }
 
   @After
