@@ -7,28 +7,23 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedEdge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.SourcedMemGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class WebGraph extends SourcedMemGraph<Source, String> {
+public class WebGraph extends RootedSourcedMemGraph<Source, String> {
 
   private Query<String, Source> srcQuery;
-  private int depthLimit;
 
-  public WebGraph(Query<String, Source> srcQuery) {
+  public WebGraph(Source headVal, Query<String, Source> srcQuery) throws GraphException {
+    super(headVal);
     this.srcQuery = srcQuery;
-    this.depthLimit = -1;
   }
 
-  public WebGraph(Query<String, Source> srcQuery, int depthLimit) {
-    this.srcQuery = srcQuery;
-    this.depthLimit = depthLimit;
-  }
+
   @Override
-  public Set<Edge<Source, String>> getEdges(SourcedVertex<Source, String> vert) throws GraphException {
+  public Set<Edge<Source, String>> getAllEdges(SourcedVertex<Source, String> vert)
+      throws GraphException {
     Source src = vert.getVal();
     List<String> links = src.getLinks();
     Set<Edge<Source, String>> neighbors = new HashSet<>();
@@ -36,22 +31,6 @@ public class WebGraph extends SourcedMemGraph<Source, String> {
       try {
         Source nSrc = srcQuery.query(url);
         Vertex<Source, String> nVert = this.getVertex(nSrc);
-
-        // if the depth limit was set...
-        // TODO: currently, if revisited with new depth, new depth is not updated
-        // through the graph
-        if (depthLimit > 0) {
-          if (src.getDepth() > -1) {             // if src has a set depth...
-            if (nSrc.getDepth() < 0) {
-              nSrc.setDepth(src.getDepth() + 1); // if nSrc depth unset, then set to src's + 1
-            } else {
-              nSrc.setDepth(Math.min(src.getDepth() + 1, nSrc.getDepth()));
-            }
-          }
-          if (nSrc.getDepth() > depthLimit) {
-            continue;
-          }
-        }
         neighbors.add(new SourcedEdge<>(url, 0.0, vert, nVert));
       } catch (QueryException e) {
         // do nothing

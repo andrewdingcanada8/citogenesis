@@ -17,8 +17,7 @@ public abstract class SourcedMemGraph<T, W> extends SourcedGraph<T, W> {
 
   @Override
   public Vertex getVertex(T val) throws GraphException {
-    // may bite us later, but if you can't find vertex in map, construct
-    // it here and just add it to the graph
+
     if (vertices.keySet().contains(val)) {
       return vertices.get(val);
     }
@@ -26,5 +25,9 @@ public abstract class SourcedMemGraph<T, W> extends SourcedGraph<T, W> {
     Vertex<T, W> newVert = new SourcedMemVertex(val, this);
     vertices.put(val, newVert);
     return newVert;
+  }
+
+  protected boolean loadedVertex(T val) {
+    return vertices.keySet().contains(val);
   }
 }
