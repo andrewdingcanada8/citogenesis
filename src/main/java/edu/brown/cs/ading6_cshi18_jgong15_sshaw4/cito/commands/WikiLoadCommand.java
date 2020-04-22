@@ -36,9 +36,10 @@ public class WikiLoadCommand extends SimpleCommand {
     public void run(List<TypedString> arguments, PrintWriter pw)
         throws ParseException, InvalidInputException, WorldException {
       String url = new RawStringArg().convert(arguments.get(0));
+      WikiTestUtils
       Wiki wiki = new Wiki();
 
-      pw.write("Set wiki to :" + url);
+      pw.write("Set wiki to " + url);
       pw.flush();
     }
   }

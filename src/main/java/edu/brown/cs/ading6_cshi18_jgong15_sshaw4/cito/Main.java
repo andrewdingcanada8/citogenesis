@@ -9,7 +9,7 @@ public final class Main {
   private Main() { }
 
   public static void main(String[] args) {
-    REPL repl = new REPL(new PrintWriter(System.out), new World[]{new CitoWorld()});
+    REPL repl = new REPL(new PrintWriter(System.out), CitoWorld.getInstance());
     repl.run();
   }
 
