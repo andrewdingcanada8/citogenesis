@@ -5,12 +5,18 @@ import java.util.Set;
 
 public class Wiki {
   private Set<Annotation> annotationSet;
+  private String url;
   private String html; // TODO: find the best representation for html
   // Maybe have an html parser for wiki?
 
 
   public Wiki() {
     annotationSet = null;
+  }
+
+  public Wiki(String url) {
+    annotationSet = null;
+    this.url = url;
   }
 
 }

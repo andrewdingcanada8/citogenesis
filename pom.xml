@@ -148,7 +148,16 @@
             <artifactId>junit-quickcheck-generators</artifactId>
             <version>0.9.1</version>
         </dependency>
+
+        <!-- jsoup HTML parser library @ https://jsoup.org/ -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.13.1</version>
+        </dependency>
     </dependencies>
+
+
 
     <!-- Build section -->
     <build>

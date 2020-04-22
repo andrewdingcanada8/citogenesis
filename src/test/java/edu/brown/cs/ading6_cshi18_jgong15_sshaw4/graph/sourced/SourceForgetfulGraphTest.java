@@ -5,13 +5,8 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.SourceParseException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.GraphSource;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedEdge;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.forgetful.SourcedForgetfulGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.forgetful.SourcedForgetfulVertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.SourcedMemGraph;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.SourcedMemVertex;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -39,16 +34,15 @@ public class SourceForgetfulGraphTest {
     Line bc = new Line("BC");
     Line ac = new Line("AC");
     
-    GraphSource<Node, Line> mfSource = new MiniForgetfulSource(Set.of(a, b, c), Set.of(ab, bc, ac));
-    Graph<Node, Line> fGraph = new SourcedForgetfulGraph<>(mfSource);
+    SourcedForgetfulGraph<Node, Line> graph = new MiniForgetfulSource(Set.of(a, b, c), Set.of(ab, bc, ac));
 
-    Vertex<Node, Line> vertA = fGraph.getVertex(a);
-    Vertex<Node, Line>vertB = fGraph.getVertex(b);
-    Vertex<Node, Line>vertC = fGraph.getVertex(c);
+    Vertex<Node, Line> vertA = graph.getVertex(a);
+    Vertex<Node, Line>vertB = graph.getVertex(b);
+    Vertex<Node, Line>vertC = graph.getVertex(c);
 
-    assertEquals(vertA, new SourcedForgetfulVertex<>(a, mfSource));
-    assertEquals(vertB, new SourcedForgetfulVertex<>(b, mfSource));
-    assertEquals(vertC, new SourcedForgetfulVertex<>(c, mfSource));
+    assertEquals(vertA, new SourcedForgetfulVertex<>(a, graph));
+    assertEquals(vertB, new SourcedForgetfulVertex<>(b, graph));
+    assertEquals(vertC, new SourcedForgetfulVertex<>(c, graph));
 
     Set<Edge<Node, Line>> edgesA = Set.of(
         new SourcedEdge<>(ab, 0, vertA, vertB), new SourcedEdge(ac, 0, vertA, vertC));
@@ -81,16 +75,15 @@ public class SourceForgetfulGraphTest {
     Line cd = new Line("CD");
 
 
-    GraphSource<Node, Line> mSource = new MiniForgetfulSource(Set.of(a, b, c, d), Set.of(ab, bc, ac, ad, bd, cd));
-    Graph<Node, Line> graph = new SourcedForgetfulGraph<>(mSource);
+    SourcedForgetfulGraph<Node, Line> graph = new MiniForgetfulSource(Set.of(a, b, c, d), Set.of(ab, bc, ac, ad, bd, cd));
 
     Vertex<Node, Line>vertA = graph.getVertex(a);
     Vertex<Node, Line>vertB = graph.getVertex(b);
     Vertex<Node, Line>vertC = graph.getVertex(c);
 
-    assertEquals(vertA, new SourcedForgetfulVertex<>(a, mSource));
-    assertEquals(vertB, new SourcedForgetfulVertex<>(b, mSource));
-    assertEquals(vertC, new SourcedForgetfulVertex<>(c, mSource));
+    assertEquals(vertA, new SourcedForgetfulVertex<>(a, graph));
+    assertEquals(vertB, new SourcedForgetfulVertex<>(b, graph));
+    assertEquals(vertC, new SourcedForgetfulVertex<>(c, graph));
 
     Set<Edge<Node, Line>> edgesA = Set.of(
         new SourcedEdge<>(ab, 0, vertA, vertB), new SourcedEdge(ac, 0, vertA, vertC));
@@ -111,8 +104,7 @@ public class SourceForgetfulGraphTest {
 
     Line aa = new Line("AA");
 
-    GraphSource mSource = new MiniForgetfulSource(Set.of(a), Set.of(aa));
-    Graph<Node, Line> graph = new SourcedForgetfulGraph<>(mSource);
+    SourcedForgetfulGraph<Node, Line> graph = new MiniForgetfulSource(Set.of(a), Set.of(aa));
 
     Vertex<Node, Line> vertA = graph.getVertex(a);
     assertFalse(vertA.getEdges().isEmpty());
@@ -125,8 +117,7 @@ public class SourceForgetfulGraphTest {
 
     Line aa = new Line("AA");
 
-    GraphSource mSource = new MiniForgetfulSource(Set.of(a), Set.of(aa));
-    Graph<Node, Line> graph = new SourcedForgetfulGraph<>(mSource);
+    SourcedForgetfulGraph<Node, Line> graph = new MiniForgetfulSource(Set.of(a), Set.of(aa));
 
     Vertex<Node, Line> vertA = graph.getVertex(a);
     assertTrue(vertA.getEdges().isEmpty());
@@ -201,7 +192,7 @@ public class SourceForgetfulGraphTest {
     }
   }
 
-  private class MiniForgetfulSource implements GraphSource<Node, Line> {
+  private class MiniForgetfulSource extends SourcedForgetfulGraph<Node, Line> {
     Set<Node> nodes;
     Set<Line> lines;
     public MiniForgetfulSource(Set<Node> ns, Set<Line> ls) {
@@ -209,7 +200,7 @@ public class SourceForgetfulGraphTest {
       this.lines = ls;
     }
     @Override
-    public Set<Edge<Node, Line>> getEdges(SourcedVertex<Node, Line> inVert) throws SourceParseException {
+    public Set<Edge<Node, Line>> getEdges(SourcedVertex<Node, Line> inVert) {
       Set<Edge<Node, Line>> out = new HashSet<>();
       Node inNode = inVert.getVal();
       for (Line l : lines) {
