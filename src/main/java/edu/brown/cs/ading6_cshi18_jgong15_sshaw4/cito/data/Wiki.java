@@ -1,22 +1,25 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Set;
 
 public class Wiki {
-  private Set<Annotation> annotationSet;
+  private Set<Citation> citationSet;
   private String url;
   private String html; // TODO: find the best representation for html
-  // Maybe have an html parser for wiki?
-
 
   public Wiki() {
-    annotationSet = null;
+    citationSet = null;
   }
 
-  public Wiki(String url) {
-    annotationSet = null;
+  public Wiki(String url, String html, Calendar timestamp) {
     this.url = url;
+    this.html = html;
+    WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html, timestamp);
+    citationSet = wikiHTMLParser.parseForCitations();
   }
 
+  public Set<Citation> getCitationSet() {
+    return citationSet;
+  }
 }

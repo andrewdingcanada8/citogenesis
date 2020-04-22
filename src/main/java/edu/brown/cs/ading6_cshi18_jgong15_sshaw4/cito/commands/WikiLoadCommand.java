@@ -1,6 +1,8 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.CitoWorld;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Wiki;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.CheckConnectionQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.RawStringArg;
@@ -39,10 +41,14 @@ public class WikiLoadCommand extends SimpleCommand {
         throws ParseException, InvalidInputException, WorldException {
       String url = new RawStringArg().convert(arguments.get(0));
       checkURL(url);
-      Wiki wiki = new Wiki();
-
-      pw.write("Set wiki to " + url);
-      pw.flush();
+      try {
+        Wiki wiki = new WikiQuery().query(url);
+        // TODO: set wiki
+        pw.write("Set wiki to " + url);
+        pw.flush();
+      } catch (QueryException e) {
+        throw new WorldException("ERROR: cannot access " + url);
+      }
     }
 
     public boolean checkURL(String url) {
