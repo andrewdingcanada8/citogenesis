@@ -37,4 +37,18 @@ public abstract class Source {
    * @return timestamp
    */
   public abstract Calendar getTimestamp();
+
+  /**
+   * @return depth of source
+   */
+  public int getDepth() {
+    return depth;
+  }
+
+  /**
+   * @param depth new depth of source
+   */
+  public void setDepth(int depth) {
+    this.depth = depth;
+  }
 }
