@@ -19,7 +19,7 @@ public class SimpleVertexGenerator extends Generator<SimpleVertex> {
   // -How to ensure I've got good coverage...
 
 
-  private static final int MAX_VERTS = 100;
+  private static final int MAX_VERTS = 50;
 
   public SimpleVertexGenerator() {
     super(SimpleVertex.class);
@@ -64,7 +64,7 @@ public class SimpleVertexGenerator extends Generator<SimpleVertex> {
 
       // dfs for all reachable nodes
       Set<SimpleVertex> vertSet = new HashSet<>();
-      SimpleVertex.dfs(cpVert, vertSet);
+      GraphUtils.dfs(cpVert, vertSet);
       List<SimpleVertex> vertList = new ArrayList<>(vertSet);
       List<SimpleVertex> pickList = new ArrayList<>(vertSet);
 

@@ -24,18 +24,21 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
   private Map<T, Integer> depthMap;
   private int maxDepth;
 
-  public RootedSourcedMemGraph(T headVal) throws GraphException {
+  public RootedSourcedMemGraph(T headVal) {
     this(headVal, MAX_DEPTH_DEFAULT);
   }
 
-  public RootedSourcedMemGraph(T headVal, int maxDepth) throws GraphException {
+  public RootedSourcedMemGraph(T headVal, int maxDepth) {
     this.headVal = headVal;
     this.maxDepth = maxDepth;
+    if (maxDepth < 0) {
+      throw new IllegalArgumentException("depth must be a non-negative integer");
+    }
     depthMap = new HashMap<>();
-    loadByBFS();
   }
 
-  public Vertex<T, W> getHead() {
+  public Vertex<T, W> getHead() throws GraphException {
+    loadByBFS();
     return head;
   }
 
