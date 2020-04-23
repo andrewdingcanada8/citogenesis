@@ -19,7 +19,7 @@ public class SimpleVertexGenerator extends Generator<SimpleVertex> {
   // -How to ensure I've got good coverage...
 
 
-  private static final int MAX_VERTS = 50;
+  private static final int MAX_VERTS = 25;
 
   public SimpleVertexGenerator() {
     super(SimpleVertex.class);
@@ -48,43 +48,5 @@ public class SimpleVertexGenerator extends Generator<SimpleVertex> {
         }).collect(Collectors.toList());
 
     return connectedVerts.get(0);
-  }
-
-  @Override
-  public List<SimpleVertex> doShrink(SourceOfRandomness random, SimpleVertex larger) {
-    if (larger.getEdges().isEmpty())
-      return Collections.emptyList();
-
-    Stream<SimpleVertex> single = Stream.of(new SimpleVertex("0"));
-    // set up stream of graphs from larger with one random edge removed
-
-    Stream<SimpleVertex> reduced = Stream.generate(() -> {
-      // copy vertex to prevent multiple changes to same graph
-      SimpleVertex cpVert = (SimpleVertex) larger.clone();
-
-      // dfs for all reachable nodes
-      Set<SimpleVertex> vertSet = new HashSet<>();
-      GraphUtils.dfs(cpVert, vertSet);
-      List<SimpleVertex> vertList = new ArrayList<>(vertSet);
-      List<SimpleVertex> pickList = new ArrayList<>(vertSet);
-
-      // pick random node in the set and remove a random edge
-      SimpleVertex cand;
-      do{
-        cand = pickList.get(random.nextInt(vertList.size()));
-        pickList.remove(cand);
-      } while (cand.getEdges().isEmpty());
-
-
-      List<Edge<String, Object>> edges = new ArrayList<>(cand.getEdges());
-      edges.remove(random.nextInt(edges.size()));
-      cand.setEdges(new HashSet<>(edges));
-
-      // return matching starting vertex
-      return vertList.get(vertList.indexOf(larger));
-    });
-
-    // append stream and return next 50 results
-    return Streams.concat(single, reduced).limit(50).collect(Collectors.toList());
   }
 }
