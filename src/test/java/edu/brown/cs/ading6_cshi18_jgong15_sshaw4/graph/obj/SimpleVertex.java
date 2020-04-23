@@ -21,6 +21,10 @@ public class SimpleVertex implements Vertex<String, Object>, Cloneable {
     return name;
   }
 
+  public void setVal(String n) {
+    name = n;
+  }
+
   @Override
   public Set<Edge<String, Object>> getEdges() {
     return edges;
@@ -48,7 +52,7 @@ public class SimpleVertex implements Vertex<String, Object>, Cloneable {
   public String toString() {
     Set<SimpleVertex> allVerts = new HashSet<>();
     GraphUtils.dfs(this, allVerts);
-    StringBuilder out = new StringBuilder();
+    StringBuilder out = new StringBuilder("node: {" + name + "}");
     allVerts.forEach(v -> out.append(v.getVal() + " "));
     return out.toString();
   }
