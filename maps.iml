@@ -56,5 +56,6 @@
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.20.0-GA" level="project" />
     <orderEntry type="library" name="Maven: ru.vyarus:generics-resolver:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.pholser:junit-quickcheck-generators:0.9.1" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.13.1" level="project" />
   </component>
 </module>

@@ -5,11 +5,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.SourceParseException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.GraphSource;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedEdge;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.forgetful.SourcedForgetfulGraph;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.forgetful.SourcedForgetfulVertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.SourcedMemGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.SourcedMemVertex;
 import org.junit.Test;
@@ -39,16 +34,15 @@ public class SourceMemGraphTest {
     Line bc = new Line("BC");
     Line ac = new Line("AC");
     
-    GraphSource<Node, Line> mSource = new MiniMemSource(Set.of(a, b, c), Set.of(ab, bc, ac));
-    Graph<Node, Line> graph = new SourcedMemGraph<>(mSource);
+    SourcedMemGraph<Node, Line> graph = new MiniMemGraph(Set.of(a, b, c), Set.of(ab, bc, ac)); //
 
     Vertex<Node, Line> vertA = graph.getVertex(a);
     Vertex<Node, Line>vertB = graph.getVertex(b);
     Vertex<Node, Line>vertC = graph.getVertex(c);
 
-    assertEquals(vertA, new SourcedMemVertex<>(a, mSource));
-    assertEquals(vertB, new SourcedMemVertex<>(b, mSource));
-    assertEquals(vertC, new SourcedMemVertex<>(c, mSource));
+    assertEquals(vertA, new SourcedMemVertex<>(a, graph));
+    assertEquals(vertB, new SourcedMemVertex<>(b, graph));
+    assertEquals(vertC, new SourcedMemVertex<>(c, graph));
 
     Set<Edge<Node, Line>> edgesA = Set.of(
         new SourcedEdge<>(ab, 0, vertA, vertB), new SourcedEdge(ac, 0, vertA, vertC));
@@ -81,16 +75,15 @@ public class SourceMemGraphTest {
     Line cd = new Line("CD");
 
 
-    GraphSource<Node, Line> mSource = new MiniMemSource(Set.of(a, b, c, d), Set.of(ab, bc, ac, ad, bd, cd));
-    Graph<Node, Line> graph = new SourcedMemGraph<>(mSource);
+    SourcedMemGraph<Node, Line> graph = new MiniMemGraph(Set.of(a, b, c, d), Set.of(ab, bc, ac, ad, bd, cd));
 
     Vertex<Node, Line>vertA = graph.getVertex(a);
     Vertex<Node, Line>vertB = graph.getVertex(b);
     Vertex<Node, Line>vertC = graph.getVertex(c);
 
-    assertEquals(vertA, new SourcedMemVertex<>(a, mSource));
-    assertEquals(vertB, new SourcedMemVertex<>(b, mSource));
-    assertEquals(vertC, new SourcedMemVertex<>(c, mSource));
+    assertEquals(vertA, new SourcedMemVertex<>(a, graph));
+    assertEquals(vertB, new SourcedMemVertex<>(b, graph));
+    assertEquals(vertC, new SourcedMemVertex<>(c, graph));
 
     Set<Edge<Node, Line>> edgesA = Set.of(
         new SourcedEdge<>(ab, 0, vertA, vertB), new SourcedEdge(ac, 0, vertA, vertC));
@@ -111,8 +104,7 @@ public class SourceMemGraphTest {
 
     Line aa = new Line("AA");
 
-    GraphSource mSource = new MiniMemSource(Set.of(a), Set.of(aa));
-    Graph<Node, Line> graph = new SourcedMemGraph<>(mSource);
+    SourcedMemGraph<Node, Line> graph = new MiniMemGraph(Set.of(a), Set.of(aa));
 
     Vertex<Node, Line> vertA = graph.getVertex(a);
     assertFalse(vertA.getEdges().isEmpty());
@@ -125,8 +117,7 @@ public class SourceMemGraphTest {
 
     Line aa = new Line("AA");
 
-    GraphSource mSource = new MiniMemSource(Set.of(a), Set.of(aa));
-    Graph<Node, Line> graph = new SourcedMemGraph<>(mSource);
+    SourcedMemGraph<Node, Line> graph = new MiniMemGraph(Set.of(a), Set.of(aa));
 
     Vertex<Node, Line> vertA = graph.getVertex(a);
     assertTrue(vertA.getEdges().isEmpty());
@@ -201,15 +192,15 @@ public class SourceMemGraphTest {
     }
   }
 
-  private class MiniMemSource implements GraphSource<Node, Line> {
+  private class MiniMemGraph extends SourcedMemGraph<Node, Line> {
     Set<Node> nodes;
     Set<Line> lines;
-    public MiniMemSource(Set<Node> ns, Set<Line> ls) {
+    public MiniMemGraph(Set<Node> ns, Set<Line> ls) {
       this.nodes = ns;
       this.lines = ls;
     }
     @Override
-    public Set<Edge<Node, Line>> getEdges(SourcedVertex<Node, Line> inVert) throws SourceParseException {
+    public Set<Edge<Node, Line>> getEdges(SourcedVertex<Node, Line> inVert) {
       Set<Edge<Node, Line>> out = new HashSet<>();
       Node inNode = inVert.getVal();
       for (Line l : lines) {

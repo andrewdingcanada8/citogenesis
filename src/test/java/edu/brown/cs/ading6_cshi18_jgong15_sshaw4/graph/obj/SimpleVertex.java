@@ -4,7 +4,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 
-import javax.print.DocFlavor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,19 +14,6 @@ public class SimpleVertex implements Vertex<String, Object>, Cloneable {
   public SimpleVertex(String name) {
     this.name = name;
     this.edges = Collections.emptySet();
-  }
-
-  public static <T extends Vertex<String, Object>> void dfs(T v, Set<T> visited) {
-    visited.add(v);
-    Set<Edge<String, Object>> es;
-    try {
-      es = v.getEdges();
-    } catch (GraphException e) {
-      throw new IllegalStateException("not supposed to be here...");
-    }
-    es.stream().map(e -> e.getDest())
-        .filter(nv -> !visited.contains(nv))
-        .forEach(nv -> dfs((T)nv, visited));
   }
 
   @Override
@@ -61,7 +47,7 @@ public class SimpleVertex implements Vertex<String, Object>, Cloneable {
   @Override
   public String toString() {
     Set<SimpleVertex> allVerts = new HashSet<>();
-    dfs(this, allVerts);
+    GraphUtils.dfs(this, allVerts);
     StringBuilder out = new StringBuilder();
     allVerts.forEach(v -> out.append(v.getVal() + " "));
     return out.toString();
@@ -70,7 +56,7 @@ public class SimpleVertex implements Vertex<String, Object>, Cloneable {
   @Override
   public Object clone() {
     HashSet<SimpleVertex> allVerts = new HashSet<>();
-    dfs(this, allVerts);
+    GraphUtils.dfs(this, allVerts);
     // reconstruct vertices
     List<SimpleVertex> newVerts = allVerts.stream()
         .map(v -> new SimpleVertex(v.getVal()))
