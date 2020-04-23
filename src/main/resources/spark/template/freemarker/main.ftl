@@ -8,8 +8,15 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-<iframe src=${content}></iframe>
-
+<div class="content">
+    <form method="GET" action="/search" class="search">
+        <label> URL
+            <input type="text" name="url">
+        </label>
+        <input type="submit">
+    </form>
+    ${content}
+</div>
 <script src="js/jquery-2.1.1.js"></script>
 </body>
 </html>
