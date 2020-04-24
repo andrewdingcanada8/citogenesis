@@ -13,10 +13,14 @@ import java.util.*;
 
 public class WebGraph extends RootedSourcedMemGraph<Source, String> {
 
+  public static final int DEFAULT_DEPTH = 10;
   private Query<String, Source> srcQuery;
 
-  public WebGraph(Source headVal, Query<String, Source> srcQuery) throws GraphException {
-    super(headVal);
+  public WebGraph(Source headVal, Query<String, Source> srcQuery) {
+    this(headVal, srcQuery, DEFAULT_DEPTH);
+  }
+  public WebGraph(Source headVal, Query<String, Source> srcQuery, int depth) {
+    super(headVal, depth);
     this.srcQuery = srcQuery;
   }
 
