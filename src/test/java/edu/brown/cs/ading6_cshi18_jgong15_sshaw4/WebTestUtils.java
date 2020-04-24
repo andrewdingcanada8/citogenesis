@@ -1,7 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.CheckConnectionQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.CheckConnectionQuery;
 import static org.junit.Assume.*;
 
 public final class WebTestUtils {

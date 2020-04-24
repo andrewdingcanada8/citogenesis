@@ -1,4 +1,4 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.SendableQuery;
 

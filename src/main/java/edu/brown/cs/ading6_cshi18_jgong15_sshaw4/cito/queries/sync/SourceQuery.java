@@ -1,10 +1,10 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.WebSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.HTMLQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.HTMLQuery;
 
 import java.util.Calendar;
 
