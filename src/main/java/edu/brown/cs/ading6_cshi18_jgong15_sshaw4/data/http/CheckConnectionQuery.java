@@ -9,10 +9,6 @@ import java.net.http.HttpResponse;
 
 public class CheckConnectionQuery extends HttpQuery<String, Boolean> {
 
-  public CheckConnectionQuery() {
-    super();
-  }
-
   public CheckConnectionQuery(int timeOutInSec) {
     super(timeOutInSec);
   }

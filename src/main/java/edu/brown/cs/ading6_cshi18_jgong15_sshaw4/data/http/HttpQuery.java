@@ -8,9 +8,6 @@ import java.net.http.HttpResponse;
 
 public abstract class HttpQuery<Q, R>
     extends SendableQuery<Q, R, HttpSource, HttpRequest, HttpResponse<String>, HttpClient> {
-  public HttpQuery() {
-    super(new HttpSource());
-  }
   public HttpQuery(int timeOutInSec) {
     super(new HttpSource(timeOutInSec));
   }

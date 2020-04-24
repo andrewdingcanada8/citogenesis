@@ -16,7 +16,7 @@ public class WebGraphTest {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
     SourceQuery sq = new SourceQuery(5);
     Source src = sq.query("https://www.google.com");
-    WebGraph nyGraph = new WebGraph(src, sq, 2);
+    WebGraph nyGraph = new WebGraph(src, sq, 1);
     nyGraph.getHead();
   }
 

@@ -12,10 +12,6 @@ import java.util.Calendar;
 
 public class TimeStampQuery extends HttpQuery<String, Calendar> {
 
-  public TimeStampQuery() {
-    super();
-  }
-
   public TimeStampQuery(int timeOutInSec) {
     super(timeOutInSec);
   }

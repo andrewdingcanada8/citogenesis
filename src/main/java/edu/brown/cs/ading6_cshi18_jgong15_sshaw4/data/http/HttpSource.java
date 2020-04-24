@@ -8,24 +8,35 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HttpSource implements DataSource<HttpRequest, HttpResponse<String>, HttpClient> {
-  private HttpClient client;
-  public HttpSource() {
-    client = HttpClient.newHttpClient();
-  }
+  private static volatile Map<Integer, HttpClient> clients;
+  private HttpClient myClient;
 
   public HttpSource(int timeOutInSec) {
-    client = HttpClient.newBuilder()
-        .connectTimeout(Duration.ofSeconds(timeOutInSec))
-        .build();
+    // initialize client map if called for the first time
+    if (clients == null) {
+      clients = new HashMap<>();
+    }
+
+    // check if we have any clients with the corresponding timeout
+    boolean noClient = clients.keySet().stream().noneMatch(n -> n == timeOutInSec);
+    if (noClient) {
+      clients.put(timeOutInSec,
+          HttpClient.newBuilder()
+              .connectTimeout(Duration.ofSeconds(timeOutInSec))
+              .build());
+    }
+    myClient = clients.get(timeOutInSec);
   }
 
 
   @Override
   public HttpResponse<String> runQuery(HttpRequest queryInput) throws DataSourceException {
     try {
-      return client.send(queryInput, HttpResponse.BodyHandlers.ofString());
+      return myClient.send(queryInput, HttpResponse.BodyHandlers.ofString());
     } catch (IOException | InterruptedException e) {
       throw new DataSourceException(e.getMessage());
     }
@@ -33,6 +44,6 @@ public class HttpSource implements DataSource<HttpRequest, HttpResponse<String>,
 
   @Override
   public HttpClient getSource() {
-    return client;
+    return myClient;
   }
 }

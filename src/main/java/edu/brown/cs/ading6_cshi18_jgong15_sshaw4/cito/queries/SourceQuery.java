@@ -11,10 +11,6 @@ import java.util.Calendar;
 public class SourceQuery implements Query<String, Source> {
   private Query<String, String> htmlQuery;
   private Query<String, Calendar> timeQuery;
-  public SourceQuery() {
-    htmlQuery = new HTMLQuery();
-    timeQuery = new TimeStampQuery();
-  }
 
   public SourceQuery(int timeOutInSec) {
     htmlQuery = new HTMLQuery(timeOutInSec);

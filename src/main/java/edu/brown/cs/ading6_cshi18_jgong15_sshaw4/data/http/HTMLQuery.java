@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class HTMLQuery extends HttpQuery<String, String> {
   private String curURL;
-  public HTMLQuery() {
-    curURL = "UNUSED";
-  }
 
   public HTMLQuery(int timeOutInSec) {
     super(timeOutInSec);
