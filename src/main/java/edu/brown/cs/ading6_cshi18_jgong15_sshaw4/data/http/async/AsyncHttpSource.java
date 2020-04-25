@@ -17,7 +17,7 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
     HttpClient> {
   private static volatile Map<Integer, HttpClient> clients;
   private static volatile Map<Integer, Semaphore> semaphores;
-  private static final int NUM_STREAMS = 10;
+  private static final int NUM_STREAMS = 20;
   private HttpClient myClient;
   private Semaphore mySem;
 
@@ -48,6 +48,7 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
   @Override
   public CompletableFuture<HttpResponse<String>> runQuery(HttpRequest queryInput) {
     mySem.acquireUninterruptibly();
+    System.out.println("acquiring permit. Num left: " + mySem.availablePermits());
     return myClient.sendAsync(queryInput, HttpResponse.BodyHandlers.ofString())
         .thenApply(res -> {
           mySem.release();  // release when done obtaining request info

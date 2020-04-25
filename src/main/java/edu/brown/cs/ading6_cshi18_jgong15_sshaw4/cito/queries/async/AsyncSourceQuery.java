@@ -23,8 +23,6 @@ public class AsyncSourceQuery implements Query<String, CompletableFuture<Source>
     CompletableFuture<String> htmlFuture = htmlQuery.query(url);
     //CompletableFuture<Calendar> timeFuture = timeQuery.query(url);
     //return htmlFuture.thenCombineAsync(timeFuture, (html, time) -> new WebSource(url, html, time));
-    return htmlFuture.thenCompose(str ->
-        CompletableFuture.supplyAsync(() ->
-            new WebSource(url, str, null)));
+    return htmlFuture.thenApply(str -> new WebSource(url, str, null));
   }
 }
