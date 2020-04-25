@@ -2,6 +2,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Deadend;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
@@ -33,11 +34,21 @@ public class WebGraph extends RootedSourcedMemGraph<Source, String> {
     Set<Edge<Source, String>> neighbors = new HashSet<>();
     for (String url : links) {
       try {
-        Source nSrc = srcQuery.query(url);
-        Vertex<Source, String> nVert = this.getVertex(nSrc);
+        Vertex<Source, String> nVert;
+        WebSource dummy = new WebSource(url, "", null);
+        // if loaded already, acquire new page without querying soure
+        if (this.loadedVertex(dummy)) {
+          nVert = this.getVertex(dummy);
+        } else {
+          Source nSrc = srcQuery.query(url);
+          nVert = this.getVertex(nSrc);
+        }
         neighbors.add(new SourcedEdge<>(url, 0.0, vert, nVert));
-      } catch (QueryException e) {
-        // do nothing
+        System.out.println("adding... " + url);
+      } catch (QueryException | IllegalArgumentException e) {
+        // do nothing (i.e, don't attach anything to the source)
+        neighbors.add(new SourcedEdge<>(url, 0.0, vert, new Deadend<>(new DeadSource())));
+        System.out.println("Graph search encountered error: " + e.getMessage());
       }
     }
     return neighbors;
