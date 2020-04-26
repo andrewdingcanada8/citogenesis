@@ -4,9 +4,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-public class DeadSource extends Source {
+public class DeadSource implements Source {
   @Override
   public String getHTML() {
+    return "";
+  }
+
+  @Override
+  public String getContent() {
     return "";
   }
 

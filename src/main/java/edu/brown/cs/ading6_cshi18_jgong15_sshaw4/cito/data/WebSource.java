@@ -2,16 +2,20 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class WebSource extends Source {
+public class WebSource implements Source {
 
   private String html;
+  private String content;
   private String url;
   private Calendar timestamp;
   private List<String> links;
@@ -27,18 +31,40 @@ public class WebSource extends Source {
     this.url = url;
     this.timestamp = timestamp;
 
-    // extract all links
+    // extract all links (href attributes in anchor tags)
     Document doc = Jsoup.parse(html, url);
     Elements anchors = doc.getElementsByTag("a");
     this.links = anchors.stream()
         .map(e -> e.absUrl("href"))
         .filter(str -> !str.equals(""))
         .collect(Collectors.toList());
+
+    // extract all text elements (h1, h2, h3, h4, h5, h6, p, li tags)
+    Elements h1s = doc.getElementsByTag("h1");
+    Elements h2s = doc.getElementsByTag("h2");
+    Elements h3s = doc.getElementsByTag("h3");
+    Elements h4s = doc.getElementsByTag("h4");
+    Elements h5s = doc.getElementsByTag("h5");
+    Elements h6s = doc.getElementsByTag("h6");
+    Elements ps = doc.getElementsByTag("p");
+    Elements li = doc.getElementsByTag("li");
+
+    // flatten into single list, extract text from each, and then join
+    // with a single space apart
+    this.content = Stream.of(h1s, h2s, h3s, h4s, h5s, h6s, ps, li)
+        .flatMap(Collection::stream)
+        .map(Element::text)
+        .collect(Collectors.joining(" "));
   }
 
   @Override
   public String getHTML() {
     return html;
+  }
+
+  @Override
+  public String getContent() {
+    return content;
   }
 
   @Override
