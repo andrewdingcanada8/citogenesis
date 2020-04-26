@@ -64,7 +64,6 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
         // pass rules on url
         .filter(l -> RULES.stream().allMatch(r -> r.verify(l, vert, this)))
         // run asyncquery
-        .limit(10) // test
         .map(l -> {
           try {
             return srcQuery.query(l);
@@ -93,7 +92,8 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
         .collect(Collectors.toSet());
     // wait for all requests to finish
     try {
-      CompletableFuture.allOf(edgeFs.toArray(CompletableFuture[]::new)).get(5, TimeUnit.SECONDS);
+      System.out.println("all requests for " + src.getURL() + " sent. waiting...");
+      CompletableFuture.allOf(edgeFs.toArray(CompletableFuture[]::new)).get(1, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     } catch (ExecutionException | TimeoutException e) {

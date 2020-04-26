@@ -20,7 +20,7 @@ public class WebGraphTest {
   @Test
   public void asyncSanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
-    AsyncSourceQuery sq = new AsyncSourceQuery(1);
+    AsyncSourceQuery sq = new AsyncSourceQuery(3);
     Source src = sq.query("https://www.nytimes.com/2020/04/24/us/coronavirus-us-usa-updates.html").join();
     AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 2);
     nyGraph.getHead();
