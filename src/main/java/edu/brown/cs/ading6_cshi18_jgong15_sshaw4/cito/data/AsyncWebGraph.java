@@ -1,8 +1,8 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.blacklist.HostBlacklistFactory;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.blacklist.NoInLinking;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.blacklist.Rule;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.HostBlacklistFactory;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.NoInLinking;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.URLRule;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Deadend;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
@@ -22,11 +22,12 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
-  public static final Set<Rule> RULES;
+  public static final Set<URLRule> URL_RULES;
+
   static {
-    RULES = new HashSet<>();
-    RULES.add(new NoInLinking());
-    RULES.addAll(HostBlacklistFactory.getDefault());
+    URL_RULES = new HashSet<>();
+    URL_RULES.add(new NoInLinking());
+    URL_RULES.addAll(HostBlacklistFactory.getDefault());
   }
 
   public static final int DEFAULT_DEPTH = 10;
@@ -36,7 +37,8 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
     this(headVal, srcQuery, DEFAULT_DEPTH);
   }
 
-  public AsyncWebGraph(Source headVal, Query<String, CompletableFuture<Source>> srcQuery, int depth) {
+  public AsyncWebGraph(Source headVal,
+                       Query<String, CompletableFuture<Source>> srcQuery, int depth) {
     super(headVal, depth);
     this.srcQuery = srcQuery;
   }
@@ -62,7 +64,7 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
         // if we haven't loaded yet
         .filter(l -> !this.loadedVertex(new WebSource(l, "", null)))
         // pass rules on url
-        .filter(l -> RULES.stream().allMatch(r -> r.verify(l, vert, this)))
+        .filter(l -> URL_RULES.stream().allMatch(r -> r.verify(l, vert.getVal().getURL(), this)))
         // run asyncquery
         .map(l -> {
           try {
