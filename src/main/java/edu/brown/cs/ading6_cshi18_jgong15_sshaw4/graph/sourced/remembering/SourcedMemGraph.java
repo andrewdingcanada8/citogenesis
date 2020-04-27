@@ -1,11 +1,12 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedGraph;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class SourcedMemGraph<T, W> extends SourcedGraph<T, W> {
 
@@ -16,9 +17,8 @@ public abstract class SourcedMemGraph<T, W> extends SourcedGraph<T, W> {
   }
 
   @Override
-  public Vertex getVertex(T val) throws GraphException {
-    // may bite us later, but if you can't find vertex in map, construct
-    // it here and just add it to the graph
+  public Vertex getVertex(T val) {
+
     if (vertices.keySet().contains(val)) {
       return vertices.get(val);
     }
@@ -26,5 +26,13 @@ public abstract class SourcedMemGraph<T, W> extends SourcedGraph<T, W> {
     Vertex<T, W> newVert = new SourcedMemVertex(val, this);
     vertices.put(val, newVert);
     return newVert;
+  }
+
+  protected boolean loadedVertex(T val) {
+    return vertices.keySet().contains(val);
+  }
+
+  public Collection<Vertex<T, W>> getLoadedVertices() {
+    return vertices.values();
   }
 }

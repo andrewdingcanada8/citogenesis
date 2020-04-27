@@ -43,4 +43,11 @@ public abstract class SourcedVertex<T, W> implements Vertex<T, W> {
   public int hashCode() {
     return Objects.hash(val);
   }
+
+  @Override
+  public String toString() {
+    return "SourcedVertex{"
+        + "val=" + val
+        + '}';
+  }
 }

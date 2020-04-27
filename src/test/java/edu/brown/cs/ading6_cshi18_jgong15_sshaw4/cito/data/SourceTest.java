@@ -16,6 +16,7 @@ public class SourceTest {
     ArrayList<String> strs = new ArrayList<>();
     strs.add("http://blah.com");
     assertEquals(strs, src.getLinks());
+    assertEquals("blah", src.getContent());
   }
 
   @Test
@@ -28,6 +29,7 @@ public class SourceTest {
     strs.add("https://halllo.edu");
     strs.add("http://nested.txt");
     assertEquals(strs, src.getLinks());
+    assertEquals("Cozy", src.getContent());
   }
 
   @Test
@@ -35,6 +37,7 @@ public class SourceTest {
     String html = "<html><body><a>nope none</a></body></html>";
     Source src = new WebSource("test.com", html, new GregorianCalendar());
     assertTrue("links detected when there aren't any", src.getLinks().isEmpty());
+    assertEquals("", src.getContent());
   }
 
   @Test
@@ -48,6 +51,30 @@ public class SourceTest {
     ArrayList<String> strs = new ArrayList<>();
     strs.add("http://test.com/blah");
     assertEquals(strs, src.getLinks());
+    assertEquals("blah", src.getContent());
+  }
+
+  @Test
+  public void extractsAllTextTagsTest() {
+    String html = "<html>"
+        + "<body>"
+        + "<p>i'm a teapot</p>"
+        + "<h1>short and stout</h1>"
+        + "<h2>here is my handle</h2>"
+        + "<h3>here is my spout</h3>"
+        + "<h4>I kinda forget the rest</h4>"
+        + "<h5>WOOOOP</h5>"
+        + "<h6>st about tipping over</h6>"
+        + "<li>i give up</li></body></html>";
+    Source src = new WebSource("http://test.com", html, new GregorianCalendar());
+    assertTrue(src.getContent().contains("i'm a teapot"));
+    assertTrue(src.getContent().contains("short and stout"));
+    assertTrue(src.getContent().contains("here is my handle"));
+    assertTrue(src.getContent().contains("here is my spout"));
+    assertTrue(src.getContent().contains("I kinda forget the rest"));
+    assertTrue(src.getContent().contains("WOOOOP"));
+    assertTrue(src.getContent().contains("st about tipping over"));
+    assertTrue(src.getContent().contains("i give up"));
   }
 
 }
