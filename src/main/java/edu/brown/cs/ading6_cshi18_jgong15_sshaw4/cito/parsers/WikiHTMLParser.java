@@ -1,4 +1,10 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers;
+
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Citation;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.Calendar;
 import java.util.HashSet;
@@ -33,7 +39,12 @@ public class WikiHTMLParser {
   }
 
   public void parseForRawCitation() {
-    String foaieb;
+    Document doc = Jsoup.parse(html, url);
+    Elements refs = doc.select(".reference");
+    System.out.println(refs);
+//    for (Element ref : refs) {
+//      Citation
+//    }
   }
 
   public Set<Citation> parseForCitations() {
@@ -58,5 +69,4 @@ public class WikiHTMLParser {
     // TODO: check revision timestamp
     return true;
   }
-
 }

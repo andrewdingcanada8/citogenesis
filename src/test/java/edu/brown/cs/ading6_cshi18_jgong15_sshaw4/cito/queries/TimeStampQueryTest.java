@@ -19,7 +19,7 @@ public class TimeStampQueryTest {
 
   @Before
   public void setUp() {
-    _query = new TimeStampQuery(5);
+    _query = new TimeStampQuery(10);
     assumeTrue(WebTestUtils.checkURL("http://archive.org"));
   }
 

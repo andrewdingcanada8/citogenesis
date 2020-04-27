@@ -26,6 +26,14 @@ public class Citation {
     this.sourceType = sourceType;
   }
 
+  public WebSource getInitialWebSource() {
+    return initialWebSource;
+  }
+
+  public String getSourceType() {
+    return sourceType;
+  }
+
   public void setSourceType(String sourceType) {
     this.sourceType = sourceType;
     if (sourceType.equals("Self")) {
