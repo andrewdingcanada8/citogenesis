@@ -14,16 +14,17 @@ import java.util.stream.IntStream;
 
 public class CosSimThreshold implements SourceRule {
 
-  private static final double THRESHOLD = 0.5;
+  private static final double THRESHOLD = 0.7;
 
   @Override
   public boolean verify(Source src,
                         Source prevSrc,
                         RootedSourcedMemGraph<Source, String> graph) {
     // lemmatize both documents and acquire lists of lemmas
-    return cosSim(src.getContent(), prevSrc.getContent()) > THRESHOLD;
+    return cosSim(src.getContent(), prevSrc.getContent()) >= THRESHOLD;
   }
 
+  // TODO: CACHE LEMMATIZATION PROCESS
   public static double cosSim(String doc1, String doc2) {
     Document rootDoc = new Document(doc1.toLowerCase());
     Document leafDoc = new Document(doc2.toLowerCase());

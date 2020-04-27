@@ -47,7 +47,7 @@ public class WebGraph extends RootedSourcedMemGraph<Source, String> {
         System.out.println("adding... " + url);
       } catch (QueryException | IllegalArgumentException e) {
         // do nothing (i.e, don't attach anything to the source)
-        neighbors.add(new SourcedEdge<>(url, 0.0, vert, new Deadend<>(new DeadSource())));
+        neighbors.add(new SourcedEdge<>(url, 0.0, vert, new Deadend<>(new DeadSource(url))));
         System.out.println("Graph search encountered error: " + e.getMessage());
       }
     }

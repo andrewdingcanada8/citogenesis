@@ -1,13 +1,13 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.source.CosSimThreshold;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.source.SourceRule;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.HostBlacklistFactory;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.NoInLinking;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.URLRule;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Deadend;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedEdge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
@@ -16,9 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
@@ -28,6 +25,13 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
     URL_RULES = new HashSet<>();
     URL_RULES.add(new NoInLinking());
     URL_RULES.addAll(HostBlacklistFactory.getDefault());
+  }
+
+  public static final Set<SourceRule> SRC_RULES;
+
+  static {
+    SRC_RULES = new HashSet<>();
+    SRC_RULES.add(new CosSimThreshold());
   }
 
   public static final int DEFAULT_DEPTH = 10;
@@ -45,26 +49,25 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
 
 
   @Override
-  public Set<Edge<Source, String>> getAllEdges(SourcedVertex<Source, String> vert)
-      throws GraphException {
-    Source src = vert.getVal();
-    System.out.println("Starting search on: " + src.getURL());
-    List<String> links = src.getLinks();
+  public Set<Edge<Source, String>> getAllEdges(SourcedVertex<Source, String> rootVert) {
+    Source rootSrc = rootVert.getVal();
+    System.out.println("Starting search on: " + rootSrc.getURL());
+    List<String> links = rootSrc.getLinks();
 
     // If we already have the sources, then just grab them
     Set<Edge<Source, String>> knownEs = links.stream()
         .filter(l -> this.loadedVertex(new WebSource(l, "", null)))
         .map(l -> {
           Vertex<Source, String> nv = this.getVertex(new WebSource(l, "", null));
-          return new SourcedEdge<Source, String>(l, 0, vert, nv);
+          return new SourcedEdge<Source, String>(l, 0, rootVert, nv);
         }).collect(Collectors.toSet());
 
     // for the soures we don't have...
-    Set<CompletableFuture<? extends Edge<Source, String>>> edgeFs = links.stream()
+    Set<CompletableFuture<Source>> srcFs = links.stream()
         // if we haven't loaded yet
         .filter(l -> !this.loadedVertex(new WebSource(l, "", null)))
         // pass rules on url
-        .filter(l -> URL_RULES.stream().allMatch(r -> r.verify(l, vert.getVal().getURL(), this)))
+        .filter(l -> URL_RULES.stream().allMatch(r -> r.verify(l, rootVert.getVal().getURL(), this)))
         // run asyncquery
         .map(l -> {
           try {
@@ -72,38 +75,46 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
           } catch (Exception e) {
             System.out.println("Async Graph send error: " + e.getMessage());
             CompletableFuture<Source> dud = new CompletableFuture<>();
-            dud.complete(new DeadSource());
+            dud.complete(new DeadSource(l));
             return dud;
           }
         })
-        // when done, obtain new vertex and make an edge
-        .map(srcFuture ->
-            srcFuture.thenCompose(s ->
-                CompletableFuture.supplyAsync(() -> {
-                  Vertex nv = this.getVertex(s);
-                  System.out.println("adding.... " + s.getURL());
-                  return new SourcedEdge<Source, String>(src.getURL(), 0, vert, nv);
-                })))
-        // if we hit a QueryException/any others, just attach a dead source instead
-        .map(eFut ->
-            eFut.exceptionally(ex -> {
-              System.out.println("Async Graph connection error: " + ex.getMessage());
-              return new SourcedEdge<Source, String>(
-                  "dead", 0, vert, new Deadend<>(new DeadSource()));
-            }))
-        .collect(Collectors.toSet());
-    // wait for all requests to finish
-    try {
-      System.out.println("all requests for " + src.getURL() + " sent. waiting...");
-      CompletableFuture.allOf(edgeFs.toArray(CompletableFuture[]::new)).get(1, TimeUnit.SECONDS);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException | TimeoutException e) {
-      System.out.println("Link search on " + src.getURL() + " errored: " + e.getMessage());
-    }
-
-    knownEs.addAll(edgeFs.stream().map(CompletableFuture::join).collect(Collectors.toList()));
-    System.out.println("Search on " + src.getURL() + " complete.");
+        // check to make sure Sources pass rules
+        .map(srcFut ->
+            srcFut.thenCompose(curSrc ->
+                CompletableFuture.supplyAsync(
+                    () -> {
+                      if (curSrc instanceof DeadSource) {
+                        return curSrc;
+                      }
+                      boolean viable = SRC_RULES.stream()
+                          .allMatch(rule -> rule.verify(curSrc, rootSrc, this));
+                      if (viable) {
+                        return curSrc;
+                      } else {
+                        return NonViableSource.INSTANCE;
+                      }
+                    }
+                )))
+        .map(fut ->
+            fut.exceptionally(ex -> {
+              System.out.println("Async graph connection error: " + ex.getMessage());
+              return NonViableSource.INSTANCE;
+            })).collect(Collectors.toSet());
+    // wait for all Source processing to finish
+    CompletableFuture.allOf(srcFs.toArray(CompletableFuture[]::new)).join();
+    // clear out all non-viable edges, make edges
+    List<Edge<Source, String>> newEs = srcFs.stream()
+        .map(CompletableFuture::join)
+        .filter(s -> s != NonViableSource.INSTANCE)
+        .map(s -> {
+          Vertex<Source, String> nv = this.getVertex(s);
+          System.out.println("adding..." + s.getURL());
+          return new SourcedEdge<Source, String>(s.getURL(), 0, rootVert, nv);
+        }).collect(Collectors.toList());
+    // add to known edges and return
+    knownEs.addAll(newEs);
+    System.out.println("Search on " + rootSrc.getURL() + " complete.");
     return knownEs;
   }
 }

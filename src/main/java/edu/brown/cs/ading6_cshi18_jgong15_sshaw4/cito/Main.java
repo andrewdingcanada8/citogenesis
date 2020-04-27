@@ -13,4 +13,14 @@ public final class Main {
     repl.run();
   }
 
+
+  // Seiji's TODO:
+  // caching on lemmatization process
+  // implement 'second pass' timestamp when it becomes relevant (when identifying generators)
+  // graph synchronization for url-node differences
+  // multi-threading bfs
+
+
+  // implement citation text relevancy (instead of source-source relevancy)
+
 }

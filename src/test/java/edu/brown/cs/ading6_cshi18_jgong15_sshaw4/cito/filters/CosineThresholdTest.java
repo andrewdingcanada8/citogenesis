@@ -25,6 +25,13 @@ public class CosineThresholdTest {
 
     Source petSrc = new AsyncSourceQuery(5).query("https://en.wikipedia.org/wiki/Pet_door").join();
     System.out.println("Not similar: " + CosSimThreshold.cosSim(petSrc.getContent(), nySrc2.getContent()));
+
+    Source desSrc = new AsyncSourceQuery(5).query("http://dianeburgiodesign.com/").join();
+    System.out.println("Not similar: " + CosSimThreshold.cosSim(desSrc.getContent(), nySrc2.getContent()));
+
+    Source google1 = new AsyncSourceQuery(5).query("http://google.com").join();
+    Source google2 = new AsyncSourceQuery(5).query("http://google.com").join();
+    System.out.println("Google (server-balanced) comparison: " + CosSimThreshold.cosSim(google1.getContent(), google2.getContent()));
   }
 
 }

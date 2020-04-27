@@ -4,10 +4,12 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQ
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.SourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class WebGraphTest {
 
+  @Ignore
   @Test
   public void sanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
