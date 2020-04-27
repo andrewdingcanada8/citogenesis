@@ -23,7 +23,7 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
 
   static {
     URL_RULES = new HashSet<>();
-    URL_RULES.add(new NoInLinking());
+    //URL_RULES.add(new NoInLinking());
     URL_RULES.addAll(HostBlacklistFactory.getDefault());
   }
 
@@ -46,7 +46,6 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
     super(headVal, depth);
     this.srcQuery = srcQuery;
   }
-
 
   @Override
   public Set<Edge<Source, String>> getAllEdges(SourcedVertex<Source, String> rootVert) {
@@ -88,7 +87,7 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
                         return curSrc;
                       }
                       boolean viable = SRC_RULES.stream()
-                          .allMatch(rule -> rule.verify(curSrc, rootSrc, this));
+                          .allMatch(rule -> rule.verify(this.getHeadVal(), rootSrc, this));
                       if (viable) {
                         return curSrc;
                       } else {

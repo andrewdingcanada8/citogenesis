@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 
 public class CosSimThreshold implements SourceRule {
 
-  private static final double THRESHOLD = 0.7;
+  private static final double THRESHOLD = 0.8;
 
   @Override
   public boolean verify(Source src,

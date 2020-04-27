@@ -19,6 +19,7 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
   // I'll stick with this now, but will get back to it if there's time
 
   private static final int MAX_DEPTH_DEFAULT = 1000;
+
   private T headVal;
   private Vertex<T, W> head;
   private Map<T, Integer> depthMap;
@@ -53,6 +54,14 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
     } else {
       return Collections.emptySet();
     }
+  }
+
+  public T getHeadVal() {
+    return headVal;
+  }
+
+  public void setHeadVal(T headVal) {
+    this.headVal = headVal;
   }
 
   /**
