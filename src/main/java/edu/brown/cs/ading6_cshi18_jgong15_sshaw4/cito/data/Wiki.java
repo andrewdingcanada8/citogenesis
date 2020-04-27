@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Wiki extends Source {
+public class Wiki implements Source {
   private Set<Citation> citationSet = new HashSet<>();
   private Calendar timestamp;
   private String url;
@@ -22,6 +22,17 @@ public class Wiki extends Source {
   @Override
   public String getHTML() {
     return html;
+  }
+
+  /**
+   * Get parsed content of the source.
+   *
+   * @return content
+   */
+  @Override
+  // TODO: Finish this
+  public String getContent() {
+    return null;
   }
 
   /**
