@@ -20,7 +20,7 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
   private static volatile Map<Integer, HttpClient> clients;
   private static volatile Map<Integer, Semaphore> semaphores;
   private int myTimeoutInSec;
-  private static final int NUM_STREAMS = 20;
+  private static final int NUM_STREAMS = 10;
   private HttpClient myClient;
   private Semaphore mySem;
 

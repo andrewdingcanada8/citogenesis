@@ -22,10 +22,11 @@ public class WebGraphTest {
   @Test
   public void asyncSanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
-    AsyncSourceQuery sq = new AsyncSourceQuery(3);
-    Source src = sq.query("https://www.nytimes.com/2020/04/24/us/coronavirus-us-usa-updates.html").join();
-    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 2);
+    AsyncSourceQuery sq = new AsyncSourceQuery(5);
+    Source src = sq.query("https://www.nytimes.com/2020/04/26/health/can-antibody-tests-help-end-the-coronavirus-pandemic.html").join();
+    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 5);
     nyGraph.getHead();
+    nyGraph.getLoadedVertices().stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
   }
 
 

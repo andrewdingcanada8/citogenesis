@@ -13,6 +13,8 @@ public final class HostBlacklistFactory {
         new HostBlocker("amazon"),
         new HostBlocker("baidu"),
         new HostBlocker("slack"),
-        new HostBlocker("yandex"));
+        new HostBlocker("yandex"),
+        new HostBlocker("twitter"),
+        new HostBlocker("facebook"));
   }
 }
