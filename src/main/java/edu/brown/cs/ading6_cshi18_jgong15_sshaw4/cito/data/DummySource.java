@@ -31,6 +31,11 @@ public class DummySource implements Source {
   }
 
   @Override
+  public void queryTimestamp() {
+
+  }
+
+  @Override
   public Calendar getTimestamp() {
     return new GregorianCalendar();
   }

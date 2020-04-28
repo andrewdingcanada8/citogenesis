@@ -34,6 +34,10 @@ public class DeadSource implements Source {
   }
 
   @Override
+  public void queryTimestamp() {
+  }
+
+  @Override
   public Calendar getTimestamp() {
     throw new UnsupportedOperationException("dead sources have no timestamps");
   }

@@ -3,6 +3,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.CalendarDeserializer;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.async.AsyncHttpQuery;
 
 import java.net.URI;
@@ -28,14 +29,17 @@ public class AsyncTimeStampQuery extends AsyncHttpQuery<String, Calendar> {
   }
 
   @Override
-  protected HttpRequest getQuery(String input, HttpClient src) {
-
-    HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create("https://web.archive.org/cdx/search/cdx?url="
-            + input
-            + "&fl=timestamp&output=json&limit=1"))
-        .build();
-    return request;
+  protected HttpRequest getQuery(String input, HttpClient src) throws QueryException {
+    try {
+      HttpRequest request = HttpRequest.newBuilder()
+          .uri(URI.create("https://web.archive.org/cdx/search/cdx?url="
+              + input
+              + "&fl=timestamp&output=json&limit=1"))
+          .build();
+      return request;
+    } catch (IllegalArgumentException e) {
+      throw new QueryException(e.getMessage());
+    }
   }
 
   @Override

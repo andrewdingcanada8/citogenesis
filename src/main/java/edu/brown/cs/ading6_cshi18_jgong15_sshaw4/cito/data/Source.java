@@ -30,6 +30,11 @@ public interface Source {
   List<String> getLinks();
 
   /**
+   * Set off timestamp query process (if needed).
+   */
+  void queryTimestamp();
+
+  /**
    * Get timestamp of the source.
    * @return timestamp
    */

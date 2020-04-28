@@ -16,7 +16,7 @@ public final class Main {
 
   // Seiji's TODO:
   // implement 'second pass' timestamp when it becomes relevant (when identifying generators)
-  // limit the link extraction to elements contained in content-elements <p>, <li>?
+  // run full pipeline
 
   // caching on lemmatization process
   // graph synchronization for url-node differences

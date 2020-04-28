@@ -8,6 +8,15 @@ import java.util.Comparator;
 public class GeneratingSourceFinder implements GeneratingVertexFinder<Source, String> {
   @Override
   public Comparator<Source> getCompr() {
-    return Comparator.comparing(Source::getTimestamp);
+    return (s, o) -> {
+      // null object is always greater than
+      if (s != null && o == null) {
+        return -1;
+      }
+      if (s == null && o != null) {
+        return 1;
+      }
+      return s.getTimestamp().compareTo(o.getTimestamp());
+    };
   }
 }

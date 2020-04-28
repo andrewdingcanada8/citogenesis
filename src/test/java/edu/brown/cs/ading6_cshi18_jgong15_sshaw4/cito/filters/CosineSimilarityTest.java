@@ -24,15 +24,31 @@ public class CosineSimilarityTest {
 
   @Test
   public void someWhereInTheMiddleTest() {
-    String doc1 = "this is a document with some words";
-    String doc2 = "some words in here";
-    String doc3 = "this is a document with a sentence";
+    String doc1 = "doc words present dog blog";
+    String doc2 = "words here but not the same";
+    String doc3 = "doc words present dog";
 
     assertTrue(CosSimThreshold.cosSim(doc1, doc2)
         < CosSimThreshold.cosSim(doc1, doc3));
+
+    // symmetric relations still hold
     assertEquals(CosSimThreshold.cosSim(doc1, doc2),
         CosSimThreshold.cosSim(doc2, doc1), THRESHOLD);
     assertEquals(CosSimThreshold.cosSim(doc2, doc3),
         CosSimThreshold.cosSim(doc3, doc2), THRESHOLD);
+  }
+
+  @Test
+  public void removesStopWords() {
+    String doc1 = "in the to that food the the the the the";
+    String doc2 = "that that that that that to food the in in";
+    assertEquals(CosSimThreshold.cosSim(doc1, doc2), 1, THRESHOLD);
+  }
+
+  @Test
+  public void caseInSensitive() {
+    String doc1 = "all case";
+    String doc2 = "ALL CASE";
+    assertEquals(CosSimThreshold.cosSim(doc1, doc2), 1, THRESHOLD);
   }
 }

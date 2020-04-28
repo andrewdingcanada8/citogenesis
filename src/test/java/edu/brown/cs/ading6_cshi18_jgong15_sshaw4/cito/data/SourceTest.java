@@ -22,11 +22,23 @@ public class SourceTest {
   @Test
   public void multipleLinksTest() {
     String html = "<html><body>"
-        + "<a href = \"https://halllo.edu\">froofs</a>"
+        + "<p><a href = \"https://halllo.edu\">froofs</a></p>"
         + "<ul><li><a href = \"http://nested.txt\">Cozy</a></li></ul>";
     Source src = new WebSource("test.com", html);
     ArrayList<String> strs = new ArrayList<>();
     strs.add("https://halllo.edu");
+    strs.add("http://nested.txt");
+    assertEquals(strs, src.getLinks());
+    assertEquals("Cozy", src.getContent());
+  }
+
+  @Test
+  public void notInTextElTest() {
+    String html = "<html><body>"
+        + "<a href = \"https://halllo.edu\">froofs</a>"
+        + "<ul><li><a href = \"http://nested.txt\">Cozy</a></li></ul>";
+    Source src = new WebSource("test.com", html);
+    ArrayList<String> strs = new ArrayList<>();
     strs.add("http://nested.txt");
     assertEquals(strs, src.getLinks());
     assertEquals("Cozy", src.getContent());

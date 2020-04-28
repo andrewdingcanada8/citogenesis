@@ -1,5 +1,8 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncTimeStampQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.async.AsyncHttpQuery;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,20 +12,25 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class WebSource implements Source {
 
+  public static final int QUERY_TIMEOUT = 10;
   private String html;
   private String content;
   private String url;
   private Calendar timestamp;
   private List<String> links;
+  private AsyncHttpQuery<String, Calendar> timestampQuery;
+  private CompletableFuture<Calendar> calFut;
 
   /**
    * Creates a new WebSource.
-   * @param url source url. http/https prefix is necessary or link-scraping will break.
+   *
+   * @param url  source url. http/https prefix is necessary or link-scraping will break.
    * @param html source html
    */
   public WebSource(String url, String html) {
@@ -57,6 +65,9 @@ public class WebSource implements Source {
         .filter(str -> !str.equals(""))
         .distinct()
         .collect(Collectors.toList());
+    // initialize query
+    timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
+    timestamp = null;
   }
 
   @Override
@@ -80,7 +91,34 @@ public class WebSource implements Source {
   }
 
   @Override
+  public void queryTimestamp() {
+    if (timestamp != null) {
+      return;
+    }
+    try {
+      calFut = timestampQuery.query(url).exceptionally(e -> {
+        System.out.println("Error while querying timestamp for " + url + ": "
+            + e.getMessage());
+        return null;
+      });
+    } catch (QueryException e) {
+      System.out.println("Error while initiating query for calendar for "
+          + url + ": " + e.getMessage());
+      calFut = null;
+    }
+  }
+
+  @Override
   public Calendar getTimestamp() {
+    if (timestamp == null && calFut != null) {
+      timestamp = calFut.join();
+    }
+    // if previous kick failed, try one more time, synchronously
+    this.queryTimestamp();
+    if (timestamp == null && calFut != null) {
+      timestamp = calFut.join();
+    }
+    // will return null of both tries error
     return timestamp;
   }
 
