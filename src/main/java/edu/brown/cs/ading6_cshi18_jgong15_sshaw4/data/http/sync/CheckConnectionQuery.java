@@ -1,4 +1,4 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 
@@ -8,10 +8,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class CheckConnectionQuery extends HttpQuery<String, Boolean> {
-
-  public CheckConnectionQuery() {
-    super();
-  }
 
   public CheckConnectionQuery(int timeOutInSec) {
     super(timeOutInSec);

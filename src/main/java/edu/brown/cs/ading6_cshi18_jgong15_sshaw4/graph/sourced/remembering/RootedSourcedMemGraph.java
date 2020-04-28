@@ -19,6 +19,7 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
   // I'll stick with this now, but will get back to it if there's time
 
   private static final int MAX_DEPTH_DEFAULT = 1000;
+
   private T headVal;
   private Vertex<T, W> head;
   private Map<T, Integer> depthMap;
@@ -55,19 +56,22 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
     }
   }
 
+  public T getHeadVal() {
+    return headVal;
+  }
+
+  public void setHeadVal(T headVal) {
+    this.headVal = headVal;
+  }
+
   /**
    * Initial BFS load-in to properly assign depth numbers.
+   *
    * @throws GraphException in the case of erroneous output
    */
   private void loadByBFS() throws GraphException {
     Set<Vertex<T, W>> visited = new HashSet<>();
-
-    try {
-      head = this.getVertex(headVal);
-    } catch (GraphException e) {
-      throw new IllegalStateException("cannot get head vertex. "
-          + "Something is seriously broken. ERROR: " + e.getMessage());
-    }
+    head = this.getVertex(headVal);
 
     Deque<Vertex<T, W>> queue = new LinkedList<>();
     queue.addLast(head);

@@ -1,0 +1,57 @@
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.SourceQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class WebGraphTest {
+
+  @Ignore
+  @Test
+  public void sanityCheckTest() throws QueryException, GraphException {
+    //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
+    SourceQuery sq = new SourceQuery(1);
+    Source src = sq.query("https://www.nytimes.com/2020/04/24/us/coronavirus-us-usa-updates.html");
+    WebGraph nyGraph = new WebGraph(src, sq, 1);
+    nyGraph.getHead();
+  }
+
+  @Ignore
+  @Test
+  public void asyncSanityCheckTest() throws QueryException, GraphException {
+    //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
+    AsyncSourceQuery sq = new AsyncSourceQuery(10);
+    Source src = sq.query("https://www.nytimes.com/2020/04/26/health/can-antibody-tests-help-end-the-coronavirus-pandemic.html").join();
+    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 3);
+    Vertex<Source, String> hv = nyGraph.getHead();
+    Collection<Vertex<Source, String>> loadedVertices = nyGraph.getLoadedVertices();
+    loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
+
+    List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
+    comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());
+    List<Vertex<Source, String>> gens = comps.stream()
+        .map(comp -> {
+          try {
+            return new GeneratingSourceFinder().search(comp);
+          } catch (GraphException e) {
+            System.out.println("Error while finding gen sources: " + e.getMessage());
+            return null;
+          }
+        })
+        .collect(Collectors.toList());
+    gens.stream().forEach(v -> System.out.println("generator: " + v));
+  }
+
+
+}

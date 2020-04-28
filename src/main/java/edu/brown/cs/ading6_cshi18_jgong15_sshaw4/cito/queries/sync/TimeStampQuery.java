@@ -1,8 +1,9 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.HttpQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.CalendarDeserializer;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.HttpQuery;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,10 +12,6 @@ import java.net.http.HttpResponse;
 import java.util.Calendar;
 
 public class TimeStampQuery extends HttpQuery<String, Calendar> {
-
-  public TimeStampQuery() {
-    super();
-  }
 
   public TimeStampQuery(int timeOutInSec) {
     super(timeOutInSec);

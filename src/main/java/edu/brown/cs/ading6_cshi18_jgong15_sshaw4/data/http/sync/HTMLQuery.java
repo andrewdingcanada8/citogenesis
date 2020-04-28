@@ -1,4 +1,4 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 
@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class HTMLQuery extends HttpQuery<String, String> {
   private String curURL;
-  public HTMLQuery() {
-    curURL = "UNUSED";
-  }
 
   public HTMLQuery(int timeOutInSec) {
     super(timeOutInSec);

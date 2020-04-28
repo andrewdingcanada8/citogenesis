@@ -1,26 +1,23 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class DeadSource implements Source {
+public class DummySource implements Source {
 
   private String url;
 
-  public DeadSource(String url) {
+  public DummySource(String url) {
     this.url = url;
   }
 
   @Override
   public String getHTML() {
-    return "";
+    return "lorem ipsum";
   }
 
   @Override
   public String getContent() {
-    return "";
+    return "loreum ipsum";
   }
 
   @Override
@@ -35,11 +32,12 @@ public class DeadSource implements Source {
 
   @Override
   public void queryTimestamp() {
+
   }
 
   @Override
   public Calendar getTimestamp() {
-    throw new UnsupportedOperationException("dead sources have no timestamps");
+    return new GregorianCalendar();
   }
 
   @Override
@@ -50,7 +48,7 @@ public class DeadSource implements Source {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    DeadSource that = (DeadSource) o;
+    DummySource that = (DummySource) o;
     return Objects.equals(url, that.url);
   }
 
