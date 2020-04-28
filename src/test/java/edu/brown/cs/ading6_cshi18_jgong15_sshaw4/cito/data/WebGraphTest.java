@@ -24,7 +24,7 @@ public class WebGraphTest {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
     AsyncSourceQuery sq = new AsyncSourceQuery(5);
     Source src = sq.query("https://www.nytimes.com/2020/04/26/health/can-antibody-tests-help-end-the-coronavirus-pandemic.html").join();
-    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 5);
+    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 2);
     nyGraph.getHead();
     nyGraph.getLoadedVertices().stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
   }

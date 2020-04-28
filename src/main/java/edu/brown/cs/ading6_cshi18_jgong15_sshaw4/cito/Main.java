@@ -15,12 +15,15 @@ public final class Main {
 
 
   // Seiji's TODO:
-  // caching on lemmatization process
   // implement 'second pass' timestamp when it becomes relevant (when identifying generators)
+  // limit the link extraction to elements contained in content-elements <p>, <li>?
+
+  // caching on lemmatization process
   // graph synchronization for url-node differences
   // multi-threading bfs
   // loosen up parameters on rules to only take the URLs/Sources - the other items
-  // limit the link extraction to elements contained in content-elements <p>, <li>?
+
+  // waiting for charles...
   // implement citation text relevancy (instead of source-source relevancy)
 
 }

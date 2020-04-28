@@ -24,20 +24,14 @@ public class WebSource implements Source {
    * Creates a new WebSource.
    * @param url source url. http/https prefix is necessary or link-scraping will break.
    * @param html source html
-   * @param timestamp publication timestamp
    */
-  public WebSource(String url, String html, Calendar timestamp) {
+  public WebSource(String url, String html) {
     this.html = html;
     this.url = url;
     this.timestamp = timestamp;
 
     // extract all links (href attributes in anchor tags)
     Document doc = Jsoup.parse(html, url);
-    Elements anchors = doc.getElementsByTag("a");
-    this.links = anchors.stream()
-        .map(e -> e.absUrl("href"))
-        .filter(str -> !str.equals(""))
-        .collect(Collectors.toList());
 
     // extract all text elements (h1, h2, h3, h4, h5, h6, p, li tags)
     Elements h1s = doc.getElementsByTag("h1");
@@ -55,6 +49,14 @@ public class WebSource implements Source {
         .flatMap(Collection::stream)
         .map(Element::text)
         .collect(Collectors.joining(" "));
+
+    // extract links from relevant content
+    this.links = Stream.concat(ps.stream(), li.stream())
+        .flatMap(elt -> elt.getElementsByTag("a").stream())
+        .map(elt -> elt.absUrl("href"))
+        .filter(str -> !str.equals(""))
+        .distinct()
+        .collect(Collectors.toList());
   }
 
   @Override

@@ -21,6 +21,6 @@ public class SourceQuery implements Query<String, Source> {
   public Source query(String url) throws QueryException {
     String html = htmlQuery.query(url);
     Calendar timestamp = timeQuery.query(url);
-    return new WebSource(url, html, timestamp);
+    return new WebSource(url, html);
   }
 }

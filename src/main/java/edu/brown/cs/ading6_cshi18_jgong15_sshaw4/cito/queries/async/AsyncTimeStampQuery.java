@@ -24,11 +24,12 @@ public class AsyncTimeStampQuery extends AsyncHttpQuery<String, Calendar> {
   }
 
   public AsyncTimeStampQuery(int timeOutInSec) {
-    super(timeOutInSec);
+    super(timeOutInSec, "cito_timestamp");
   }
 
   @Override
   protected HttpRequest getQuery(String input, HttpClient src) {
+
     HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create("https://web.archive.org/cdx/search/cdx?url="
             + input

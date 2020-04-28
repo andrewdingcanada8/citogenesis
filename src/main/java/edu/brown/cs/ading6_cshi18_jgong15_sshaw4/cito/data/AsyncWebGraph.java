@@ -23,7 +23,7 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
 
   static {
     URL_RULES = new HashSet<>();
-    //URL_RULES.add(new NoInLinking());
+    URL_RULES.add(new NoInLinking());
     URL_RULES.addAll(HostBlacklistFactory.getDefault());
   }
 
@@ -55,18 +55,19 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
 
     // If we already have the sources, then just grab them
     Set<Edge<Source, String>> knownEs = links.stream()
-        .filter(l -> this.loadedVertex(new WebSource(l, "", null)))
+        .filter(l -> this.loadedVertex(new DummySource(l)))
         .map(l -> {
-          Vertex<Source, String> nv = this.getVertex(new WebSource(l, "", null));
+          Vertex<Source, String> nv = this.getVertex(new DummySource(l));
           return new SourcedEdge<Source, String>(l, 0, rootVert, nv);
         }).collect(Collectors.toSet());
 
     // for the soures we don't have...
     Set<CompletableFuture<Source>> srcFs = links.stream()
         // if we haven't loaded yet
-        .filter(l -> !this.loadedVertex(new WebSource(l, "", null)))
+        .filter(l -> !this.loadedVertex(new WebSource(l, "")))
         // pass rules on url
-        .filter(l -> URL_RULES.stream().allMatch(r -> r.verify(l, rootVert.getVal().getURL(), this)))
+        .filter(l -> URL_RULES.stream().allMatch(r ->
+            r.verify(l, rootVert.getVal().getURL(), this)))
         // run asyncquery
         .map(l -> {
           try {
@@ -87,7 +88,7 @@ public class AsyncWebGraph extends RootedSourcedMemGraph<Source, String> {
                         return curSrc;
                       }
                       boolean viable = SRC_RULES.stream()
-                          .allMatch(rule -> rule.verify(this.getHeadVal(), rootSrc, this));
+                          .allMatch(rule -> rule.verify(this.getHeadVal(), curSrc, this));
                       if (viable) {
                         return curSrc;
                       } else {

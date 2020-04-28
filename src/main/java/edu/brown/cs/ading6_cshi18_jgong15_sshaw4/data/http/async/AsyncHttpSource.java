@@ -17,15 +17,20 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
     CompletableFuture<HttpResponse<String>>,
     HttpClient> {
   public static final int SSL_TIMEOUT = 5;
-  private static volatile Map<Integer, HttpClient> clients;
-  private static volatile Map<Integer, Semaphore> semaphores;
-  private int myTimeoutInSec;
-  private static final int NUM_STREAMS = 10;
+  private static volatile Map<String, HttpClient> clients;
+  private static volatile Map<String, Semaphore> semaphores;
+  private static final int NUM_STREAMS = 15;
   private HttpClient myClient;
   private Semaphore mySem;
+  private String myKey;
 
-  public AsyncHttpSource(int timeOutInSec) {
-    myTimeoutInSec = timeOutInSec;
+  public AsyncHttpSource(int myTimeoutInSec) {
+    this(myTimeoutInSec, "default");
+  }
+
+  public AsyncHttpSource(int timeOutInSec, String clientKey) {
+    myKey = clientKey;
+
     // initialize client map if called for the first time
     if (clients == null) {
       clients = new HashMap<>();
@@ -35,17 +40,17 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
       semaphores = new HashMap<>();
     }
 
-    // check if we have any clients with the corresponding timeout
-    boolean noClient = clients.keySet().stream().noneMatch(n -> n == timeOutInSec);
-    if (noClient) {
-      clients.put(timeOutInSec,
+    // check if we have any clients with the key
+    boolean hasClient = clients.keySet().stream().anyMatch(n -> n.equals(clientKey));
+    if (!hasClient) {
+      clients.put(clientKey,
           HttpClient.newBuilder()
               .connectTimeout(Duration.ofSeconds(timeOutInSec))
               .build());
-      semaphores.put(timeOutInSec, new Semaphore(NUM_STREAMS));
+      semaphores.put(clientKey, new Semaphore(NUM_STREAMS));
     }
-    myClient = clients.get(timeOutInSec);
-    mySem = semaphores.get(timeOutInSec);
+    myClient = clients.get(clientKey);
+    mySem = semaphores.get(clientKey);
   }
 
 
