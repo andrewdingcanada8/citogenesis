@@ -10,6 +10,7 @@ import org.junit.Test;
 
 public class CosineThresholdTest {
 
+  @Ignore
   @Test
   public void someStatsCheckTest() throws QueryException {
     Source nySrc1 = new AsyncSourceQuery(5).query("https://www.nytimes.com/2020/04/26/business/coronavirus-small-business-loans-large-companies.html").join();

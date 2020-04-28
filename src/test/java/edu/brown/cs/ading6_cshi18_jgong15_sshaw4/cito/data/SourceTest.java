@@ -29,7 +29,7 @@ public class SourceTest {
     strs.add("https://halllo.edu");
     strs.add("http://nested.txt");
     assertEquals(strs, src.getLinks());
-    assertEquals("Cozy", src.getContent());
+    assertEquals("froofs Cozy", src.getContent());
   }
 
   @Test
