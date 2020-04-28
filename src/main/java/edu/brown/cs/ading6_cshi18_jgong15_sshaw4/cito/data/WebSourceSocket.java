@@ -1,10 +1,12 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.eclipse.jetty.websocket.api.Session;
@@ -16,19 +18,18 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 @WebSocket
 public class WebSourceSocket {
   private static final Gson GSON = new Gson();
-//  Gson gson = new GsonBuilder().registerTypeAdapter(WebSource.class,
-//      new WebSourceAdapter()).create();
-  private static final Queue<Session> SESSIONS = new ConcurrentLinkedQueue<>();
+  private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;
 
   private static enum MESSAGE_TYPE {
     CONNECT,
-    VERTEX
+    VERTEX,
+    NEIGHBORS
   }
 
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
-    SESSIONS.add(session);
+    SESSIONS.put(nextId, session);
     JsonObject message = new JsonObject();
     message.addProperty("type", MESSAGE_TYPE.CONNECT.ordinal());
     JsonObject payload = new JsonObject();
@@ -49,34 +50,22 @@ public class WebSourceSocket {
     assert received.get("type").getAsInt() == MESSAGE_TYPE.VERTEX.ordinal();
 
     JsonObject payload = received.get("payload").getAsJsonObject();
+    JsonElement id = payload.get("id");
 
     JsonObject toSend = new JsonObject();
-    toSend.addProperty("type", MESSAGE_TYPE.VERTEX.ordinal());
+    toSend.addProperty("type", MESSAGE_TYPE.NEIGHBORS.ordinal());
     JsonObject newPayload = new JsonObject();
-    newPayload.add("id", payload.get("id"));
+    newPayload.add("id", id);
 
-    String url = payload.get("url").getAsString();
+    JsonElement url = payload.get("url");
+    System.out.println(payload);
+
     //Call algorithm here
-
-    //dummy for testing
-//    WebSource webSource = new WebSource("fillerurl.com", "fakehtml", new GregorianCalendar());
-    newPayload.addProperty("url", url);
-
-//    Board board = new Board(payload.get("board").getAsString());
-//    Set<String> legal = board.play();
-//    int score = 0;
-//    for (String word : payload.get("text").getAsString().split(" ")) {
-//      if (legal.contains(word)) {
-//        score += Board.score(word);
-//      }
-//    }
-//    newPayload.addProperty("score", score);
+    newPayload.add("url", url);
 
     toSend.add("payload", newPayload);
 
     String toSendStr = GSON.toJson(toSend);
-    for (Session s : SESSIONS) {
-      s.getRemote().sendString(toSendStr);
-    }
+    SESSIONS.get(id.getAsInt()).getRemote().sendString(toSendStr);
   }
 }

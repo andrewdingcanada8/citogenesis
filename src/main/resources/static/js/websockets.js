@@ -1,14 +1,37 @@
 const MESSAGE_TYPE = {
   CONNECT: 0,
-  VERTEX: 1
+  VERTEX: 1,
+  NEIGHBORS: 2
 };
 
 let conn = null;
 let myId = -1;
 
+$(document).ready(() => {
+  setup_click();
+  setup_hover();
+  setup_socket();
+});
+
+function setup_click() {
+  $('#submit').click(function(evt) {
+    evt.preventDefault();
+    let url = $('#socket-form').val();
+    neighbors(url);
+  });
+}
+
+function setup_hover () {
+  $('.hover-demo').mouseover(function(evt) {
+    evt.preventDefault();
+    let url = $('#socket-form').val();
+    neighbors(url);
+  });
+}
+
 // Setup the WebSocket connection for live updating of scores.
-setup_live_scores = () => {
-  conn = new WebSocket('ws://' + window.location.host + '/test');
+function setup_socket () {
+  conn = new WebSocket('ws://' + window.location.host + '/socket-process');
 
   conn.onerror = err => {
     console.log('Connection error:', err);
@@ -23,9 +46,10 @@ setup_live_scores = () => {
       case MESSAGE_TYPE.CONNECT:
         myId = parseInt(data.payload.id, 10);
         break;
-      case MESSAGE_TYPE.VERTEX:
-        const score = parseInt(data.payload.url, 10);
-        $('#url').html(score);
+      case MESSAGE_TYPE.NEIGHBORS:
+        const url = data.payload.url;
+        console.log(url);
+        $('#result').text(url);
         break;
     }
   };
@@ -33,10 +57,9 @@ setup_live_scores = () => {
 
 // Should be called when a user blips
 // `guesses` should be the array of guesses the user has made so far.
-const new_guess = guesses => {
-  const text = guesses.join(' ');
+const neighbors = url => {
   conn.send(JSON.stringify({type: MESSAGE_TYPE.VERTEX, payload: {
     id: myId,
-    url: "fillerurl.com"
+    url: url
   }}));
 }
