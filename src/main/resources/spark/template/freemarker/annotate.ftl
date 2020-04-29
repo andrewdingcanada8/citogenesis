@@ -95,8 +95,8 @@
 
     </div>
 <#--    <script src="js/annotate-socket.js"></script>-->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/annotate-socket.js"></script>
+    <script src="/js/jquery-2.1.1.js"></script>
+    <script src="/js/annotate-socket.js"></script>
     <#--<script src="js/socket-demo.js"></script>-->
     <#--<script src="js/websocket.js"></script>-->
 </body>
