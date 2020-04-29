@@ -39,7 +39,14 @@ public class WebGraphTest {
     Collection<Vertex<Source, String>> loadedVertices = nyGraph.getLoadedVertices();
     loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
 
+    // conduct search, filter out any dead sources
     List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
+    comps = comps.stream()
+        .filter(comp ->
+            comp.stream().anyMatch(v ->
+                v.getVal() instanceof DeadSource))
+        .collect(Collectors.toList());
+
     comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());
     List<Vertex<Source, String>> gens = comps.stream()
         .map(comp -> {
@@ -54,7 +61,6 @@ public class WebGraphTest {
     gens.stream().forEach(v -> System.out.println("generator: " + v));
   }
 
-  @Ignore
   @Test
   public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
@@ -67,6 +73,7 @@ public class WebGraphTest {
 
     Vertex<Source, String> hv = nyGraph.getHead();
     List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
+
     comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());
     List<Vertex<Source, String>> gens = comps.stream()
         .map(comp -> {
