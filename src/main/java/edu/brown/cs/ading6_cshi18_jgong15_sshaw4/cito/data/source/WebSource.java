@@ -1,5 +1,6 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncTimeStampQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.async.AsyncHttpQuery;
@@ -26,6 +27,7 @@ public class WebSource implements Source {
   private List<String> links;
   private AsyncHttpQuery<String, Calendar> timestampQuery;
   private CompletableFuture<Calendar> calFut;
+  private String title;
 
   /**
    * Creates a new WebSource.
@@ -69,6 +71,12 @@ public class WebSource implements Source {
     // initialize query
     timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
     timestamp = null;
+    title = doc.getElementsByTag("title").text();
+  }
+
+  @Override
+  public String title() {
+    return title;
   }
 
   @Override

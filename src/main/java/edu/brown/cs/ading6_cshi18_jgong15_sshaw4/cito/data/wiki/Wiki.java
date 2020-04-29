@@ -1,5 +1,7 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers.WikiHTMLParser;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncTimeStampQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
@@ -21,6 +23,11 @@ public class Wiki implements Source {
   private String content;
   private AsyncHttpQuery<String, Calendar> timestampQuery;
   private CompletableFuture<Calendar> calFut;
+
+  @Override
+  public String title() {
+    return "Wikipedia";
+  }
 
   /**
    * Get webpage html.

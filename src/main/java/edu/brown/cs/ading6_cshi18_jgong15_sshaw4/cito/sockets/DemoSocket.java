@@ -1,4 +1,4 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
 @WebSocket
-public class WebSourceSocket {
+public class DemoSocket {
   private static final Gson GSON = new Gson();
   private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;

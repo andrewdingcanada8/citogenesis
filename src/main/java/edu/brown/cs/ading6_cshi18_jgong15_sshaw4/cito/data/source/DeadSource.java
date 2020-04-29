@@ -1,4 +1,6 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source;
+
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,6 +13,11 @@ public class DeadSource implements Source {
 
   public DeadSource(String url) {
     this.url = url;
+  }
+
+  @Override
+  public String title() {
+    return "ded boi";
   }
 
   @Override

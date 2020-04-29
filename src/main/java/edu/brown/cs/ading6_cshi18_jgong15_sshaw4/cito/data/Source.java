@@ -5,6 +5,8 @@ import java.util.List;
 
 public interface Source {
 
+  String title();
+
   /**
    * Get webpage html.
    * @return HTML

@@ -1,5 +1,10 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.*;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DummySource;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.NonViableSource;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.WebSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.source.CosSimThreshold;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.source.SourceRule;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.HostBlacklistFactory;
@@ -10,23 +15,22 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedEdge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.AsyncRootedSourcedMemGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
+public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   public static final Set<URLRule> URL_RULES;
+  private String keywords;
+  private Source keySource;
 
   static {
     URL_RULES = new HashSet<>();
-    //URL_RULES.add(new NoInLinking());
-    URL_RULES.add((url, prevUrl, graph) -> !prevUrl.equals("dead"));
+    URL_RULES.add(new NoInLinking());
     URL_RULES.addAll(HostBlacklistFactory.getDefault());
   }
 
@@ -40,24 +44,21 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
   public static final int DEFAULT_DEPTH = 10;
   private Query<String, CompletableFuture<Source>> srcQuery;
 
-  public AsyncWebGraph(Source headVal, Query<String, CompletableFuture<Source>> srcQuery) {
-    this(headVal, srcQuery, DEFAULT_DEPTH);
+  public AsyncQueryWebGraph(Source headVal, Query<String, CompletableFuture<Source>> srcQuery, String keywords) {
+    this(headVal, srcQuery, keywords, DEFAULT_DEPTH);
   }
 
-  public AsyncWebGraph(Source headVal,
-                       Query<String, CompletableFuture<Source>> srcQuery, int depth) {
+  public AsyncQueryWebGraph(Source headVal,
+                            Query<String, CompletableFuture<Source>> srcQuery, String keywords, int depth) {
     super(headVal, depth);
     this.srcQuery = srcQuery;
+    this.keywords = keywords;
+    this.keySource = new DummySource("keywords dummy", keywords);
   }
 
   @Override
   public Set<Edge<Source, String>> getAllEdges(SourcedVertex<Source, String> rootVert) {
     Source rootSrc = rootVert.getVal();
-
-    if (rootSrc instanceof DeadSource) {
-      return Collections.emptySet();
-    }
-
     System.out.println("Starting search on: " + rootSrc.getURL());
     List<String> links = rootSrc.getLinks();
 
@@ -72,7 +73,7 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
     // for the soures we don't have...
     Set<CompletableFuture<Source>> srcFs = links.stream()
         // if we haven't loaded yet
-        .filter(l -> !this.loadedVertex(new DummySource(l)))
+        .filter(l -> !this.loadedVertex(new WebSource(l, "")))
         // pass rules on url
         .filter(l -> URL_RULES.stream().allMatch(r ->
             r.verify(l, rootVert.getVal().getURL(), this)))
@@ -83,7 +84,7 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
           } catch (Exception e) {
             System.out.println("Async Graph send error: " + e.getMessage());
             CompletableFuture<Source> dud = new CompletableFuture<>();
-            dud.complete(NonViableSource.INSTANCE);
+            dud.complete(new DeadSource(l));
             return dud;
           }
         })
@@ -96,7 +97,7 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
                         return curSrc;
                       }
                       boolean viable = SRC_RULES.stream()
-                          .allMatch(rule -> rule.verify(this.getHeadVal(), curSrc, this));
+                          .allMatch(rule -> rule.verify(keySource, curSrc, this));
                       if (viable) {
                         return curSrc;
                       } else {
@@ -114,11 +115,11 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
     // clear out all non-viable edges, make edges
     List<Edge<Source, String>> newEs = srcFs.stream()
         .map(CompletableFuture::join)
-        .filter(s -> !s.equals(NonViableSource.INSTANCE))
+        .filter(s -> s != NonViableSource.INSTANCE)
         .map(s -> {
           Vertex<Source, String> nv = this.getVertex(s);
           System.out.println("adding..." + s.getURL());
-          return new SourcedEdge<>(s.getURL(), 0, rootVert, nv);
+          return new SourcedEdge<Source, String>(s.getURL(), 0, rootVert, nv);
         }).collect(Collectors.toList());
     // add to known edges and return
     knownEs.addAll(newEs);

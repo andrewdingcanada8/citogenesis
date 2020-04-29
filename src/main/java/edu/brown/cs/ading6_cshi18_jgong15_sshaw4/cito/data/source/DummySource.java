@@ -1,4 +1,6 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source;
+
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 
 import java.util.*;
 
@@ -14,6 +16,11 @@ public class DummySource implements Source {
   public DummySource(String url, String content) {
     this.url = url;
     this.content = content;
+  }
+
+  @Override
+  public String title() {
+    return "lorem ipsum";
   }
 
   @Override
