@@ -16,8 +16,8 @@ public class SourceQueryTest {
 
   @Before
   public void setUp() {
-    _query = new SourceQuery();
     assumeTrue(WebTestUtils.checkURL("https://www.google.com"));
+    _query = new SourceQuery(WebTestUtils.HTTP_TIMEOUT);
   }
 
   @After

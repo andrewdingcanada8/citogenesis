@@ -222,7 +222,7 @@
                 <configuration>
                     <systemProperties>
                         <property>
-                            <name>pathDB</name>
+                            <name>timeout</name>
                         </property>
                     </systemProperties>
                 </configuration>

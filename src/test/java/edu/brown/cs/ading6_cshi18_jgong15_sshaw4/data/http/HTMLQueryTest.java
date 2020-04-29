@@ -16,7 +16,8 @@ public class HTMLQueryTest {
 
   @Before
   public void setUp() {
-    _query = new HTMLQuery();
+    assumeTrue(WebTestUtils.HTTP_TIMEOUT > 0); // needed since global website check isn't done here
+    _query = new HTMLQuery(WebTestUtils.HTTP_TIMEOUT);
     _timedQuery = new HTMLQuery(3);
   }
 
