@@ -27,6 +27,7 @@ public class WebGraphTest {
     nyGraph.getHead();
   }
 
+  @Ignore
   @Test
   public void asyncQuerySanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
