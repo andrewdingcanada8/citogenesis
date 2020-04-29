@@ -70,7 +70,7 @@ public class CosSim implements BiFunction<String, String, Double> {
       words = Collections.emptyList();
     }
     List<String> puncs = List.of("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", ":",
-        "'", "\"", ";", ":", "?", ".", ",", "/", "{", "}", "\\");
+        "'", "\"", ";", ":", "?", ".", ",", "/", "{", "}", "\\", "[", "]", "|");
     STOP_WORDS = new HashSet<>();
     STOP_WORDS.addAll(words);
     STOP_WORDS.addAll(puncs);
