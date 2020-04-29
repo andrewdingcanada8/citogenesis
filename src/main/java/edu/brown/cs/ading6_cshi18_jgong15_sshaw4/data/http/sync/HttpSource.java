@@ -1,4 +1,4 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.DataSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.DataSourceException;
@@ -9,14 +9,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+
 public class HttpSource implements DataSource<HttpRequest, HttpResponse<String>, HttpClient> {
-  private HttpClient client;
-  public HttpSource() {
-    client = HttpClient.newHttpClient();
-  }
+  private HttpClient myClient;
 
   public HttpSource(int timeOutInSec) {
-    client = HttpClient.newBuilder()
+    myClient = HttpClient.newBuilder()
         .connectTimeout(Duration.ofSeconds(timeOutInSec))
         .build();
   }
@@ -25,7 +23,7 @@ public class HttpSource implements DataSource<HttpRequest, HttpResponse<String>,
   @Override
   public HttpResponse<String> runQuery(HttpRequest queryInput) throws DataSourceException {
     try {
-      return client.send(queryInput, HttpResponse.BodyHandlers.ofString());
+      return myClient.send(queryInput, HttpResponse.BodyHandlers.ofString());
     } catch (IOException | InterruptedException e) {
       throw new DataSourceException(e.getMessage());
     }
@@ -33,6 +31,6 @@ public class HttpSource implements DataSource<HttpRequest, HttpResponse<String>,
 
   @Override
   public HttpClient getSource() {
-    return client;
+    return myClient;
   }
 }

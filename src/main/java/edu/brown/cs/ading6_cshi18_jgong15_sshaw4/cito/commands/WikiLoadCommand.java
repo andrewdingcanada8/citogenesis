@@ -4,7 +4,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.CitoWorld;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.CheckConnectionQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.CheckConnectionQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.RawStringArg;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.CommandRunner;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.InvalidInputException;
@@ -25,6 +25,8 @@ public class WikiLoadCommand extends SimpleCommand {
         new String[]{"URL"});
   }
 
+  public static final int WIKI_TIMEOUT = 30;
+
   private class WikiRunner extends CommandRunner {
 
     /**
@@ -42,7 +44,7 @@ public class WikiLoadCommand extends SimpleCommand {
       String url = new RawStringArg().convert(arguments.get(0));
       checkURL(url);
       try {
-        Wiki wiki = new WikiQuery().query(url);
+        Wiki wiki = new WikiQuery(WIKI_TIMEOUT).query(url);
         // TODO: set wiki
         pw.write("Set wiki to " + url);
         pw.flush();
