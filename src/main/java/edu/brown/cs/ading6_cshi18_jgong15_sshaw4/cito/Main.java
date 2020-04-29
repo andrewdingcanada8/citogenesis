@@ -66,7 +66,7 @@ public final class Main {
     // Setup Spark Routes
     Spark.get("/socket-demo", new SocketDemoHandler(), freeMarker);
     Spark.get("/search", new SearchHandler(), freeMarker);
-    Spark.get("/annotate/:pageURL", new AnnotateHandler(), freeMarker);
+    Spark.get("/annotate/wiki/:pageURL", new AnnotateHandler(), freeMarker);
 
   }
 

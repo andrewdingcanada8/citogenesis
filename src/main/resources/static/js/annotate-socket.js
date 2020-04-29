@@ -1,32 +1,37 @@
 const MESSAGE_TYPE = {
 
-    SUBMIT1: 0,
-    // SUBMIT1: when the user clicks on 'Annotate'
+    SUBMIT: 0,
+    // SUBMIT: when the user clicks on 'Annotate'
     // payload: id, url
 
-    SUBMIT2: 1,
-    // SUBMIT2: when the user clicks on 'Graph'
-    // payload: id, url
-
-    ANNOTATION: 2,
+    ANNOTATION: 1,
     // ANNOTATION: Server sent annotation information
     // payload: TODO: tbd
 
-    GRAPH: 3
-    // GRAPH: Server sent graphh information
-    // payload: TODO: tbd
 };
 
 let conn = null;
 let myId = -1;
 
 $(document).ready(() => {
+    console.log("hahahahhaha");
     setup_click();
     setup_socket();
 });
 
+function newAnnotation() {
+    let newDiv = document.createElement("div");
 
+    document.body.appendChild(newDiv);
+}
 
+function setup_hover () {
+    $(".a-link1").mouseover(function (evt) {
+        evt.preventDefault();
+        // window.location.href = "#"+anchor;
+        window.location.href = "#annotation0";
+    });
+}
 
 function setup_click() {
     // For Annotation Submit Button

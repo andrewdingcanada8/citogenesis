@@ -1,14 +1,26 @@
-<#assign head>
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>${title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- In real-world webapps, css is usually minified and
+         concatenated. Here, separate normalize from our code, and
+         avoid minification for clarity. -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/html5bp.css">
+    <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/annotate.css">
     <link rel="stylesheet" href="/css/wiki1.css">
     <link rel="stylesheet" href="/css/wiki2.css">
-</#assign>
-<#assign body>
+    <script src="js/annotate.js"></script>
+</head>
+
+<body>
     <div class="sidenav">
-        <h1>CITOGENESIS</h1>
+        <a href="http://localhost:4567/search"><h1>CITOGENESIS</h1></a>
         <h3>Annotations:</h3>
         <div class="annotationColumn">
-            <div class="annotationCard" id="0">
+            <div class="annotationCard" id="a-block1">
                 <a href="google.com">Name</a>
                 <p>Generating Sources (2):</p>
                 <ol>
@@ -18,17 +30,7 @@
                 <p>Circular Reporting: True</p>
                 <p></p>
             </div>
-            <div class="annotationCard" id="0">
-                <a href="google.com">Name</a>
-                <p>Generating Sources (2):</p>
-                <ol>
-                    <li><a href="1">gen source 1</a></li>
-                    <li><a href="2">gen source 2</a></li>
-                </ol>
-                <p>Circular Reporting: True</p>
-                <p></p>
-            </div>
-            <div class="annotationCard" id="0">
+            <div class="annotationCard" id="a-block2">
                 <a href="google.com">Name</a>
                 <p>Generating Sources (2):</p>
                 <ol>
@@ -64,7 +66,7 @@
                                                     <li>You should also add the template <code>{{Translated|it|Castel Menardo}}</code> to the <a href="/wiki/Talk:Castel_Menardo" title="Talk:Castel Menardo">talk page</a>.</li>
                                                     <li>For more guidance, see <a href="/wiki/Wikipedia:Translation" title="Wikipedia:Translation">Wikipedia:Translation</a>.</li></ul></div></div></div></td></tr></tbody></table>
                         <table class="infobox vcard" style="width:22em;width:25.5em;border-spacing:2px;"><tbody><tr><th colspan="2" style="text-align:center;font-size:125%;font-weight:bold;background-color:#C3D6EF;text-align:center;vertical-align:middle;font-size:110%;">Menardo Castle</th></tr><tr><td colspan="2" style="text-align:center;background-color:#C3D6EF;text-align:center;vertical-align:middle;font-size:110%;"><div style="display:inline;" class="nickname"><i>Castel Menardo</i></div></td></tr><tr><td colspan="2" style="text-align:center;background-color:#DCDCDC;text-align:center;vertical-align:middle;"><span class="label"><a href="/wiki/Serramonacesca" title="Serramonacesca">Serramonacesca</a> </span></td></tr><tr><td colspan="2" style="text-align:center"><a href="/wiki/File:CastelMenardo.JPG" class="image"><img alt="CastelMenardo.JPG" src="//upload.wikimedia.org/wikipedia/commons/thumb/c/c3/CastelMenardo.JPG/250px-CastelMenardo.JPG" decoding="async" width="250" height="188" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/c/c3/CastelMenardo.JPG/375px-CastelMenardo.JPG 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/c/c3/CastelMenardo.JPG/500px-CastelMenardo.JPG 2x" data-file-width="2048" data-file-height="1536" /></a><div>Castle in Serramonacesca</div></td></tr><tr><td colspan="2" style="text-align:center"><div class="center"><div style="width:250px;float:none;clear:both;margin-left:auto;margin-right:auto"><div style="width:250px;padding:0"><div style="position:relative;width:250px"><a href="/wiki/File:Italy_provincial_location_map_2016.svg" class="image" title="Menardo Castle is located in Italy"><img alt="Menardo Castle is located in Italy" src="//upload.wikimedia.org/wikipedia/commons/thumb/1/16/Italy_provincial_location_map_2016.svg/250px-Italy_provincial_location_map_2016.svg.png" decoding="async" width="250" height="314" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/1/16/Italy_provincial_location_map_2016.svg/375px-Italy_provincial_location_map_2016.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/1/16/Italy_provincial_location_map_2016.svg/500px-Italy_provincial_location_map_2016.svg.png 2x" data-file-width="1034" data-file-height="1299" /></a><div style="position:absolute;top:42.643%;left:61.611%"><div style="position:absolute;left:-5px;top:-5px;line-height:0"><img alt="Menardo Castle" src="//upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Red_pog.svg/10px-Red_pog.svg.png" decoding="async" title="Menardo Castle" width="10" height="10" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Red_pog.svg/15px-Red_pog.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Red_pog.svg/20px-Red_pog.svg.png 2x" data-file-width="64" data-file-height="64" /></div><div style="font-size:90%;line-height:110%;position:absolute;width:6em;top:-0.75em;left:6px;text-align:left"><div style="display:inline;padding:1px;float:left">Menardo Castle</div></div></div></div><div></div></div></div></div></td></tr><tr><th scope="row" style="padding-right:1em">Type</th><td>Castle</td></tr><tr><th colspan="2" style="text-align:center;background-color:#C3D6EF;text-align:center;vertical-align:middle;font-size:110%;">Site history</th></tr><tr><th scope="row" style="padding-right:1em">Built</th><td>12th century</td></tr></tbody></table>
-                        <p><b>Castel Menardo</b> (<a href="/wiki/Italian_language" title="Italian language">Italian</a> for <i>Menardo Castle</i>)  is a  <a href="/wiki/Middle_Ages" title="Middle Ages">medieval</a> castle in <a href="/wiki/Serramonacesca" title="Serramonacesca">Serramonacesca</a>, <a href="/wiki/Province_of_Pescara" title="Province of Pescara">Province of Pescara</a>, <a href="/wiki/Abruzzo" title="Abruzzo">Abruzzo</a>, southern <a href="/wiki/Italy" title="Italy">Italy</a>.<sup id="cite_ref-1" class="reference"><a href="#cite_note-1">&#91;1&#93;</a></sup>
+                        <p><b>Castel Menardo</b> (<a href="/wiki/Italian_language" title="Italian language">Italian</a> for <i>Menardo Castle</i>)  is a  <a href="/wiki/Middle_Ages" title="Middle Ages">medieval</a> castle in <a href="/wiki/Serramonacesca" title="Serramonacesca">Serramonacesca</a>, <a href="/wiki/Province_of_Pescara" title="Province of Pescara">Province of Pescara</a>, <a href="/wiki/Abruzzo" title="Abruzzo">Abruzzo</a>, southern <a href="/wiki/Italy" title="Italy" id="a-link1">Italy</a>.<sup id="cite_ref-1" class="reference"><a href="#cite_note-1">&#91;1&#93;</a></sup>
                         </p>
                         <h2><span class="mw-headline" id="References">References</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Castel_Menardo&amp;action=edit&amp;section=1" title="Edit section: References">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
                         <div class="reflist" style="list-style-type: decimal;">
@@ -93,5 +95,12 @@
         </div>
 
     </div>
-</#assign>
-<#include "main.ftl">
+<#--    <script src="js/annotate-socket.js"></script>-->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/annotate-socket.js"></script>
+    <#--<script src="js/socket-demo.js"></script>-->
+    <#--<script src="js/websocket.js"></script>-->
+</body>
+<!-- See http://html5boilerplate.com/ for a good place to start
+     dealing with real world issues like old browsers.  -->
+</html>
