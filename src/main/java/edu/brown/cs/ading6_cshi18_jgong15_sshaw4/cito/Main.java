@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.DemoSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.WikiCitationSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.run.REPL;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -61,10 +62,11 @@ public final class Main {
     Spark.exception(Exception.class, new ExceptionPrinter());
 
     FreeMarkerEngine freeMarker = createEngine();
-    Spark.webSocket("/socket-process", DemoSocket.class);
+    Spark.webSocket("/citation-socket", WikiCitationSocket.class);
+//    Spark.webSocket("/socket-process", DemoSocket.class);
 
     // Setup Spark Routes
-    Spark.get("/socket-demo", new SocketDemoHandler(), freeMarker);
+//    Spark.get("/socket-demo", new SocketDemoHandler(), freeMarker);
     Spark.get("/search", new SearchHandler(), freeMarker);
     Spark.get("/annotate/wiki/:pageURL", new AnnotateHandler(), freeMarker);
 

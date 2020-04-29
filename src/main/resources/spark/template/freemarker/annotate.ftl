@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/css/annotate.css">
     <link rel="stylesheet" href="/css/wiki1.css">
     <link rel="stylesheet" href="/css/wiki2.css">
-    <script src="js/annotate.js"></script>
 </head>
 
 <body>
