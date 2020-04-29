@@ -1,0 +1,39 @@
+.a {
+    color: #000000;
+}
+.sidenav {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #dfdfdf;
+    overflow-x: hidden;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.content {
+    margin-left: 200px;
+
+}
+.annotationColumn {
+    /*background-color: #87c0cc;*/
+    background-color: #2d3347;
+}
+.annotationCard {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    width: auto%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    text-align: left;
+    background-color: #f1f1f1;
+}
+.annotationCard a:hover {
+    color: #1a256b;
+}

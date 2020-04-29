@@ -1,6 +1,8 @@
-<link rel="stylesheet" href="css/timdbmain.css">
+<#assign head>
+    <link rel="stylesheet" href="css/socket-demo.css">
+</#assign>
 
-<#assign content>
+<#assign body>
 
 <h1>Sockets Demo</h1>
 <div id="content">
@@ -17,7 +19,7 @@
 </div>
 
 </#assign>
-<#include "timdb-main.ftl">
+<#include "main.ftl">
 
 
 <#--<script>-->

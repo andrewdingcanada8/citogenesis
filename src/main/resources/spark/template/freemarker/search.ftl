@@ -3,9 +3,12 @@
     <script>
         function annotate(){
             let url = $('#pageURL').val();
+            url = url.substr(url.lastIndexOf("/") + 1, url.length);
             // TODO: add some string cutting here so only the important wikipedia page info is shown
             // It's actually only the last word that is the article title. everything after the last /
             window.location.href = "http://localhost:4567/annotate/" + url;
+            // window.location.href = "http://localhost:4567/socket-demo";
+
         }
         function graph(){
             let url = $('#pageURL').val();
