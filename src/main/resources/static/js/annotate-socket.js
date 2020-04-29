@@ -1,7 +1,7 @@
 const MESSAGE_TYPE = {
     CONNECT: 0,
     URLSUBMISSION: 1,
-    CITATIONS: 2,
+    CITATION: 2
 };
 
 let conn = null;
@@ -28,7 +28,7 @@ function setup_hover () {
 
 // Setup the WebSocket connection for live updating of scores.
 function setup_socket () {
-    conn = new WebSocket('ws://' + window.location.host + '/annotation-socket');
+    conn = new WebSocket('ws://' + window.location.host + '/citation-socket');
 
     conn.onerror = err => {
         console.log('Connection error:', err);
@@ -40,14 +40,16 @@ function setup_socket () {
             default:
                 console.log('Unknown message type!', data.type);
                 break;
-            case MESSAGE_TYPE.CITATIONS:
-                let citation = data.payload.citations;
+            case MESSAGE_TYPE.CONNECT:
+                myId = parseInt(data.payload.id, 10);
+                console.log(myId);
+                break;
+            case MESSAGE_TYPE.CITATION:
+                let citation = data.payload.citation;
                 let id = data.payload.id;
                 const url = data.payload.url;
                 console.log(url);
                 $('#result').text(url);
-                break;
-            case MESSAGE_TYPE.GRAPH:
                 break;
         }
     };

@@ -41,7 +41,7 @@ public class WikiCitationSocket {
   private static enum MESSAGE_TYPE {
     CONNECT,
     URLSUBMISSION,
-    CITATIONS
+    CITATION
   }
 
   @OnWebSocketConnect
@@ -91,7 +91,7 @@ public class WikiCitationSocket {
     Type type = new TypeToken<List<Source>>(){}.getType();
     for (Citation citation: citations) {
       JsonObject toSend = new JsonObject();
-      toSend.addProperty("type", MESSAGE_TYPE.CITATIONS.ordinal());
+      toSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
       JsonObject newPayload = new JsonObject();
       newPayload.add("id", id);
 
@@ -104,7 +104,7 @@ public class WikiCitationSocket {
       }
       String jSource = GSON.toJson(genSources, type);
 
-      newPayload.addProperty("citations", jSource);
+      newPayload.addProperty("citation", jSource);
       Boolean hasCycles = citation.getHasCycles();
       newPayload.addProperty("hasCycles", hasCycles);
 
