@@ -32,7 +32,7 @@ public class WebGraphTest {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
     AsyncSourceQuery sq = new AsyncSourceQuery(10);
     Source src = sq.query("https://www.nytimes.com/2020/04/26/health/can-antibody-tests-help-end-the-coronavirus-pandemic.html").join();
-    AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(src, sq, 5);
+    AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(src, sq, "coronavirus branch", 5);
     nyGraph.load();
     Vertex<Source, String> hv = nyGraph.getHead();
     Collection<Vertex<Source, String>> loadedVertices = nyGraph.getLoadedVertices();
@@ -53,6 +53,7 @@ public class WebGraphTest {
     gens.stream().forEach(v -> System.out.println("generator: " + v));
   }
 
+  @Ignore
   @Test
   public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));

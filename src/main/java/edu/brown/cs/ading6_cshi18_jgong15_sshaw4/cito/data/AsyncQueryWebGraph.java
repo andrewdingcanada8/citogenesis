@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 
 public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   public static final Set<URLRule> URL_RULES;
+  private String keywords;
+  private Source keySource;
 
   static {
     URL_RULES = new HashSet<>();
@@ -37,14 +39,16 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   public static final int DEFAULT_DEPTH = 10;
   private Query<String, CompletableFuture<Source>> srcQuery;
 
-  public AsyncQueryWebGraph(Source headVal, Query<String, CompletableFuture<Source>> srcQuery) {
-    this(headVal, srcQuery, DEFAULT_DEPTH);
+  public AsyncQueryWebGraph(Source headVal, Query<String, CompletableFuture<Source>> srcQuery, String keywords) {
+    this(headVal, srcQuery, keywords, DEFAULT_DEPTH);
   }
 
   public AsyncQueryWebGraph(Source headVal,
-                            Query<String, CompletableFuture<Source>> srcQuery, int depth) {
+                            Query<String, CompletableFuture<Source>> srcQuery, String keywords, int depth) {
     super(headVal, depth);
     this.srcQuery = srcQuery;
+    this.keywords = keywords;
+    this.keySource = new DummySource("keywords dummy", keywords);
   }
 
   @Override
@@ -88,7 +92,7 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
                         return curSrc;
                       }
                       boolean viable = SRC_RULES.stream()
-                          .allMatch(rule -> rule.verify(this.getHeadVal(), curSrc, this));
+                          .allMatch(rule -> rule.verify(keySource, curSrc, this));
                       if (viable) {
                         return curSrc;
                       } else {
