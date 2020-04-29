@@ -63,6 +63,7 @@ public class WebSource implements Source {
         .flatMap(elt -> elt.getElementsByTag("a").stream())
         .map(elt -> elt.absUrl("href"))
         .filter(str -> !str.equals(""))
+        .filter(str -> !str.contains("mailto"))
         .distinct()
         .collect(Collectors.toList());
     // initialize query
