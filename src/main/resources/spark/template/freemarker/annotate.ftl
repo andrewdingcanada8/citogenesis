@@ -1,7 +1,5 @@
 <#assign head>
     <link rel="stylesheet" href="/css/annotate.css">
-<#--    <link rel="stylesheet" href="/css/load.php?lang=en&amp;modules=ext.cite.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cjquery.makeCollapsible.styles%7Cskins.vector.styles.legacy%7Cwikibase.client.init&amp;only=styles&amp;skin=vector">-->
-<#--    <link rel="stylesheet" href="/css/load.php?lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=vector">-->
     <link rel="stylesheet" href="/css/wiki1.css">
     <link rel="stylesheet" href="/css/wiki2.css">
 </#assign>
