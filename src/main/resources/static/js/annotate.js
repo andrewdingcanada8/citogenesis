@@ -4,3 +4,7 @@ function newAnnotation() {
 
     document.body.appendChild(newDiv);
 }
+
+function annotationClick(annotationID) {
+
+}
