@@ -1,14 +1,19 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Citation;
+import com.google.gson.reflect.TypeToken;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.SourceSerializer;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers.WikiHTMLParser;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.TimeStampQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.HTMLQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -16,14 +21,19 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @WebSocket
 public class WikiCitationSocket {
-  private static final Gson GSON = new Gson();
+  private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Source.class,
+      new SourceSerializer()).create();
   private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;
   private static final int TIMELIMIT = 10;
@@ -76,17 +86,32 @@ public class WikiCitationSocket {
 
 
     //pack the results
-    JsonObject toSend = new JsonObject();
-    toSend.addProperty("type", MESSAGE_TYPE.CITATIONS.ordinal());
-    JsonObject newPayload = new JsonObject();
-    newPayload.add("id", id);
 
-    //parse the citation here
-    newPayload.add("citations", citations);
+    //JSON the citation here
+    Type type = new TypeToken<List<Source>>(){}.getType();
+    for (Citation citation: citations) {
+      JsonObject toSend = new JsonObject();
+      toSend.addProperty("type", MESSAGE_TYPE.CITATIONS.ordinal());
+      JsonObject newPayload = new JsonObject();
+      newPayload.add("id", id);
 
-    toSend.add("payload", newPayload);
+      List<Vertex<Source, String>> genVertices = citation.getGenSources();
+      List<Source> genSources = new ArrayList<Source>();
+      for (Vertex<Source, String> vertex: genVertices) {
+        if (vertex != null) {
+          genSources.add(vertex.getVal());
+        }
+      }
+      String jSource = GSON.toJson(genSources, type);
 
-    String toSendStr = GSON.toJson(toSend);
-    SESSIONS.get(id.getAsInt()).getRemote().sendString(toSendStr);
+      newPayload.addProperty("citations", jSource);
+      Boolean hasCycles = citation.getHasCycles();
+      newPayload.addProperty("hasCycles", hasCycles);
+
+      toSend.add("payload", newPayload);
+
+      String toSendStr = GSON.toJson(toSend);
+      SESSIONS.get(id.getAsInt()).getRemote().sendString(toSendStr);
+    }
   }
 }
