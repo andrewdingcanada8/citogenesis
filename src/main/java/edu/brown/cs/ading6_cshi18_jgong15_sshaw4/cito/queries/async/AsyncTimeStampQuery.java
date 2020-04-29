@@ -15,17 +15,13 @@ import java.util.concurrent.CompletableFuture;
 
 public class AsyncTimeStampQuery extends AsyncHttpQuery<String, Calendar> {
 
-  private static final Gson CAL_GSON;
-
-  static {
-    GsonBuilder gsonBuilder = new GsonBuilder();
-    gsonBuilder.registerTypeAdapter(Calendar.class, new CalendarDeserializer());
-    gsonBuilder.registerTypeAdapter(Calendar.class, new CalendarDeserializer());
-    CAL_GSON = gsonBuilder.create();
-  }
+  private final Gson gson;
 
   public AsyncTimeStampQuery(int timeOutInSec) {
     super(timeOutInSec, "cito_timestamp");
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(Calendar.class, new CalendarDeserializer());
+    gson = gsonBuilder.create();
   }
 
   @Override
@@ -46,6 +42,6 @@ public class AsyncTimeStampQuery extends AsyncHttpQuery<String, Calendar> {
   protected CompletableFuture<Calendar> processResult(
       CompletableFuture<HttpResponse<String>> result) {
     return result.thenCompose(res -> CompletableFuture.supplyAsync(
-        () -> CAL_GSON.fromJson(res.body(), Calendar.class)));
+        () -> gson.fromJson(res.body(), Calendar.class)));
   }
 }
