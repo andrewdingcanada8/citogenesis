@@ -1,10 +1,10 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.SourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.QueryCacher;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;

@@ -1,4 +1,6 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source;
+
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 
 import java.util.Calendar;
 import java.util.List;
@@ -10,6 +12,11 @@ public final class NonViableSource implements Source {
   }
 
   private NonViableSource() { }
+
+  @Override
+  public String title() {
+    return "nonviable src";
+  }
 
   @Override
   public String getHTML() {
