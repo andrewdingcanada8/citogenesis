@@ -1,5 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotationHandler;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.GraphHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.run.REPL;
 import freemarker.template.Configuration;
@@ -63,9 +65,9 @@ public final class Main {
     FreeMarkerEngine freeMarker = createEngine();
 
     // Setup Spark Routes
-    // TODO: not sure if i want to call it search forever
     Spark.get("/search", new SearchHandler(), freeMarker);
-//    Spark.post("/results", new ResultsHandler());
+//    Spark.get("/annotation/:site-url", new AnnotationHandler(), freeMarker);
+//    Spark.get("/graph/:site-url", new GraphHandler(), freeMarker);
   }
 
   /**

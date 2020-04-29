@@ -8,11 +8,12 @@ import spark.TemplateViewRoute;
 
 import java.util.Map;
 
-public class SearchHandler implements TemplateViewRoute {
+public class GraphHandler implements TemplateViewRoute {
+
   @Override
   public ModelAndView handle(Request request, Response response) throws Exception {
     Map<String, Object> variables = ImmutableMap.of("title",
-            "Cito: Search");
-    return new ModelAndView(variables, "search.ftl");
+            "Cito: Graph");
+    return new ModelAndView(variables, "graph.ftl");
   }
 }
