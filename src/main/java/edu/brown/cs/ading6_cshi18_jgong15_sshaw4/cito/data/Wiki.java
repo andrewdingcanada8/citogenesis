@@ -1,18 +1,25 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers.WikiHTMLParser;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncTimeStampQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.async.AsyncHttpQuery;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class Wiki implements Source {
+  public static final int QUERY_TIMEOUT = 10;
   private Set<Citation> citationSet = new HashSet<>();
   private Calendar timestamp;
   private String url;
   private String html; // TODO: find the best representation for html
+  private AsyncHttpQuery<String, Calendar> timestampQuery;
+  private CompletableFuture<Calendar> calFut;
 
   /**
    * Get webpage html.
@@ -62,12 +69,42 @@ public class Wiki implements Source {
   }
 
   /**
+   * Set off timestamp query process (if needed).
+   */
+  @Override
+  public void queryTimestamp() {
+    if (timestamp != null) {
+      return;
+    }
+    try {
+      calFut = timestampQuery.query(url).exceptionally(e -> {
+        System.out.println("Error while querying timestamp for " + url + ": "
+            + e.getMessage());
+        return null;
+      });
+    } catch (QueryException e) {
+      System.out.println("Error while initiating query for calendar for "
+          + url + ": " + e.getMessage());
+      calFut = null;
+    }
+  }
+
+  /**
    * Get timestamp of the source.
    *
    * @return timestamp
    */
   @Override
   public Calendar getTimestamp() {
+    if (timestamp == null && calFut != null) {
+      timestamp = calFut.join();
+    }
+    // if previous kick failed, try one more time, synchronously
+    this.queryTimestamp();
+    if (timestamp == null && calFut != null) {
+      timestamp = calFut.join();
+    }
+    // will return null of both tries error
     return timestamp;
   }
 
@@ -75,6 +112,17 @@ public class Wiki implements Source {
     this.url = url;
     this.html = html;
     this.timestamp = timestamp;
+    // initialize query
+    timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
+//    WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html, timestamp);
+//    citationSet = wikiHTMLParser.parseForCitations();
+  }
+
+  public Wiki(String url, String html) {
+    this.url = url;
+    this.html = html;
+    // initialize query
+    timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
 //    WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html, timestamp);
 //    citationSet = wikiHTMLParser.parseForCitations();
   }
