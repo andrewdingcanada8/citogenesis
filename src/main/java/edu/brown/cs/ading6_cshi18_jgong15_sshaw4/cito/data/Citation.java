@@ -54,7 +54,7 @@ public class Citation {
         Source src = sq.query(url).join();
         initialWebSource = src;
         AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(
-            src, new QueryCacher<>(sq, 500), citedContent, 5);
+            src, new QueryCacher<>(sq, 500), citedContent, 2);
         nyGraph.load();
         Vertex<Source, String> hv = nyGraph.getHead();
         List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
@@ -80,6 +80,7 @@ public class Citation {
         }).reduce(0, Integer::sum);
       } catch (Exception e) {
         initialWebSource = null;
+        hasCycles = false;
         genSources = new ArrayList<>();
         numberOfGeneratingSources = 0;
       }

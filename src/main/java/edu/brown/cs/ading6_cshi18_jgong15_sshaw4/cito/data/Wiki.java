@@ -17,7 +17,8 @@ public class Wiki implements Source {
   private Set<Citation> citationSet = new HashSet<>();
   private Calendar timestamp;
   private String url;
-  private String html; // TODO: find the best representation for html
+  private String html;
+  private String content;
   private AsyncHttpQuery<String, Calendar> timestampQuery;
   private CompletableFuture<Calendar> calFut;
 
@@ -39,7 +40,7 @@ public class Wiki implements Source {
   @Override
   // TODO: Finish this
   public String getContent() {
-    return null;
+    return content;
   }
 
   /**
@@ -108,14 +109,21 @@ public class Wiki implements Source {
     return timestamp;
   }
 
+  /**
+   * Constructor for Wiki that has the timestamp.
+   * @param url url of the wiki page
+   * @param html html of the wiki page
+   * @param timestamp timestamp
+   */
   public Wiki(String url, String html, Calendar timestamp) {
     this.url = url;
     this.html = html;
     this.timestamp = timestamp;
     // initialize query
     timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
-//    WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html, timestamp);
-//    citationSet = wikiHTMLParser.parseForCitations();
+    WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html, timestamp);
+    citationSet = wikiHTMLParser.parseForRawCitations();
+    content = wikiHTMLParser.parseForContent();
   }
 
   public Wiki(String url, String html) {
@@ -123,8 +131,9 @@ public class Wiki implements Source {
     this.html = html;
     // initialize query
     timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
-//    WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html, timestamp);
-//    citationSet = wikiHTMLParser.parseForCitations();
+    WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html);
+    citationSet = wikiHTMLParser.parseForCitations();
+    content = wikiHTMLParser.parseForContent();
   }
 
   public Set<Citation> getCitationSet() {

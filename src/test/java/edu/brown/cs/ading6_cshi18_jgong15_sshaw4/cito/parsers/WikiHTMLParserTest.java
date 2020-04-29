@@ -30,7 +30,7 @@ public class WikiHTMLParserTest {
 
   @Test
   public void testParseForRawCitations() {
-    _parser.parseForRawCitation();
+    _parser.parseForRawCitations();
     //assertEqual(_parser.parseForRawCitation(),);
 
   }
