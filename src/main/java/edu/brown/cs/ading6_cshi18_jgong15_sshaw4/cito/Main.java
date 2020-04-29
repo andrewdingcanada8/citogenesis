@@ -13,9 +13,7 @@ public final class Main {
     repl.run();
   }
 
-
   // Seiji's TODO:
-  // caching on lemmatization process
   // multi-threading bfs
   // graph synchronization for url-node differences
   // loosen up parameters on rules to only take the URLs/Sources - the other items

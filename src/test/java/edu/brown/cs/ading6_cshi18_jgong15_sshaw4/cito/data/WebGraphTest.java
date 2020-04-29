@@ -28,15 +28,42 @@ public class WebGraphTest {
   }
 
   @Test
-  public void asyncSanityCheckTest() throws QueryException, GraphException {
+  public void asyncQuerySanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
     AsyncSourceQuery sq = new AsyncSourceQuery(10);
     Source src = sq.query("https://www.nytimes.com/2020/04/26/health/can-antibody-tests-help-end-the-coronavirus-pandemic.html").join();
-    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 3);
+    AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(src, sq, 5);
+    nyGraph.load();
     Vertex<Source, String> hv = nyGraph.getHead();
     Collection<Vertex<Source, String>> loadedVertices = nyGraph.getLoadedVertices();
     loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
 
+    List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
+    comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());
+    List<Vertex<Source, String>> gens = comps.stream()
+        .map(comp -> {
+          try {
+            return new GeneratingSourceFinder().search(comp);
+          } catch (GraphException e) {
+            System.out.println("Error while finding gen sources: " + e.getMessage());
+            return null;
+          }
+        })
+        .collect(Collectors.toList());
+    gens.stream().forEach(v -> System.out.println("generator: " + v));
+  }
+
+  @Test
+  public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
+    //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
+    AsyncSourceQuery sq = new AsyncSourceQuery(10);
+    Source src = sq.query("https://www.nytimes.com/2020/04/26/health/can-antibody-tests-help-end-the-coronavirus-pandemic.html").join();
+    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 5);
+    nyGraph.load();
+    Collection<Vertex<Source, String>> loadedVertices = nyGraph.getLoadedVertices();
+    loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
+
+    Vertex<Source, String> hv = nyGraph.getHead();
     List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
     comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());
     List<Vertex<Source, String>> gens = comps.stream()

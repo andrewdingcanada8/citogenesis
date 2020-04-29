@@ -10,7 +10,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedEdge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.AsyncRootedSourcedMemGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
+public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   public static final Set<URLRule> URL_RULES;
 
   static {
@@ -37,11 +37,11 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
   public static final int DEFAULT_DEPTH = 10;
   private Query<String, CompletableFuture<Source>> srcQuery;
 
-  public AsyncWebGraph(Source headVal, Query<String, CompletableFuture<Source>> srcQuery) {
+  public AsyncQueryWebGraph(Source headVal, Query<String, CompletableFuture<Source>> srcQuery) {
     this(headVal, srcQuery, DEFAULT_DEPTH);
   }
 
-  public AsyncWebGraph(Source headVal,
+  public AsyncQueryWebGraph(Source headVal,
                             Query<String, CompletableFuture<Source>> srcQuery, int depth) {
     super(headVal, depth);
     this.srcQuery = srcQuery;
