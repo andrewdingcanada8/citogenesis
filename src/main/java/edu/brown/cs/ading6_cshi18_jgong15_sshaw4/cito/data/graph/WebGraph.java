@@ -1,5 +1,8 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DummySource;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Deadend;
