@@ -18,7 +18,7 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
   // rather than extension, this behavior may be integrated by composition
   // I'll stick with this now, but will get back to it if there's time
 
-  private static final int MAX_DEPTH_DEFAULT = 1000;
+  private static final int MAX_DEPTH_DEFAULT = 10;
 
   private T headVal;
   private Vertex<T, W> head;
@@ -33,13 +33,17 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
     this.headVal = headVal;
     this.maxDepth = maxDepth;
     if (maxDepth < 0) {
-      throw new IllegalArgumentException("depth must be a non-negative integer");
+      maxDepth = 0;
     }
     depthMap = new HashMap<>();
+    head = this.getVertex(headVal);
   }
 
-  public Vertex<T, W> getHead() throws GraphException {
-    loadByBFS();
+  public void load() throws GraphException {
+    this.loadByBFS();
+  }
+
+  public Vertex<T, W> getHead() {
     return head;
   }
 
@@ -60,8 +64,12 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
     return headVal;
   }
 
-  public void setHeadVal(T headVal) {
-    this.headVal = headVal;
+  protected int getMaxDepth() {
+    return maxDepth;
+  }
+
+  protected Map<T, Integer> getDepthMap() {
+    return depthMap;
   }
 
   /**
@@ -69,10 +77,8 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
    *
    * @throws GraphException in the case of erroneous output
    */
-  private void loadByBFS() throws GraphException {
+  protected void loadByBFS() throws GraphException {
     Set<Vertex<T, W>> visited = new HashSet<>();
-    head = this.getVertex(headVal);
-
     Deque<Vertex<T, W>> queue = new LinkedList<>();
     queue.addLast(head);
     depthMap.put(headVal, 0);

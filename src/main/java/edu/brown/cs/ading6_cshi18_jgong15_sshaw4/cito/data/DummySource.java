@@ -5,9 +5,15 @@ import java.util.*;
 public class DummySource implements Source {
 
   private String url;
+  private String content;
 
   public DummySource(String url) {
+    this(url, "lorem ipsum");
+  }
+
+  public DummySource(String url, String content) {
     this.url = url;
+    this.content = content;
   }
 
   @Override
@@ -17,7 +23,7 @@ public class DummySource implements Source {
 
   @Override
   public String getContent() {
-    return "loreum ipsum";
+    return content;
   }
 
   @Override
