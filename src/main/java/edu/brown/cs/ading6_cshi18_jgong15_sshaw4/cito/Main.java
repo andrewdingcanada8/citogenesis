@@ -2,6 +2,8 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito;
 
 import com.google.common.collect.ImmutableMap;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.WebSourceSocket;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.run.REPL;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
@@ -64,6 +66,9 @@ public final class Main {
 
     // Setup Spark Routes
     Spark.get("/socket-demo", new SocketDemoHandler(), freeMarker);
+    Spark.get("/search", new SearchHandler(), freeMarker);
+    Spark.get("/annotate/:pageURL", new AnnotateHandler(), freeMarker);
+
   }
 
   private class SocketDemoHandler implements TemplateViewRoute {

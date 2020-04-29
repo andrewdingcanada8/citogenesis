@@ -27,4 +27,4 @@
     </div>
 
 </#assign>
-<#include "timdb-main.ftl">
+<#include "../timdb-main.ftl">

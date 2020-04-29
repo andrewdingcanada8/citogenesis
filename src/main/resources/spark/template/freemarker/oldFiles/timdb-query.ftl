@@ -11,4 +11,4 @@
     ${querycontent}
     <p id="output">${output}</p>
 </#assign>
-<#include "timdb-main.ftl">
+<#include "../timdb-main.ftl">
