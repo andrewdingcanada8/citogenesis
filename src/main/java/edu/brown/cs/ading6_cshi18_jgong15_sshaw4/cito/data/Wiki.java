@@ -19,6 +19,7 @@ public class Wiki implements Source {
   private String url;
   private String html;
   private String content;
+  private String contentHTML;
   private AsyncHttpQuery<String, Calendar> timestampQuery;
   private CompletableFuture<Calendar> calFut;
 
@@ -38,9 +39,12 @@ public class Wiki implements Source {
    * @return content
    */
   @Override
-  // TODO: Finish this
   public String getContent() {
     return content;
+  }
+
+  public String getContentHTML() {
+    return contentHTML;
   }
 
   /**
@@ -123,6 +127,7 @@ public class Wiki implements Source {
     timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
     WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html, timestamp);
     citationSet = wikiHTMLParser.parseForRawCitations();
+    contentHTML = wikiHTMLParser.parseForContentHTML();
     content = wikiHTMLParser.parseForContent();
   }
 
@@ -133,6 +138,7 @@ public class Wiki implements Source {
     timestampQuery = new AsyncTimeStampQuery(QUERY_TIMEOUT);
     WikiHTMLParser wikiHTMLParser = new WikiHTMLParser(url, html);
     citationSet = wikiHTMLParser.parseForCitations();
+    contentHTML = wikiHTMLParser.parseForContentHTML();
     content = wikiHTMLParser.parseForContent();
   }
 
