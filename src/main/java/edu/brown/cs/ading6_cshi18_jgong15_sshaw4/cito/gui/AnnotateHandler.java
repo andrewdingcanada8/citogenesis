@@ -15,22 +15,6 @@ public class AnnotateHandler implements TemplateViewRoute {
     String pageURL = request.params(":pageURL");
     System.out.println(pageURL);
 
-//    String htmlString = new String();
-//    Scanner in = null;
-//    in = new Scanner(new File("data/cito/samplePage.txt"));
-//    while (in.hasNextLine()) {
-//      // Regex to make file consistent.
-//      String nextLine = in.nextLine();
-//      htmlString = htmlString.concat(nextLine);
-//    }
-//    in.close();
-//    assert htmlString != null;
-//    System.out.println(htmlString);
-//
-//    Map<String, Object> variables = ImmutableMap.of("title",
-//            "Cito: Annotation", "html", htmlString, "content", htmlString);
-//    return new ModelAndView(variables, "annotate.ftl");
-
     Map<String, Object> variables = ImmutableMap.of("title",
             "Cito: Annotate", "results", pageURL);
     return new ModelAndView(variables, "annotate.ftl");

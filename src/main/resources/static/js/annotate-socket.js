@@ -1,13 +1,7 @@
 const MESSAGE_TYPE = {
-
-    SUBMIT: 0,
-    // SUBMIT: when the user clicks on 'Annotate'
-    // payload: id, url
-
-    ANNOTATION: 1,
-    // ANNOTATION: Server sent annotation information
-    // payload: TODO: tbd
-
+    CONNECT: 0,
+    URLSUBMISSION: 1,
+    CITATIONS: 2,
 };
 
 let conn = null;
@@ -15,7 +9,6 @@ let myId = -1;
 
 $(document).ready(() => {
     console.log("hahahahhaha");
-    setup_click();
     setup_socket();
 });
 
@@ -33,24 +26,9 @@ function setup_hover () {
     });
 }
 
-function setup_click() {
-    // For Annotation Submit Button
-    $('#annotateSubmitButton').click(function(evt) {
-        evt.preventDefault();
-        let url = $('#pageURL').val();
-        annotate(url);
-    });
-    // For Graph Submit Button
-    $('#graphSubmitButton').click(function(evt) {
-        evt.preventDefault();
-        let url = $('#pageURL').val();
-        graph(url);
-    });
-}
-
 // Setup the WebSocket connection for live updating of scores.
 function setup_socket () {
-    conn = new WebSocket('ws://' + window.location.host + '/socket-process');
+    conn = new WebSocket('ws://' + window.location.host + '/annotation-socket');
 
     conn.onerror = err => {
         console.log('Connection error:', err);
@@ -62,7 +40,9 @@ function setup_socket () {
             default:
                 console.log('Unknown message type!', data.type);
                 break;
-            case MESSAGE_TYPE.ANNOTATION:
+            case MESSAGE_TYPE.CITATIONS:
+                let citation = data.payload.citations;
+                let id = data.payload.id;
                 const url = data.payload.url;
                 console.log(url);
                 $('#result').text(url);
