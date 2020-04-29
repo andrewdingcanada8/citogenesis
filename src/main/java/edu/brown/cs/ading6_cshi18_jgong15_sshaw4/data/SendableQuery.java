@@ -21,7 +21,7 @@ public abstract class SendableQuery<Q, R, D extends DataSource<T, W, M>, T, W, M
     this.source = source;
   }
 
-  protected abstract T getQuery(Q input, M src);
+  protected abstract T getQuery(Q input, M src) throws QueryException;
 
   protected abstract R processResult(W result) throws QueryException;
 

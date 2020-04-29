@@ -32,6 +32,10 @@ public final class NonViableSource implements Source {
   }
 
   @Override
+  public void queryTimestamp() {
+  }
+
+  @Override
   public Calendar getTimestamp() {
     return null;
   }

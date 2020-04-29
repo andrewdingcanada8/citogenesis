@@ -13,4 +13,7 @@ public abstract class AsyncHttpQuery<Q, R> extends SendableQuery
   public AsyncHttpQuery(int timeOutInSec) {
     super(new AsyncHttpSource(timeOutInSec));
   }
+  public AsyncHttpQuery(int timeOutInSec, String clientKey) {
+    super(new AsyncHttpSource(timeOutInSec, clientKey));
+  }
 }

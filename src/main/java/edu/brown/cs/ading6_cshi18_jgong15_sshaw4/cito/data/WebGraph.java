@@ -35,7 +35,7 @@ public class WebGraph extends RootedSourcedMemGraph<Source, String> {
     for (String url : links) {
       try {
         Vertex<Source, String> nVert;
-        WebSource dummy = new WebSource(url, "", null);
+        Source dummy = new DummySource(url);
         // if loaded already, acquire new page without querying soure
         if (this.loadedVertex(dummy)) {
           nVert = this.getVertex(dummy);

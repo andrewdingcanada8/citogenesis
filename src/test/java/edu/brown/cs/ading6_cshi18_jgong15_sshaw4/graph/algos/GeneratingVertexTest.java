@@ -13,10 +13,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.components.Generat
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +22,7 @@ public class GeneratingVertexTest {
 
   @Property
   public void ifGenFoundItsInComp(@From(SimpleVertexGenerator.class) SimpleVertex v) throws GraphException {
-    Set<Set<Vertex<String, Object>>> comps = new Tarjan().search(v);
+    List<Set<Vertex<String, Object>>> comps = new Tarjan().search(v);
     for (Set<Vertex<String, Object>> comp : comps) {
       Vertex<String, Object> gen = new MinStringFinder().search(comp);
       if (gen != null) {
@@ -37,7 +34,7 @@ public class GeneratingVertexTest {
 
   @Property
   public void isMin(@From(SimpleVertexGenerator.class) SimpleVertex v) throws GraphException {
-    Set<Set<Vertex<String, Object>>> comps = new Tarjan().search(v);
+    List<Set<Vertex<String, Object>>> comps = new Tarjan().search(v);
     for (Set<Vertex<String, Object>> comp : comps) {
       Vertex<String, Object> gen = new MinStringFinder().search(comp);
       if (gen != null) {
@@ -48,7 +45,7 @@ public class GeneratingVertexTest {
 
   @Property
   public void ifReturnIsNullMinIsNotConnected(@From(SimpleVertexGenerator.class) SimpleVertex v) throws GraphException {
-    Set<Set<Vertex<String, Object>>> comps = new Tarjan().search(v);
+    List<Set<Vertex<String, Object>>> comps = new Tarjan().search(v);
     for (Set<Vertex<String, Object>> comp : comps) {
       Vertex<String, Object> gen = new MinStringFinder().search(comp);
       if (gen == null) {

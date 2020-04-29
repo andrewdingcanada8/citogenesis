@@ -11,16 +11,16 @@ public class Tarjan<T, W> implements ComponentSearch<T, W> {
 
   private int index;
   private Deque<Vertex<T, W>> stack;
-  private Set<Set<Vertex<T, W>>> sccs;
+  private List<Set<Vertex<T, W>>> sccs;
   private Map<Vertex<T, W>, Integer> disc;
   private Map<Vertex<T, W>, Integer> lowlink;
 
   @Override
-  public Set<Set<Vertex<T, W>>> search(Vertex<T, W> start) throws GraphException {
+  public List<Set<Vertex<T, W>>> search(Vertex<T, W> start) throws GraphException {
     // reset global variables
     index = 0;
     stack = new ArrayDeque<>();
-    sccs = new HashSet<>();
+    sccs = new ArrayList<>();
     disc = new HashMap<>();
     lowlink = new HashMap<>();
     tarjanEngine(start);

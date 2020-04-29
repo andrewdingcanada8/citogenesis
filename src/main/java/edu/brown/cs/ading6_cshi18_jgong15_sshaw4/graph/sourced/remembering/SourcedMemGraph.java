@@ -6,7 +6,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedGraph;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class SourcedMemGraph<T, W> extends SourcedGraph<T, W> {
 
@@ -17,7 +16,7 @@ public abstract class SourcedMemGraph<T, W> extends SourcedGraph<T, W> {
   }
 
   @Override
-  public Vertex getVertex(T val) {
+  public synchronized Vertex<T, W> getVertex(T val) {
 
     if (vertices.keySet().contains(val)) {
       return vertices.get(val);

@@ -14,7 +14,7 @@ public class AsyncHTMLQuery extends AsyncHttpQuery<String, String> {
   private String curURL;
 
   public AsyncHTMLQuery(int timeOutInSec) {
-    super(timeOutInSec);
+    super(timeOutInSec, "html");
     curURL = "UNUSED";
   }
 

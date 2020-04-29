@@ -12,6 +12,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
 import org.junit.runner.RunWith;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -21,7 +22,7 @@ public class TarjanTest {
 
   @Property(trials = 25)
   public void outputSetsAreSCCs(@From(SimpleVertexGenerator.class) SimpleVertex v) throws GraphException {
-    Set<Set<SimpleVertex>> comps = new Tarjan().search(v);
+    List<Set<SimpleVertex>> comps = new Tarjan().search(v);
     // we know a component is an scc if
     // a dfs from every node in the scc contains the scc
     for (Set<SimpleVertex> comp : comps) {
@@ -37,7 +38,7 @@ public class TarjanTest {
   @Property
   public void unionOfCompsAreAllNodesAccessibleFromStart(
       @From(SimpleVertexGenerator.class) SimpleVertex v) throws GraphException {
-    Set<Set<SimpleVertex>> comps = new Tarjan().search(v);
+    List<Set<SimpleVertex>> comps = new Tarjan().search(v);
 
     // construct set union
     Set<SimpleVertex> union = new HashSet<>();
@@ -52,7 +53,7 @@ public class TarjanTest {
 
   @Property
   public void compsAreDisjoint(@From(SimpleVertexGenerator.class) Vertex v) throws GraphException {
-    Set<Set<Vertex>> comps = new Tarjan().search(v);
+    List<Set<Vertex>> comps = new Tarjan().search(v);
 
     // construct set union
     Set<Vertex> union = new HashSet<>();
