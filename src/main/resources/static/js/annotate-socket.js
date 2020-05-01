@@ -1,7 +1,8 @@
 const MESSAGE_TYPE = {
     CONNECT: 0,
     URLSUBMISSION: 1,
-    CITATION: 2
+    HTML: 2,
+    CITATION: 3
 };
 
 let conn = null;
@@ -9,18 +10,27 @@ let myId = -1;
 
 $(document).ready(() => {
     console.log("hahahahhaha");
+    setup_hover();
     setup_socket();
+    urlSubmit();
 });
 
-function newAnnotation() {
-    let newDiv = document.createElement("div");
+function newAnnotation(data) {
+    let id = data.payload.id;
+    let hasCycles = data.payload.hasCycles;
+    let citeSource = data.payload.citeSource;
+    let list = data.genSources;
+    console.log(id + hasCycles + citeSource + list);
+    $('#result').text(id + hasCycles + citeSource + list);
+    // let newDiv = document.createElement("div");
 
-    document.body.appendChild(newDiv);
+    // document.body.appendChild(newDiv);
 }
 
 function setup_hover () {
     $(".a-link1").mouseover(function (evt) {
         evt.preventDefault();
+        console.log("hey");
         // window.location.href = "#"+anchor;
         window.location.href = "#annotation0";
     });
@@ -45,11 +55,7 @@ function setup_socket () {
                 console.log(myId);
                 break;
             case MESSAGE_TYPE.CITATION:
-                let citation = data.payload.citation;
-                let id = data.payload.id;
-                const url = data.payload.url;
-                console.log(url);
-                $('#result').text(url);
+                newAnnotation(data);
                 break;
         }
     };
@@ -59,20 +65,11 @@ function setup_socket () {
  * Called when a user clicks the annotate button
  * @param url - a string that contains the website url to be annotated
  */
-const annotate = url => {
-    conn.send(JSON.stringify({type: MESSAGE_TYPE.ANNOTATE, payload: {
+const urlSubmit = url => {
+    let submitURL = window.location.href;
+    submitURL = submitURL.substr(submitURL.lastIndexOf("/")-4, submitURL.length);
+    conn.send(JSON.stringify({type: MESSAGE_TYPE.URLSUBMISSION, payload: {
             id: myId,
-            url: url
-        }}));
-}
-
-/**
- * Called when a user clicks the graph button
- * @param url - a string that contains the website url to be graphed
- */
-const graph = url => {
-    conn.send(JSON.stringify({type: MESSAGE_TYPE.GRAPH, payload: {
-            id: myId,
-            url: url
+            url: "https://en.wikipedia.org/" + submitURL
         }}));
 }

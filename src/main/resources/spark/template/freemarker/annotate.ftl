@@ -6,8 +6,8 @@
     <!-- In real-world webapps, css is usually minified and
          concatenated. Here, separate normalize from our code, and
          avoid minification for clarity. -->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/html5bp.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/html5bp.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/annotate.css">
     <link rel="stylesheet" href="/css/wiki1.css">
