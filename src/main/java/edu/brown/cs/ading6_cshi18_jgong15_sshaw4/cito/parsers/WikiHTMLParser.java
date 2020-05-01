@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Parser to parse requests from the wiki class.
@@ -60,6 +61,16 @@ public class WikiHTMLParser {
     }
   }
 
+  public String parseForContentHTML() {
+    Document doc = Jsoup.parse(html, url);
+    Elements content = doc.select("#content");
+    if (content != null) {
+      return content.html();
+    } else {
+      return "";
+    }
+  }
+
   /**
    * Parse the wiki html for citations.
    * @return a set of citation that hasn't been checked for revision date
@@ -79,21 +90,28 @@ public class WikiHTMLParser {
       //System.out.println(refContent);
       Elements extLinks = refContent.select(".external");
       Element timeAccessed = refContent.select(".reference-accessdate").first();
-      // If there are more than one external links:
-      // Use the first archive one for link; the second one is the unaccessble original
-      if (extLinks != null) {
-        Element extLink = extLinks.first();
-        if (extLink != null) {
-          String link = extLink.attr("href");
-          //System.out.println(link);
-          uncheckedCitations.add(new Citation("Web", citedContent, link));
-        } else {
-          uncheckedCitations.add(new Citation("Other"));
-        }
+      // Check if the citation is already made with another instance of cited content.
+      Predicate<Citation> isQualified = elt -> elt.getId().equals(citeNote);
+      Citation containsCiteNote = uncheckedCitations.stream()
+          .filter(isQualified).findAny().orElse(null);
+      if (containsCiteNote != null) {
+        containsCiteNote.addContentCited(citedContent);
       } else {
-        uncheckedCitations.add(new Citation("Other"));
+        // If there are more than one external links:
+        // Use the first archive one for link; the second one is the unaccessble original
+        if (extLinks != null) {
+          Element extLink = extLinks.first();
+          if (extLink != null) {
+            String link = extLink.attr("href");
+            //System.out.println(link);
+            uncheckedCitations.add(new Citation("Web", citeNote, citedContent, link));
+          } else {
+            uncheckedCitations.add(new Citation("Other", citeNote));
+          }
+        } else {
+          uncheckedCitations.add(new Citation("Other", citeNote));
+        }
       }
-
     }
     return uncheckedCitations;
   }
@@ -117,7 +135,7 @@ public class WikiHTMLParser {
    * @return true or false
    */
   public boolean checkCitation(Citation citation) {
-    // TODO: check revision timestamp
+    // TODO: check revision timestamp.
     return true;
   }
 

@@ -25,7 +25,7 @@ public class Citation {
    * If the type is "Other", all other fields are null.
    */
   private String sourceType;
-
+  private String id;
   private String citedContent;
   private Number contentWordCount;
   private Number numberOfGeneratingSources;
@@ -36,12 +36,20 @@ public class Citation {
 
   private static final int TIME_OUT = 20;
 
-  public Citation(String sourceType) {
+  public Citation(String sourceType, String id) {
     this.sourceType = sourceType;
+    this.id = id;
   }
 
-  public Citation(String sourceType, String citedContent, String url) {
+  public Citation(String sourceType, String id, String citedContent) {
     this.sourceType = sourceType;
+    this.id = id;
+    this.citedContent = citedContent;
+  }
+
+  public Citation(String sourceType, String id, String citedContent, String url) {
+    this.sourceType = sourceType;
+    this.id = id;
     if (sourceType.equals("Self") || sourceType.equals("Other")) {
       numberOfGeneratingSources = 0;
       initialWebSource = null;
@@ -87,6 +95,10 @@ public class Citation {
     }
   }
 
+  public String getId() {
+    return id;
+  }
+
   public List<Vertex<Source, String>> getGenSources() {
     return genSources;
   }
@@ -97,6 +109,10 @@ public class Citation {
 
   public Boolean getHasCycles() {
     return hasCycles;
+  }
+
+  public String getCitedContent() {
+    return citedContent;
   }
 
   public Source getInitialWebSource() {
@@ -115,6 +131,10 @@ public class Citation {
       genSources = null;
       sccs = null;
     }
+  }
+
+  public void addContentCited(String content) {
+    citedContent += content;
   }
 
   @Override
