@@ -17,8 +17,10 @@ $(document).ready(() => {
 
 function insertHTML(data) {
     let html = data.payload.html;
-    console.log(html);
-    $("#content").insertAdjacentHTML("beforeend", html);
+    // html = "<p> just a simple farmer</p>";
+    // console.log(html);
+    let div = document.getElementById("content");
+    div.insertAdjacentHTML("beforeend", html);
 }
 
 function newAnnotation(data) {
@@ -30,19 +32,42 @@ function newAnnotation(data) {
     let citeURL = data.payload.citeURL;
     let hasCycles = data.payload.hasCycles;
     let genSrcList = data.payload.jGenSources;
-    console.log("citeRefText: " + citeRefText);
-    console.log("citeId: " + citeId);
-    console.log("citeTitle: " + citeTitle);
-    console.log("citeType: " + citeType);
-    console.log("citeURL: " + citeURL);
-    console.log("hasCycles: " + hasCycles);
-    console.log("genSrcList: " + genSrcList);
-    // $('#result').text(id + hasCycles + citeSource + list);
-    // let newDiv = document.createElement("div");
-    let newP = document.createElement("P");
-    newP.innerText = citeRefText;
-    // newDiv.appendChild(newP);
-    document.body.appendChild(newP);
+
+    let column = document.getElementById("annotationColumn");
+
+    let card = document.createElement("div");
+    card.className = "annotationCard";
+    card.id = citeId;
+    column.appendChild(card);
+
+    let citeLink = document.createElement("a");
+    citeLink.href = citeURL;
+    citeLink.innerText = citeRefText;
+    card.appendChild(citeLink);
+
+    let genP = document.createElement("p");
+    genP.innerText = "Generating Sources (" + genSrcList.length + "):";
+    card.appendChild(genP);
+
+    let genList = document.createElement("ol");
+    card.appendChild(genList);
+    let counter = 0;
+    for (let source in genSrcList) {
+        if (counter > 5) {
+            break;
+        }
+        counter++;
+        let li = document.createElement("li");
+        let a = document.createElement("a");
+        a.innerText = source.title;
+        a.href = source.url;
+        li.appendChild(a);
+        genList.appendChild(li);
+    }
+
+    let circularReport = document.createElement("p");
+    circularReport.innerText = "Circular Reporting: " + hasCycles;
+    card.appendChild(circularReport);
 }
 
 

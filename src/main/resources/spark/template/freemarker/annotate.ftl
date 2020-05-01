@@ -18,7 +18,7 @@
     <div class="sidenav">
         <a href="http://localhost:4567/search"><h1>CITOGENESIS</h1></a>
         <h3>Annotations:</h3>
-        <div class="annotationColumn">
+        <div class="annotationColumn" id="annotationColumn">
             <div class="annotationCard" id="a-block1">
                 <a href="google.com">Name</a>
                 <p>Generating Sources (2):</p>
@@ -42,10 +42,12 @@
         </div>
     </div>
     <div class="content">
-        ${results}
+        <div id="content" class="mw-body" role="main">
 
+        </div>
     </div>
-<#--    <script src="js/annotate-socket.js"></script>-->
+    ${results}
+    <#--    <script src="js/annotate-socket.js"></script>-->
     <script src="/js/jquery-2.1.1.js"></script>
     <script src="/js/annotate-socket.js"></script>
     <#--<script src="js/socket-demo.js"></script>-->
