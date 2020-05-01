@@ -134,6 +134,18 @@ public class Citation {
     return genSources;
   }
 
+  public String getReferenceText() {
+    return referenceText;
+  }
+
+  public Number getContentWordCount() {
+    return contentWordCount;
+  }
+
+  public List<Set<Vertex<Source, String>>> getSccs() {
+    return sccs;
+  }
+
   public Number getNumberOfGeneratingSources() {
     return numberOfGeneratingSources;
   }
