@@ -20,8 +20,8 @@ public class Citation {
   /**
    * Type of the source.
    * One of the following: Web, Self, Other
-   * If the type is Web, it is a typical citation.
-   * If the type is Self, the generating source IS the wikipedia page.
+   * If the type is "Web", it is a typical citation.
+   * If the type is "Self", the generating source IS the wikipedia page.
    * If the type is "Other", all other fields are null.
    */
   private String sourceType;
