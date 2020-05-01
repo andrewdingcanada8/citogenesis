@@ -1,6 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers;
 
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Citation;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

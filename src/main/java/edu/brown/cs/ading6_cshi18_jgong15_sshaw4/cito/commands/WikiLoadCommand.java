@@ -1,7 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands;
 
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.CitoWorld;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Wiki;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.CheckConnectionQuery;
