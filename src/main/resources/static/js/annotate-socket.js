@@ -16,12 +16,20 @@ $(document).ready(() => {
 
 function newAnnotation(data) {
     console.log("NEW ANNOTATION!"); // TODO: Delete Later
-    // let id = data.payload.id;
-    // let hasCycles = data.payload.hasCycles;
-    // let citeSource = data.payload.citeSource;
-    // let list = data.genSources;
+    let citeId = data.payload.citeId;
+    let citeTitle = data.payload.citeTitle;
+    let citeType = data.payload.citeType;
+    let citeURL = data.payload.citeURL;
+    let hasCycles = data.payload.hasCycles;
+    let genSrcList = data.payload.jGenSources;
 
-    // console.log(id + hasCycles + citeSource + list);
+    console.log(citeId + citeTitle + citeURL + genSrcList);
+    console.log("citeId: " + citeId);
+    console.log("citeTitle: " + citeTitle);
+    console.log("citeType: " + citeType);
+    console.log("citeURL: " + citeURL);
+    console.log("hasCycles: " + hasCycles);
+    console.log("genSrcList: " + genSrcList);
     // $('#result').text(id + hasCycles + citeSource + list);
     // let newDiv = document.createElement("div");
 
