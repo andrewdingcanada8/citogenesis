@@ -41,7 +41,7 @@ public class WikiCitationSocket {
     JsonObject message = new JsonObject();
     message.addProperty("type", MESSAGE_TYPE.CONNECT.ordinal());
     JsonObject payload = new JsonObject();
-    payload.addProperty("id", nextId);
+    payload.addProperty("id", nextId); // TODO: Why is ID a JSON Object and not Primitive?
     message.add("payload", payload);
     session.getRemote().sendString(GSON.toJson(message));
     nextId++;
@@ -82,16 +82,31 @@ public class WikiCitationSocket {
 //    //pack the results
 
     // ANDREW's DUMMY PACKAGE
-    /*
+    // Preparing variables
+    Citation citation1 = new Citation("Web", "#cite_note-7", "In 1948, humorist Paul Jennings coined the term resistentialism, a jocular play on resistance and existentialism, to describe \"seemingly spiteful behavior manifested by inanimate objects\",[5] where objects that cause problems (like lost keys or a runaway bouncy ball) are said to exhibit a high degree of malice toward humans.[6][7]", "https://www.nytimes.com/1948/06/13/archives/thingness-of-things-resistentialism-it-says-here-is-the-very-latest.html");
+    List<Vertex<Source, String>> genVertices = citation1.getGenSources();
+    List<Source> genSources = new ArrayList<Source>();
+    for (Vertex<Source, String> vertex: genVertices) {
+      if (vertex != null) {
+        genSources.add(vertex.getVal());
+      }
+    }
+    Type type = new TypeToken<List<Source>>(){}.getType(); // TODO: Wtf is this
+
+
+    JsonObject toSend = new JsonObject();
+    toSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
     JsonObject newPayload = new JsonObject();
-    new Citation("Web", "#cite_note-7", "In 1948, humorist Paul Jennings coined the term resistentialism, a jocular play on resistance and existentialism, to describe \"seemingly spiteful behavior manifested by inanimate objects\",[5] where objects that cause problems (like lost keys or a runaway bouncy ball) are said to exhibit a high degree of malice toward humans.[6][7]", "https://www.nytimes.com/1948/06/13/archives/thingness-of-things-resistentialism-it-says-here-is-the-very-latest.html")
-    int type;
-    int arg;
-    int type;
-    int some vertex val;
-    list sources; sources url
-    int citationURL;
-    */
+//    String citeTitle = citation1.getInitialWebSource().title();
+//    String citeType = citation1.getSourceType();
+//    String citeURL = citation1.getInitialWebSource().getURL();
+//    Boolean hasCycles = citation1.getHasCycles();
+    String jCiteSource = GSON.toJson(citation1.getInitialWebSource(), Source.class); // title, type, url, cycles
+    String jGenSources = GSON.toJson(genSources, type); // title, url
+
+    newPayload.add("id", id);
+
+
 
     // JSON the citation here
     Type type = new TypeToken<List<Source>>(){}.getType(); // TODO: Wtf is this
@@ -104,10 +119,9 @@ public class WikiCitationSocket {
       List<Source> genSources = new ArrayList<Source>();
       for (Vertex<Source, String> vertex: genVertices) {
         if (vertex != null) {
-          genSources.add(vertex.getVal());
+          genSources.add(vertex.getVal()); // Source objects
         }
       }
-
 
       // Preparing payload
       System.out.println("sources: " + genSources.size());
