@@ -36,7 +36,6 @@ public class WebSource implements Source {
   public WebSource(String url, String html) {
     this.html = html;
     this.url = url;
-    this.timestamp = timestamp;
 
     // extract all links (href attributes in anchor tags)
     Document doc = Jsoup.parse(html, url);

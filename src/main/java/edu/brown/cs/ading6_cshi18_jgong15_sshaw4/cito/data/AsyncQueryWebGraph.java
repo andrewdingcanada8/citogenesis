@@ -22,15 +22,12 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   public static final Set<URLRule> URL_RULES;
   private String keywords;
   private Source keySource;
-
   static {
     URL_RULES = new HashSet<>();
     URL_RULES.add(new NoInLinking());
     URL_RULES.addAll(HostBlacklistFactory.getDefault());
   }
-
   public static final Set<SourceRule> SRC_RULES;
-
   static {
     SRC_RULES = new HashSet<>();
     SRC_RULES.add(new CosSimThreshold());
