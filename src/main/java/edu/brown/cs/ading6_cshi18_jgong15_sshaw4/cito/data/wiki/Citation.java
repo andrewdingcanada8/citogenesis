@@ -9,10 +9,8 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Citation {
   /**

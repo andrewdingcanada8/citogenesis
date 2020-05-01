@@ -32,6 +32,7 @@ public class WikiCitationSocket {
   private static enum MESSAGE_TYPE {
     CONNECT,
     URLSUBMISSION,
+    HTML,
     CITATION
   }
 
@@ -64,7 +65,7 @@ public class WikiCitationSocket {
 
     // Process the payload
     String url = payload.get("url").getAsString();
-    System.out.println("url: " + url);
+    System.out.println("url recieved: " + url); // TODO: Delete later
 
 //    // CHARLES CODE
 //    Query<String, String> htmlQuery = new HTMLQuery(TIMELIMIT);
@@ -83,7 +84,8 @@ public class WikiCitationSocket {
 
     // ANDREW's DUMMY PACKAGE
     // Preparing variables
-    Citation citation1 = new Citation("Web", "#cite_note-7", "In 1948, humorist Paul Jennings coined the term resistentialism, a jocular play on resistance and existentialism, to describe \"seemingly spiteful behavior manifested by inanimate objects\",[5] where objects that cause problems (like lost keys or a runaway bouncy ball) are said to exhibit a high degree of malice toward humans.[6][7]", "https://www.nytimes.com/1948/06/13/archives/thingness-of-things-resistentialism-it-says-here-is-the-very-latest.html");
+
+    Citation citation1 = new Citation("Web", "#cite_note-21", "From its initial public announcement, Murphy's law quickly spread to various technical cultures connected to aerospace engineering.[21]", "https://web.archive.org/web/20120214092035/http://catb.org/jargon/html/M/Murphys-Law.html");
     List<Vertex<Source, String>> genVertices = citation1.getGenSources();
     List<Source> genSources = new ArrayList<Source>();
     for (Vertex<Source, String> vertex: genVertices) {
@@ -101,13 +103,20 @@ public class WikiCitationSocket {
 //    String citeType = citation1.getSourceType();
 //    String citeURL = citation1.getInitialWebSource().getURL();
 //    Boolean hasCycles = citation1.getHasCycles();
+    assert citation1.getInitialWebSource() != null;
     String jCiteSource = GSON.toJson(citation1.getInitialWebSource(), Source.class); // title, type, url, cycles
     String jGenSources = GSON.toJson(genSources, type); // title, url
 
     newPayload.add("id", id);
+    newPayload.addProperty("jCiteSource", jCiteSource);
+    newPayload.addProperty("jGenSources", jGenSources); // TODO: diff between add and addProperty? why does it say i can add a JSON object instead of String to payload.add
 
+    toSend.add("payload", newPayload);
+    String toSendStr = GSON.toJson(toSend);
+    System.out.println("tosend: " + toSendStr);
+    SESSIONS.get(id.getAsInt()).getRemote().sendString(toSendStr);
 
-
+    /*
     // JSON the citation here
     Type type = new TypeToken<List<Source>>(){}.getType(); // TODO: Wtf is this
     for (Citation citation: citations) {
