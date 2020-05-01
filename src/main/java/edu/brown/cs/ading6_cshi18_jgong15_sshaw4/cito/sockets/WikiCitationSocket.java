@@ -8,7 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.SourceSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers.WikiHTMLParser;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.TimeStampQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
@@ -73,14 +75,10 @@ public class WikiCitationSocket {
     //process the payload
     String url = payload.get("url").getAsString();
     System.out.println("url: " + url);
-    Query<String, String> htmlQuery = new HTMLQuery(TIMELIMIT);
-    Query<String, Calendar> timeQuery = new TimeStampQuery(TIMELIMIT);
-    Set<Citation> citations = new HashSet<Citation>();
+    Set<Citation> citations = new HashSet<>();
     try {
-      String html = htmlQuery.query(url);
-      Calendar timestamp = timeQuery.query(url);
-      WikiHTMLParser parser = new WikiHTMLParser(url, html, timestamp);
-      citations = parser.parseForRawCitations();
+      Wiki wiki = new WikiQuery(TIMELIMIT).query(url);
+      citations = wiki.getCitationSet();
     } catch (QueryException e) {
       e.printStackTrace();
     }

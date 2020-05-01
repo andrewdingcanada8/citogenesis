@@ -86,6 +86,8 @@ public class WikiHTMLParser {
       String citeNote = ref.attr("href");
       Element prev = ref.parent().parent();
       String citedContent = prev.text();
+      //System.out.println(citedContent);
+
       Elements refContent = doc.select(citeNote);
       //System.out.println(refContent);
       Elements extLinks = refContent.select(".external");

@@ -1,5 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -11,7 +11,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -78,6 +77,7 @@ public class Citation {
       try {
         Source src = sq.query(url).join();
         initialWebSource = src;
+        System.out.println("Citation source: " + src);
         AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(
             src, new QueryCacher<>(sq, 500), citedContent, 2);
         nyGraph.load();
@@ -165,14 +165,13 @@ public class Citation {
       return false;
     }
     Citation citation = (Citation) o;
-    return Objects.equals(sourceType, citation.sourceType)
-        && Objects.equals(citedContent, citation.citedContent)
-        && Objects.equals(numberOfGeneratingSources, citation.numberOfGeneratingSources)
+    return sourceType.equals(citation.sourceType)
+        && id.equals(citation.id)
         && Objects.equals(initialWebSource, citation.initialWebSource);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sourceType, citedContent, numberOfGeneratingSources, initialWebSource);
+    return Objects.hash(sourceType, id, initialWebSource);
   }
 }
