@@ -27,6 +27,7 @@ public class Citation {
   private String sourceType;
   private String id;
   private String citedContent;
+  private String referenceText;
   private Number contentWordCount;
   private Number numberOfGeneratingSources;
   private Source initialWebSource;
@@ -49,10 +50,15 @@ public class Citation {
     }
   }
 
-  public Citation(String sourceType, String id, String citedContent) {
+  public Citation(
+      String sourceType,
+      String id,
+      String citedContent,
+      String referenceText) {
     this.sourceType = sourceType;
     this.id = id;
     this.citedContent = citedContent;
+    this.referenceText = referenceText;
     if (sourceType.equals("Self") || sourceType.equals("Other")) {
       numberOfGeneratingSources = 1;
       initialWebSource = null;
@@ -62,10 +68,16 @@ public class Citation {
     }
   }
 
-  public Citation(String sourceType, String id, String citedContent, String url) {
+  public Citation(
+      String sourceType,
+      String id,
+      String citedContent,
+      String referenceText,
+      String url) {
     this.sourceType = sourceType;
     this.id = id;
     this.citedContent = citedContent;
+    this.referenceText = referenceText;
     if (sourceType.equals("Self") || sourceType.equals("Other")) {
       numberOfGeneratingSources = 1;
       initialWebSource = null;
@@ -120,6 +132,18 @@ public class Citation {
 
   public List<Vertex<Source, String>> getGenSources() {
     return genSources;
+  }
+
+  public String getReferenceText() {
+    return referenceText;
+  }
+
+  public Number getContentWordCount() {
+    return contentWordCount;
+  }
+
+  public List<Set<Vertex<Source, String>>> getSccs() {
+    return sccs;
   }
 
   public Number getNumberOfGeneratingSources() {

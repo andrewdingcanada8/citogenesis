@@ -14,7 +14,8 @@ public class CitationTest {
     citationOne = new Citation(
         "Web",
         "cite_note-1",
-        "hello");
+        "hello",
+        "Book.org");
   }
 
   @After
