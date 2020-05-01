@@ -12,7 +12,6 @@ $(document).ready(() => {
     console.log("hahahahhaha");
     setup_hover();
     setup_socket();
-    urlSubmit();
 });
 
 function newAnnotation(data) {
@@ -53,6 +52,7 @@ function setup_socket () {
             case MESSAGE_TYPE.CONNECT:
                 myId = parseInt(data.payload.id, 10);
                 console.log(myId);
+                urlSubmit();
                 break;
             case MESSAGE_TYPE.CITATION:
                 newAnnotation(data);
@@ -65,9 +65,10 @@ function setup_socket () {
  * Called when a user clicks the annotate button
  * @param url - a string that contains the website url to be annotated
  */
-const urlSubmit = url => {
+function urlSubmit() {
     let submitURL = window.location.href;
     submitURL = submitURL.substr(submitURL.lastIndexOf("/")-4, submitURL.length);
+    console.log(submitURL);
     conn.send(JSON.stringify({type: MESSAGE_TYPE.URLSUBMISSION, payload: {
             id: myId,
             url: "https://en.wikipedia.org/" + submitURL
