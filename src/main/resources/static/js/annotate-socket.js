@@ -14,16 +14,23 @@ $(document).ready(() => {
     setup_socket();
 });
 
+
+function insertHTML(data) {
+    let html = data.payload.html;
+    console.log(html);
+    $("#content").insertAdjacentHTML("beforeend", html);
+}
+
 function newAnnotation(data) {
     console.log("NEW ANNOTATION!"); // TODO: Delete Later
+    let citeRefText = data.payload.citeRefText;
     let citeId = data.payload.citeId;
     let citeTitle = data.payload.citeTitle;
     let citeType = data.payload.citeType;
     let citeURL = data.payload.citeURL;
     let hasCycles = data.payload.hasCycles;
     let genSrcList = data.payload.jGenSources;
-
-    console.log(citeId + citeTitle + citeURL + genSrcList);
+    console.log("citeRefText: " + citeRefText);
     console.log("citeId: " + citeId);
     console.log("citeTitle: " + citeTitle);
     console.log("citeType: " + citeType);
@@ -32,9 +39,12 @@ function newAnnotation(data) {
     console.log("genSrcList: " + genSrcList);
     // $('#result').text(id + hasCycles + citeSource + list);
     // let newDiv = document.createElement("div");
-
-    // document.body.appendChild(newDiv);
+    let newP = document.createElement("P");
+    newP.innerText = citeRefText;
+    // newDiv.appendChild(newP);
+    document.body.appendChild(newP);
 }
+
 
 function setup_hover () {
     $(".a-link1").mouseover(function (evt) {
@@ -44,6 +54,7 @@ function setup_hover () {
         window.location.href = "#annotation0";
     });
 }
+
 
 // Setup the WebSocket connection for live updating of scores.
 function setup_socket () {
@@ -66,6 +77,7 @@ function setup_socket () {
                 break;
             case MESSAGE_TYPE.HTML:
                 console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
+                insertHTML(data);
                 break;
             case MESSAGE_TYPE.CITATION:
                 console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later

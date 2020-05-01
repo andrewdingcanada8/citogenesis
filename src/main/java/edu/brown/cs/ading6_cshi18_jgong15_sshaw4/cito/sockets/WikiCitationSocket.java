@@ -67,14 +67,34 @@ public class WikiCitationSocket {
     String url = payload.get("url").getAsString();
     System.out.println("url: " + url);
     Set<Citation> citations = new HashSet<>();
+    String html = "";
     try {
       Wiki wiki = new WikiQuery(TIMELIMIT).query(url);
+      html = wiki.getContentHTML();
       citations = wiki.getCitationSet();
     } catch (QueryException e) {
       e.printStackTrace();
     }
     System.out.println("citations: " + citations.size());
     //pack the results
+
+    assert !html.equals("");
+    System.out.println(html);
+    // Preparing HTML payload
+    JsonObject htmlPayload = new JsonObject();
+    htmlPayload.add("id", id);
+    htmlPayload.addProperty("html", html);
+
+    // Preparing HTML message
+    JsonObject htmlToSend = new JsonObject();
+    htmlToSend.addProperty("type", MESSAGE_TYPE.HTML.ordinal());
+
+    // Sending HTML message
+    htmlToSend.add("payload", htmlPayload);
+    String htmlToSendStr = GSON.toJson(htmlToSend);
+    System.out.println("tosend: " + htmlToSendStr); // TODO: Delete Later
+    SESSIONS.get(id.getAsInt()).getRemote().sendString(htmlToSendStr);
+
 
     //JSON the citation here
     Type type = new TypeToken<List<Source>>(){}.getType();
@@ -88,15 +108,14 @@ public class WikiCitationSocket {
       }
       System.out.println("sources: " + genSources.size()); // TODO: Delete Later
 
-      JsonObject toSend = new JsonObject();
-      toSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
-
+      String citeRefText;
       String citeType;
       String citeId;
       Boolean hasCycles;
       String citeTitle;
       String citeURL;
       String jGenSources;
+      citeRefText = citation.getReferenceText();
       citeType = citation.getSourceType();
       citeId = citation.getId();
       hasCycles = citation.getHasCycles();
@@ -111,22 +130,25 @@ public class WikiCitationSocket {
       }
 
 
+      JsonObject citeToSend = new JsonObject();
+      citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
 
-      JsonObject newPayload = new JsonObject();
-      newPayload.add("id", id);
-      newPayload.addProperty("citeId", citeId);
-      newPayload.addProperty("citeTitle", citeTitle);
-      newPayload.addProperty("citeType", citeType);
-      newPayload.addProperty("citeURL", citeURL);
-      newPayload.addProperty("hasCycles", hasCycles);
-      newPayload.addProperty("jGenSources", jGenSources); // TODO: diff between add and addProperty? why does it say i can add a JSON object instead of String to payload.add
+      JsonObject citePayload = new JsonObject();
+      citePayload.add("id", id);
+      citePayload.addProperty("citeRefText", citeRefText);
+      citePayload.addProperty("citeId", citeId);
+      citePayload.addProperty("citeTitle", citeTitle);
+      citePayload.addProperty("citeType", citeType);
+      citePayload.addProperty("citeURL", citeURL);
+      citePayload.addProperty("hasCycles", hasCycles);
+      citePayload.addProperty("jGenSources", jGenSources); // TODO: diff between add and addProperty? why does it say i can add a JSON object instead of String to payload.add
 
-      System.out.println(newPayload); // TODO: Delete Later
+      System.out.println(citePayload); // TODO: Delete Later
 
-      toSend.add("payload", newPayload);
-      String toSendStr = GSON.toJson(toSend);
-      System.out.println("tosend: " + toSendStr); // TODO: Delete Later
-      SESSIONS.get(id.getAsInt()).getRemote().sendString(toSendStr);
+      citeToSend.add("payload", citePayload);
+      String citeToSendStr = GSON.toJson(citeToSend);
+      System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
+      SESSIONS.get(id.getAsInt()).getRemote().sendString(citeToSendStr);
     }
   }
 }
