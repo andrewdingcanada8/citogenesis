@@ -71,8 +71,8 @@ public class WikiCitationSocket {
     JsonElement id = payload.get("id");
 
     //process the payload
-    String url = payload.get("url").toString();
-    System.out.print(url);
+    String url = payload.get("url").getAsString();
+    System.out.println("url: " + url);
     Query<String, String> htmlQuery = new HTMLQuery(TIMELIMIT);
     Query<String, Calendar> timeQuery = new TimeStampQuery(TIMELIMIT);
     Set<Citation> citations = new HashSet<Citation>();
@@ -84,7 +84,7 @@ public class WikiCitationSocket {
     } catch (QueryException e) {
       e.printStackTrace();
     }
-    System.out.println(payload);
+    System.out.println("citations: " + citations.size());
     //pack the results
 
     //JSON the citation here
@@ -102,6 +102,7 @@ public class WikiCitationSocket {
           genSources.add(vertex.getVal());
         }
       }
+      System.out.println("sources: " + genSources.size());
       String jSource = GSON.toJson(genSources, type);
       String citeSource = GSON.toJson(citation.getInitialWebSource(), Source.class);
       newPayload.addProperty("citeSource", citeSource);
@@ -113,6 +114,7 @@ public class WikiCitationSocket {
       toSend.add("payload", newPayload);
 
       String toSendStr = GSON.toJson(toSend);
+      System.out.println("tosend: " + toSendStr);
       SESSIONS.get(id.getAsInt()).getRemote().sendString(toSendStr);
     }
   }
