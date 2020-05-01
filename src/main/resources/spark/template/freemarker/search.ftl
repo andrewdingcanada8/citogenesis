@@ -1,5 +1,5 @@
 <#assign head>
-<#--    <link rel="stylesheet" href="css/searchbar.css">-->
+<#--    <link rel="stylesheet" href="css/search.css">-->
     <script>
         function annotate(){
             let url = $('#pageURL').val();
