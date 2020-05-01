@@ -9,6 +9,8 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +29,7 @@ public class Citation {
   private Number numberOfGeneratingSources;
   private Source initialWebSource;
   private List<Vertex<Source, String>> genSources;
-  private Set<Set<Vertex<Source, String>>> sccs;
+  private List<Set<Vertex<Source, String>>> sccs;
   private Boolean hasCycles;
 
   private static final int TIME_OUT = 20;
@@ -35,24 +37,40 @@ public class Citation {
   public Citation(String sourceType, String id) {
     this.sourceType = sourceType;
     this.id = id;
+    this.citedContent = "";
+    if (sourceType.equals("Self") || sourceType.equals("Other")) {
+      numberOfGeneratingSources = 0;
+      initialWebSource = null;
+      hasCycles = false;
+      genSources = new ArrayList<>();
+      sccs = new ArrayList<>();
+    }
   }
 
   public Citation(String sourceType, String id, String citedContent) {
     this.sourceType = sourceType;
     this.id = id;
     this.citedContent = citedContent;
+    if (sourceType.equals("Self") || sourceType.equals("Other")) {
+      numberOfGeneratingSources = 1;
+      initialWebSource = null;
+      hasCycles = false;
+      genSources = new ArrayList<>();
+      sccs = new ArrayList<>();
+    }
   }
 
   public Citation(String sourceType, String id, String citedContent, String url) {
     this.sourceType = sourceType;
     this.id = id;
+    this.citedContent = citedContent;
     if (sourceType.equals("Self") || sourceType.equals("Other")) {
-      numberOfGeneratingSources = 0;
+      numberOfGeneratingSources = 1;
       initialWebSource = null;
-      genSources = null;
-      sccs = null;
+      hasCycles = false;
+      genSources = new ArrayList<>();
+      sccs = new ArrayList<>();
     } else {
-      this.citedContent = citedContent;
       AsyncSourceQuery sq = new AsyncSourceQuery(TIME_OUT);
       try {
         Source src = sq.query(url).join();
@@ -62,6 +80,7 @@ public class Citation {
         nyGraph.load();
         Vertex<Source, String> hv = nyGraph.getHead();
         List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
+        sccs = comps;
         comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());
         hasCycles = comps.stream().anyMatch(c -> c.size() > 1);
         List<Vertex<Source, String>> gens = comps.stream()
@@ -83,10 +102,11 @@ public class Citation {
           }
         }).reduce(0, Integer::sum);
       } catch (Exception e) {
+        numberOfGeneratingSources = 1;
         initialWebSource = null;
         hasCycles = false;
         genSources = new ArrayList<>();
-        numberOfGeneratingSources = 0;
+        sccs = new ArrayList<>();
       }
     }
   }
