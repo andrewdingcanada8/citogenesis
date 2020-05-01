@@ -86,10 +86,10 @@ public class WikiHTMLParser {
       String citeNote = ref.attr("href");
       Element prev = ref.parent().parent();
       String citedContent = prev.text();
-      //System.out.println(citedContent);
 
       Elements refContent = doc.select(citeNote);
-      //System.out.println(refContent);
+      String referenceText = refContent.select(".reference-text").text();
+      System.out.println(referenceText);
       Elements extLinks = refContent.select(".external");
       Element timeAccessed = refContent.select(".reference-accessdate").first();
       // Check if the citation is already made with another instance of cited content.
@@ -106,12 +106,25 @@ public class WikiHTMLParser {
           if (extLink != null) {
             String link = extLink.attr("href");
             //System.out.println(link);
-            uncheckedCitations.add(new Citation("Web", citeNote, citedContent, link));
+            uncheckedCitations.add(new Citation(
+                "Web",
+                citeNote,
+                citedContent,
+                referenceText,
+                link));
           } else {
-            uncheckedCitations.add(new Citation("Other", citeNote));
+            uncheckedCitations.add(new Citation(
+                "Other",
+                citeNote,
+                citedContent,
+                referenceText));
           }
         } else {
-          uncheckedCitations.add(new Citation("Other", citeNote));
+          uncheckedCitations.add(new Citation(
+              "Other",
+              citeNote,
+              citedContent,
+              referenceText));
         }
       }
     }
