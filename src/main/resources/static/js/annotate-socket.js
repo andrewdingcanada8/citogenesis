@@ -9,22 +9,22 @@ let conn = null;
 let myId = -1;
 
 $(document).ready(() => {
-    console.log("hahahahhaha"); // TODO: Delete Later
     setup_hover();
     setup_socket();
 });
 
-
+/**
+ * Helper function that inserts the shortened content HTML of the wikipedia
+ * article. HTML should be pre-shortened and have its tags already added.
+ * @param data
+ */
 function insertHTML(data) {
     let html = data.payload.html;
-    // html = "<p> just a simple farmer</p>";
-    // console.log(html);
     let div = document.getElementById("content");
     div.insertAdjacentHTML("beforeend", html);
 }
 
 function newAnnotation(data) {
-    console.log("NEW ANNOTATION!"); // TODO: Delete Later
     let citeRefText = data.payload.citeRefText;
     let citeId = data.payload.citeId;
     let citeTitle = data.payload.citeTitle;
@@ -52,7 +52,11 @@ function newAnnotation(data) {
     let genList = document.createElement("ol");
     card.appendChild(genList);
     let counter = 0;
+
+
+
     for (let source in genSrcList) {
+        console.log(source); // TODO: Delete Later
         if (counter > 5) {
             break;
         }
@@ -97,15 +101,15 @@ function setup_socket () {
                 break;
             case MESSAGE_TYPE.CONNECT:
                 myId = parseInt(data.payload.id, 10);
-                console.log("CONNECT MESSAGE RECIEVED: " + myId); // TODO: Delete Later
+                // console.log("CONNECT MESSAGE RECIEVED: " + myId); // TODO: Delete Later
                 urlSubmit();
                 break;
             case MESSAGE_TYPE.HTML:
-                console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
+                // console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
                 insertHTML(data);
                 break;
             case MESSAGE_TYPE.CITATION:
-                console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
+                // console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
                 newAnnotation(data);
                 break;
 
@@ -115,12 +119,10 @@ function setup_socket () {
 
 /**
  * Called when a user clicks the annotate button
- * @param url - a string that contains the website url to be annotated
  */
 function urlSubmit() {
     let submitURL = window.location.href;
     submitURL = submitURL.substr(submitURL.lastIndexOf("/")-4, submitURL.length);
-    console.log("Short wiki url sent: " + submitURL); // TODO: Delete Later
     conn.send(JSON.stringify({type: MESSAGE_TYPE.URLSUBMISSION, payload: {
             id: myId,
             url: "https://en.wikipedia.org/" + submitURL

@@ -13,7 +13,7 @@ public class AnnotateHandler implements TemplateViewRoute {
   public ModelAndView handle(Request request, Response response) throws Exception {
     QueryParamsMap qm = request.queryMap();
     String pageURL = request.params(":pageURL");
-    System.out.println(pageURL);
+    System.out.println(pageURL); //TODO: Delete later
 
     Map<String, Object> variables = ImmutableMap.of("title",
             "Cito: Annotate", "results", pageURL);
