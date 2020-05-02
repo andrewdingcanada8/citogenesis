@@ -1,7 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.common.collect.ImmutableMap;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.DemoSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.WikiCitationSocket;
@@ -12,35 +12,65 @@ import joptsimple.OptionSet;
 import spark.*;
 import spark.template.freemarker.FreeMarkerEngine;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+
 public final class Main {
-  private static final int DEFAULT_PORT = 4567;
+  private static boolean isMocking;
+  private static WireMockServer mockServer;
+
+  private static final int DEFAULT_SPARK_PORT = 4567;
+  private static final int DEFAULT_MOCK_PORT = 8089;
   private String[] args;
+
 
   private Main(String[] args) {
     this.args = args;
   }
-  public static void main(String[]args) {
+
+  public static void main(String[] args) {
     new Main(args).run();
   }
+
   private void run() {
     // Parse command line arguments
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
-    parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(DEFAULT_PORT);
+    parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(DEFAULT_SPARK_PORT);
+    parser.accepts("mock");
+    parser.accepts("mockport").withRequiredArg().ofType(Integer.class)
+        .defaultsTo(DEFAULT_MOCK_PORT);
     OptionSet options = parser.parse(args);
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
     }
+
+    if (options.has("mock")) {
+      // start mockserver
+      isMocking = true;
+      mockServer = new WireMockServer(options().port((int) options.valueOf("mockport")));
+      mockServer.start();
+      setUpStubs();
+    } else {
+      isMocking = false;
+    }
+
+    System.out.println(mockServer.baseUrl());
     // Instantiate new REPL
     REPL repl = new REPL(new PrintWriter(System.out), CitoWorld.getInstance());
     repl.run();
+
+    if (isMocking) {
+      mockServer.stop();
+    }
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -96,5 +126,22 @@ public final class Main {
       }
       res.body(stacktrace.toString());
     }
+  }
+
+  private static void setUpStubs() {
+    configureFor("localhost", mockServer.port());
+    stubFor(get(urlMatching(".*")).willReturn(aResponse()
+        .withStatus(200)
+        .withHeader("Content-Type", "text/plain")
+        .withBody("testing12")));
+
+  }
+
+  public static boolean isMocking() {
+    return isMocking;
+  }
+
+  public static String getMockUrl() {
+    return mockServer.baseUrl();
   }
 }

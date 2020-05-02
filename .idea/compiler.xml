@@ -6,16 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="maps" />
+        <module name="cito" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="maps" target="11" />
+      <module name="cito" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="maps" options="-Xlint:all" />
+      <module name="cito" options="-Xlint:all" />
     </option>
   </component>
 </project>

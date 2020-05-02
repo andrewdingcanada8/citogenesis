@@ -1,5 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.WebTestUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.TimeStampQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
@@ -10,6 +11,8 @@ import org.junit.Test;
 
 import java.util.Calendar;
 
+import static org.junit.Assume.assumeTrue;
+
 public class WikiHTMLParserTest {
   private WikiHTMLParser _parser;
   private Query<String, String> htmlQuery = new HTMLQuery(30);
@@ -17,6 +20,7 @@ public class WikiHTMLParserTest {
 
   @Before
   public void setUp() throws QueryException {
+    assumeTrue(WebTestUtils.checkURL("https://en.wikipedia.org/wiki/Murphy%27s_law"));
     String url = "https://en.wikipedia.org/wiki/Murphy%27s_law";
     String html = htmlQuery.query(url);
     Calendar timestamp = timeQuery.query(url);

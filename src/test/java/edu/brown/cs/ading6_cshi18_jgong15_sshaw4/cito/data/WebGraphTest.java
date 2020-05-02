@@ -1,5 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.WebTestUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.WebGraph;
@@ -18,6 +19,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.junit.Assume.assumeTrue;
 
 public class WebGraphTest {
 
@@ -67,7 +70,7 @@ public class WebGraphTest {
 
   @Test
   public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
-    //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
+    assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
     String key = "that has no specific goals to accomplish, allowing players a large amount of freedom in choosing how to play the game.";
     AsyncSourceQuery sq = new AsyncSourceQuery(30);
     Source src = sq.query("https://www.ign.com/articles/2011/11/24/minecraft-review").join();
