@@ -16,7 +16,7 @@ public class AnnotateHandler implements TemplateViewRoute {
     System.out.println(pageURL); //TODO: Delete later
 
     Map<String, Object> variables = ImmutableMap.of("title",
-            "Cito: Annotate", "results", pageURL);
+            "Cito: Annotate");
     return new ModelAndView(variables, "annotate.ftl");
   }
 }
