@@ -1,7 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.WebSource;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.WebSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.QueryCacher;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;

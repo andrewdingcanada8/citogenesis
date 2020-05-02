@@ -1,5 +1,9 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncWebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.WebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.SourceQuery;

@@ -1,9 +1,9 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.WebSource;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import static org.junit.Assert.*;
 
