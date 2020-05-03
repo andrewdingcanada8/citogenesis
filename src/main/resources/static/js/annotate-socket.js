@@ -48,7 +48,10 @@ function newAnnotation(data) {
 
     let citeLink = document.createElement("a");
     citeLink.href = citeURL;
-    citeRefText = citeRefText.substr(0, CITATION_TITLE_LENGTH); // Shortens string to 50 chars
+    if (citeRefText.length > CITATION_TITLE_LENGTH) {
+        citeRefText = citeRefText.substr(0, CITATION_TITLE_LENGTH); // Shortens string to 50 chars
+        citeRefText = citeRefText.concat('...');
+    }
     citeLink.innerText = citeRefText;
     card.appendChild(citeLink);
 
