@@ -139,7 +139,7 @@ public class WikiHTMLParser {
    */
   public Set<String> parseForCitationIDs() {
     if (citationIDToContent == null) {
-      createCitationIDToContent(doc);
+      citationIDToContent = createCitationIDToContent(doc);
     }
     return citationIDToContent.keySet();
   }
@@ -152,7 +152,7 @@ public class WikiHTMLParser {
    */
   public Citation parserForCitationFromID(String citeNoteID)  {
     if (citationIDToContent == null) {
-      createCitationIDToContent(doc);
+      citationIDToContent = createCitationIDToContent(doc);
     }
     String citedContent = citationIDToContent.get(citeNoteID);
     if (citedContent == null) {
