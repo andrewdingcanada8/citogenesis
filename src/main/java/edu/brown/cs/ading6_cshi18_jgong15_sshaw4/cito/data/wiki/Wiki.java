@@ -46,7 +46,6 @@ public class Wiki implements Source {
     // initialize parser
     parser = new WikiHTMLParser(url, html, timestamp);
     citationIDs = parser.parseForCitationIDs();
-    citationSet = parser.parseForRawCitations();
   }
 
   /**
@@ -63,7 +62,6 @@ public class Wiki implements Source {
     // initialize parser
     parser = new WikiHTMLParser(url, html);
     citationIDs = parser.parseForCitationIDs();
-    citationSet = parser.parseForCitations();
   }
 
   /**
@@ -202,7 +200,23 @@ public class Wiki implements Source {
     }
   }
 
+  /**
+   * Queries the entire citation set. Expensive.
+   */
+  public void queryCitationSet() {
+    if (citationSet != null) {
+      parser.parseForRawCitations();
+    }
+  }
+
+  /**
+   * Get the total set of citations
+   * @return set of citations.
+   */
   public Set<Citation> getCitationSet() {
+    if (citationSet == null) {
+      queryCitationSet();
+    }
     return citationSet;
   }
 }
