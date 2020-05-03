@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 public class Wiki implements Source {
   private WikiHTMLParser parser;
   private Set<String> citationIDs;
-  private Set<Citation> citationSet = new HashSet<>();
+  private Set<Citation> citationSet;
   private Calendar timestamp;
   private String url;
   private String html;
@@ -45,7 +45,6 @@ public class Wiki implements Source {
     timestampQuery = new AsyncTimeStampQuery(timeout);
     // initialize parser
     parser = new WikiHTMLParser(url, html, timestamp);
-    citationIDs = parser.parseForCitationIDs();
   }
 
   /**
@@ -61,7 +60,6 @@ public class Wiki implements Source {
     timestampQuery = new AsyncTimeStampQuery(timeout);
     // initialize parser
     parser = new WikiHTMLParser(url, html);
-    citationIDs = parser.parseForCitationIDs();
   }
 
   /**
@@ -178,10 +176,22 @@ public class Wiki implements Source {
   }
 
   /**
+   * Query the set of citation ids.
+   */
+  public void queryCitationIDs() {
+    if (citationIDs != null) {
+      citationIDs = parser.parseForCitationIDs();
+    }
+  }
+
+  /**
    * Returns the set of citation ids.
    * @return set of citation ids.
    */
   public Set<String> getCitationIDs() {
+    if (citationIDs == null) {
+      queryCitationIDs();
+    }
     return citationIDs;
   }
 
@@ -205,12 +215,12 @@ public class Wiki implements Source {
    */
   public void queryCitationSet() {
     if (citationSet != null) {
-      parser.parseForRawCitations();
+      citationSet = parser.parseForRawCitations();
     }
   }
 
   /**
-   * Get the total set of citations
+   * Get the total set of citations.
    * @return set of citations.
    */
   public Set<Citation> getCitationSet() {
