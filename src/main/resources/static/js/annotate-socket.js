@@ -76,7 +76,7 @@ function newAnnotation(data) {
             let a = document.createElement("a");
             a.innerText = srcList[i].title;
             a.href = srcList[i].url;
-            console.log(srcList[i].title + " and " + srcList[i].url);
+            // console.log(srcList[i].title + " and " + srcList[i].url); // TODO: Delete Later
             li.appendChild(a);
             genList.appendChild(li);
         }
@@ -118,11 +118,11 @@ function setup_socket () {
                 urlSubmit();
                 break;
             case MESSAGE_TYPE.HTML:
-                // console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
+                console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
                 insertHTML(data);
                 break;
             case MESSAGE_TYPE.CITATION:
-                // console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
+                console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
                 newAnnotation(data);
                 break;
 
