@@ -46,7 +46,10 @@ public class Wiki implements Source {
     // initialize parser
     parser = new WikiHTMLParser(url, html, timestamp);
     citationIDs = parser.parseForCitationIDs();
+    System.out.println("|WIKI|: Finished Parsing IDs"); // TODO: Delete Later
     citationSet = parser.parseForRawCitations();
+    System.out.println("|WIKI|: Parsed for raw citations"); // TODO: Delete Later
+    // TODO: ^^^ THIS IS TAKING WAY TOO LONG
   }
 
   /**
@@ -79,8 +82,7 @@ public class Wiki implements Source {
   }
 
   /**
-   * Get webpage html.
-   *
+   * Get web page html.
    * @return HTML
    */
   @Override
@@ -91,7 +93,6 @@ public class Wiki implements Source {
   /**
    * Get parsed content of the source.
    * Text of the wiki page content-body.
-   *
    * @return content in string
    */
   @Override
@@ -114,8 +115,7 @@ public class Wiki implements Source {
   }
 
   /**
-   * Get webpage url.
-   *
+   * Get web page url.
    * @return URL
    */
   @Override
@@ -125,7 +125,6 @@ public class Wiki implements Source {
 
   /**
    * Return all hrefs.
-   *
    * @return hrefs
    */
   @Override
@@ -162,7 +161,6 @@ public class Wiki implements Source {
 
   /**
    * Get timestamp of the source.
-   *
    * @return timestamp
    */
   @Override

@@ -28,7 +28,7 @@ public class WikiCitationSocket {
           new SourceSerializer()).create();
   private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;
-  private static final int TIMELIMIT = 10;
+  private static final int TIME_LIMIT = 10;
 
   private static enum MESSAGE_TYPE {
     CONNECT,
@@ -54,32 +54,44 @@ public class WikiCitationSocket {
     SESSIONS.remove(session);
   }
 
+
+  /**
+   * OnWebSocketMessage is called whenever a new WebSocket message is sent from the client to the
+   * server. After the server sends a CONNECT message, the client sends back a URLSUBMISSION, which
+   * can be used to initiate the Wiki object. This class will then sequentially send messages to the
+   * client with information for the page like HTML, citation data etc.
+   * @param session - Session object
+   * @param message - JSON String that contains an MESSAGE_TYPE 'type' and JsonObject 'payload' in
+   *                its top level
+   * @throws IOException - IOException
+   */
   @OnWebSocketMessage
   public void message(Session session, String message) throws IOException {
     JsonObject received = GSON.fromJson(message, JsonObject.class);
     assert received.get("type").getAsInt() == MESSAGE_TYPE.URLSUBMISSION.ordinal();
 
-    //unpack the payload
+    // Extract message payload
     JsonObject payload = received.get("payload").getAsJsonObject();
     JsonElement id = payload.get("id");
 
-    //process the payload
+    // Creating Wiki
+    Wiki wiki = null;
     String url = payload.get("url").getAsString();
-    System.out.println("Actual URL: " + url); // TODO: Delete Later
-    Set<Citation> citations = new HashSet<>();
+    System.out.println("|Server| Recieved URL: " + url); // TODO: Delete Later
+    Set<String> citationIDs = new HashSet<>();
     String html = "";
     try {
-      Wiki wiki = new WikiQuery(TIMELIMIT).query(url);
+      wiki = new WikiQuery(TIME_LIMIT).query(url);
       html = wiki.getContentHTML();
-      citations = wiki.getCitationSet();
+      citationIDs = wiki.getCitationIDs();
     } catch (QueryException e) {
       e.printStackTrace();
     }
-    System.out.println("citations: " + citations.size());
-    //pack the results
-
+    // If the program exits here, the wiki has failed to be constructed.
+    assert wiki != null;
+    // If the program exits here, wiki was not able to access webpage correctly
     assert !html.equals("");
-    System.out.println(html);
+
     // Preparing HTML payload
     JsonObject htmlPayload = new JsonObject();
     htmlPayload.add("id", id);
@@ -97,8 +109,9 @@ public class WikiCitationSocket {
 
 
     //JSON the citation here
-    Type type = new TypeToken<List<Source>>(){}.getType();
-    for (Citation citation: citations) {
+    Type type = new TypeToken<List<Source>>() { }.getType();
+    for (String citationID: citationIDs) {
+      Citation citation = wiki.getCitationFromID(citationID);
       List<Vertex<Source, String>> genVertices = citation.getGenSources();
       List<Source> genSources = new ArrayList<Source>();
       for (Vertex<Source, String> vertex: genVertices) {
