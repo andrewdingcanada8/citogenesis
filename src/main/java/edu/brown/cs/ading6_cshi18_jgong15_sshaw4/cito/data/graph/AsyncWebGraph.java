@@ -70,6 +70,7 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
             r.verify(l, rootVert.getVal().getURL(), this)))
         // run asyncquery
         .map(l -> {
+          System.out.println("processing " + l + ".");
           try {
             return srcQuery.query(l);
           } catch (Exception e) {

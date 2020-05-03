@@ -63,7 +63,6 @@ public final class Main {
       isMocking = false;
     }
 
-    System.out.println(mockServer.baseUrl());
     // Instantiate new REPL
     REPL repl = new REPL(new PrintWriter(System.out), CitoWorld.getInstance());
     repl.run();
@@ -128,6 +127,9 @@ public final class Main {
     }
   }
 
+  /**
+   * Load in expected requests into the MockServer.
+   */
   private static void setUpStubs() {
     configureFor("localhost", mockServer.port());
     stubFor(get(urlMatching(".*")).willReturn(aResponse()
