@@ -77,7 +77,7 @@ public class WikiCitationSocket {
     // Creating Wiki
     Wiki wiki = null;
     String url = payload.get("url").getAsString();
-    System.out.println("|Server| Recieved URL: " + url); // TODO: Delete Later
+    System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
     Set<String> citationIDs = new HashSet<>();
     String html = "";
     try {

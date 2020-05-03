@@ -46,9 +46,9 @@ public class Wiki implements Source {
     // initialize parser
     parser = new WikiHTMLParser(url, html, timestamp);
     citationIDs = parser.parseForCitationIDs();
-    System.out.println("|WIKI|: Finished Parsing IDs"); // TODO: Delete Later
+    System.out.println("[WIKI] Finished Parsing IDs"); // TODO: Delete Later
     citationSet = parser.parseForRawCitations();
-    System.out.println("|WIKI|: Parsed for raw citations"); // TODO: Delete Later
+    System.out.println("[WIKI] Parsed for raw citations"); // TODO: Delete Later
     // TODO: ^^^ THIS IS TAKING WAY TOO LONG
   }
 
