@@ -58,7 +58,7 @@ public final class Main {
       isMocking = true;
       mockServer = new WireMockServer(options().port((int) options.valueOf("mockport")));
       mockServer.start();
-      setUpStubs();
+      MockServerUtils.setUpMockServer(mockServer.port());
     } else {
       isMocking = false;
     }
@@ -125,18 +125,6 @@ public final class Main {
       }
       res.body(stacktrace.toString());
     }
-  }
-
-  /**
-   * Load in expected requests into the MockServer.
-   */
-  private static void setUpStubs() {
-    configureFor("localhost", mockServer.port());
-    stubFor(get(urlMatching(".*")).willReturn(aResponse()
-        .withStatus(200)
-        .withHeader("Content-Type", "text/plain")
-        .withBody("testing12")));
-
   }
 
   public static boolean isMocking() {

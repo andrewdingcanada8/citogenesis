@@ -57,6 +57,10 @@ public class CitationSearchCommand extends SimpleCommand {
         graph.load();
         Vertex<Source, String> citeVert = graph.getHead();
         List<Set<Vertex<Source, String>>> comps = new Tarjan().search(citeVert);
+        comps.stream()
+            .flatMap(set -> set.stream())
+            .map(Vertex :: getVal)
+            .forEach(Source::queryTimestamp);
         gens = comps.stream()
             .map(comp -> {
               try {
