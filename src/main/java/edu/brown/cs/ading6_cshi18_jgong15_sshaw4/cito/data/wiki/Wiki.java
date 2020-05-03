@@ -75,8 +75,7 @@ public class Wiki implements Source {
   }
 
   /**
-   * Get webpage html.
-   *
+   * Get web page html.
    * @return HTML
    */
   @Override
@@ -87,7 +86,6 @@ public class Wiki implements Source {
   /**
    * Get parsed content of the source.
    * Text of the wiki page content-body.
-   *
    * @return content in string
    */
   @Override
@@ -110,8 +108,7 @@ public class Wiki implements Source {
   }
 
   /**
-   * Get webpage url.
-   *
+   * Get web page url.
    * @return URL
    */
   @Override
@@ -121,7 +118,6 @@ public class Wiki implements Source {
 
   /**
    * Return all hrefs.
-   *
    * @return hrefs
    */
   @Override
@@ -158,7 +154,6 @@ public class Wiki implements Source {
 
   /**
    * Get timestamp of the source.
-   *
    * @return timestamp
    */
   @Override
