@@ -19,26 +19,26 @@
         <a href="http://localhost:4567/search"><h1>CITOGENESIS</h1></a>
         <h3>Annotations:</h3>
         <div class="annotationColumn" id="annotationColumn">
-            <div class="annotationCard" id="a-block1">
-                <a href="google.com">Name</a>
-                <p>Generating Sources (2):</p>
-                <ol>
-                    <li><a href="1">gen source 1</a></li>
-                    <li><a href="2">gen source 2</a></li>
-                </ol>
-                <p>Circular Reporting: True</p>
-                <p></p>
-            </div>
-            <div class="annotationCard" id="a-block2">
-                <a href="google.com">Name</a>
-                <p>Generating Sources (2):</p>
-                <ol>
-                    <li><a href="1">gen source 1</a></li>
-                    <li><a href="2">gen source 2</a></li>
-                </ol>
-                <p>Circular Reporting: True</p>
-                <p></p>
-            </div>
+<#--            <div class="annotationCard" id="a-block1">-->
+<#--                <a href="google.com">Name</a>-->
+<#--                <p>Generating Sources (2):</p>-->
+<#--                <ol>-->
+<#--                    <li><a href="1">gen source 1</a></li>-->
+<#--                    <li><a href="2">gen source 2</a></li>-->
+<#--                </ol>-->
+<#--                <p>Circular Reporting: True</p>-->
+<#--                <p></p>-->
+<#--            </div>-->
+<#--            <div class="annotationCard" id="a-block2">-->
+<#--                <a href="google.com">Name</a>-->
+<#--                <p>Generating Sources (2):</p>-->
+<#--                <ol>-->
+<#--                    <li><a href="1">gen source 1</a></li>-->
+<#--                    <li><a href="2">gen source 2</a></li>-->
+<#--                </ol>-->
+<#--                <p>Circular Reporting: True</p>-->
+<#--                <p></p>-->
+<#--            </div>-->
         </div>
     </div>
     <div class="content">
@@ -46,7 +46,7 @@
 
         </div>
     </div>
-    ${results}
+<#--    ${results}-->
     <#--    <script src="js/annotate-socket.js"></script>-->
     <script src="/js/jquery-2.1.1.js"></script>
     <script src="/js/annotate-socket.js"></script>

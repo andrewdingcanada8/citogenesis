@@ -65,7 +65,7 @@ public class WikiCitationSocket {
 
     //process the payload
     String url = payload.get("url").getAsString();
-    System.out.println("url: " + url);
+    System.out.println("Actual URL: " + url); // TODO: Delete Later
     Set<Citation> citations = new HashSet<>();
     String html = "";
     try {

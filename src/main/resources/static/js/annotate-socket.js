@@ -9,29 +9,39 @@ let conn = null;
 let myId = -1;
 
 $(document).ready(() => {
-    console.log("hahahahhaha"); // TODO: Delete Later
     setup_hover();
     setup_socket();
 });
 
-
+/**
+ * Helper function that inserts the shortened content HTML of the wikipedia
+ * article. HTML should be pre-shortened and have its tags already added.
+ * @param data
+ */
 function insertHTML(data) {
     let html = data.payload.html;
-    // html = "<p> just a simple farmer</p>";
-    // console.log(html);
     let div = document.getElementById("content");
     div.insertAdjacentHTML("beforeend", html);
 }
 
 function newAnnotation(data) {
-    console.log("NEW ANNOTATION!"); // TODO: Delete Later
     let citeRefText = data.payload.citeRefText;
     let citeId = data.payload.citeId;
     let citeTitle = data.payload.citeTitle;
     let citeType = data.payload.citeType;
     let citeURL = data.payload.citeURL;
     let hasCycles = data.payload.hasCycles;
-    let genSrcList = data.payload.jGenSources;
+    let srcList;
+    if (citeType === 'Web') {
+        let str = data.payload.jGenSources.toString();
+        let text = '{ "genSources" : ' + str + '}';
+        srcList = JSON.parse(text).genSources;
+        // console.log(srcList[0]);
+    } else {
+        srcList = null;
+    }
+
+
 
     let column = document.getElementById("annotationColumn");
 
@@ -46,23 +56,38 @@ function newAnnotation(data) {
     card.appendChild(citeLink);
 
     let genP = document.createElement("p");
-    genP.innerText = "Generating Sources (" + genSrcList.length + "):";
+    // genP.innerText = "Generating Sources (" + genSrcList.length + "):";
     card.appendChild(genP);
 
     let genList = document.createElement("ol");
     card.appendChild(genList);
+
     let counter = 0;
-    for (let source in genSrcList) {
-        if (counter > 5) {
-            break;
+    if (srcList !== null) {
+        for (let i = 0; i < srcList.length; i++) {
+            if (i > 5) {
+                break;
+            }
+            let li = document.createElement("li");
+            let a = document.createElement("a");
+            a.innerText = srcList[i].title;
+            a.href = srcList[i].url;
+            // console.log(srcList[i].title + " and " + srcList[i].url);
+            li.appendChild(a);
+            genList.appendChild(li);
         }
-        counter++;
-        let li = document.createElement("li");
-        let a = document.createElement("a");
-        a.innerText = source.title;
-        a.href = source.url;
-        li.appendChild(a);
-        genList.appendChild(li);
+        // for (let source in srcList) {
+        //     if (counter > 5) {
+        //         break;
+        //     }
+        //     counter++;
+        //     let li = document.createElement("li");
+        //     let a = document.createElement("a");
+        //     a.innerText = source.title;
+        //     a.href = source.url;
+        //     li.appendChild(a);
+        //     genList.appendChild(li);
+        // }
     }
 
     let circularReport = document.createElement("p");
@@ -101,11 +126,11 @@ function setup_socket () {
                 urlSubmit();
                 break;
             case MESSAGE_TYPE.HTML:
-                console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
+                // console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
                 insertHTML(data);
                 break;
             case MESSAGE_TYPE.CITATION:
-                console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
+                // console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
                 newAnnotation(data);
                 break;
 
@@ -115,12 +140,10 @@ function setup_socket () {
 
 /**
  * Called when a user clicks the annotate button
- * @param url - a string that contains the website url to be annotated
  */
 function urlSubmit() {
     let submitURL = window.location.href;
     submitURL = submitURL.substr(submitURL.lastIndexOf("/")-4, submitURL.length);
-    console.log("Short wiki url sent: " + submitURL); // TODO: Delete Later
     conn.send(JSON.stringify({type: MESSAGE_TYPE.URLSUBMISSION, payload: {
             id: myId,
             url: "https://en.wikipedia.org/" + submitURL
