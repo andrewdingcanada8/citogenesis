@@ -37,6 +37,12 @@ public class WikiCitationSocket {
     CITATION
   }
 
+  /**
+   * When WebSocket first connects, this method messages the client to let it know of the
+   * connection, and supplies a Session ID.
+   * @param session - Session Object
+   * @throws IOException - IOException
+   */
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
     SESSIONS.put(nextId, session);
@@ -48,12 +54,11 @@ public class WikiCitationSocket {
     session.getRemote().sendString(GSON.toJson(message));
     nextId++;
   }
-
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
+    System.out.println("[Server] INFO: Socket closed due to: " + reason);
     SESSIONS.remove(session);
   }
-
 
   /**
    * OnWebSocketMessage is called whenever a new WebSocket message is sent from the client to the
@@ -78,12 +83,10 @@ public class WikiCitationSocket {
     Wiki wiki = null;
     String url = payload.get("url").getAsString();
     System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
-    Set<String> citationIDs = new HashSet<>();
     String html = "";
     try {
       wiki = new WikiQuery(TIME_LIMIT).query(url);
       html = wiki.getContentHTML();
-      citationIDs = wiki.getCitationIDs();
     } catch (QueryException e) {
       e.printStackTrace();
     }
@@ -108,9 +111,14 @@ public class WikiCitationSocket {
     SESSIONS.get(id.getAsInt()).getRemote().sendString(htmlToSendStr);
 
 
-    //JSON the citation here
+    // Getting Citation ID
+    Set<String> citationIDs = new HashSet<>();
+    citationIDs = wiki.getCitationIDs();
     Type type = new TypeToken<List<Source>>() { }.getType();
+
+    // Sequentially building and sending citation information to client
     for (String citationID: citationIDs) {
+      // Building Citation
       Citation citation = wiki.getCitationFromID(citationID);
       List<Vertex<Source, String>> genVertices = citation.getGenSources();
       List<Source> genSources = new ArrayList<Source>();
@@ -119,8 +127,7 @@ public class WikiCitationSocket {
           genSources.add(vertex.getVal());
         }
       }
-      System.out.println("sources: " + genSources.size()); // TODO: Delete Later
-
+      // Declaring fields in payload
       String citeRefText;
       String citeType;
       String citeId;
@@ -128,6 +135,7 @@ public class WikiCitationSocket {
       String citeTitle;
       String citeURL;
       JsonElement jGenSources;
+      // Filling fields in payload
       citeRefText = citation.getReferenceText();
       citeType = citation.getSourceType();
       citeId = citation.getId();
@@ -141,10 +149,7 @@ public class WikiCitationSocket {
         citeURL = "";
         jGenSources = null;
       }
-
-      JsonObject citeToSend = new JsonObject();
-      citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
-
+      // Prepare Payload, append fields
       JsonObject citePayload = new JsonObject();
       citePayload.add("id", id);
       citePayload.addProperty("citeRefText", citeRefText);
@@ -153,11 +158,12 @@ public class WikiCitationSocket {
       citePayload.addProperty("citeType", citeType);
       citePayload.addProperty("citeURL", citeURL);
       citePayload.addProperty("hasCycles", hasCycles);
-      citePayload.add("jGenSources", jGenSources); // TODO: diff between add and addProperty? why does it say i can add a JSON object instead of String to payload.add
-
-      System.out.println(citePayload); // TODO: Delete Later
-
+      citePayload.add("jGenSources", jGenSources);
+      // Preparing ToSend object with payload and message type inside
+      JsonObject citeToSend = new JsonObject();
+      citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
       citeToSend.add("payload", citePayload);
+      // Sent ToSend to client
       String citeToSendStr = GSON.toJson(citeToSend);
       System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
       SESSIONS.get(id.getAsInt()).getRemote().sendString(citeToSendStr);
