@@ -174,9 +174,7 @@ public class Wiki implements Source {
    * Query the set of citation ids.
    */
   public void queryCitationIDs() {
-    if (citationIDs != null) {
-      citationIDs = parser.parseForCitationIDs();
-    }
+    citationIDs = parser.parseForCitationIDs();
   }
 
   /**
@@ -209,9 +207,7 @@ public class Wiki implements Source {
    * Queries the entire citation set. Expensive.
    */
   public void queryCitationSet() {
-    if (citationSet != null) {
-      citationSet = parser.parseForRawCitations();
-    }
+    citationSet = parser.parseForRawCitations();
   }
 
   /**
