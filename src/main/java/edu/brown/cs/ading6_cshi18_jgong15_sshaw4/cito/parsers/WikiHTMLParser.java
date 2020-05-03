@@ -49,7 +49,6 @@ public class WikiHTMLParser {
     this.html = html;
     this.timestamp = timestamp;
     doc = Jsoup.parse(html, url);
-    citationIDToContent = createCitationIDToContent(doc);
   }
 
   /**
@@ -63,7 +62,6 @@ public class WikiHTMLParser {
     this.html = html;
     this.timestamp = null;
     doc = Jsoup.parse(html, url);
-    citationIDToContent = createCitationIDToContent(doc);
   }
 
   /**
@@ -140,6 +138,9 @@ public class WikiHTMLParser {
    * For example, "cite_note-1"
    */
   public Set<String> parseForCitationIDs() {
+    if (citationIDToContent == null) {
+      createCitationIDToContent(doc);
+    }
     return citationIDToContent.keySet();
   }
 
@@ -150,6 +151,9 @@ public class WikiHTMLParser {
    * @return a citation corresponding to the id.
    */
   public Citation parserForCitationFromID(String citeNoteID)  {
+    if (citationIDToContent == null) {
+      createCitationIDToContent(doc);
+    }
     String citedContent = citationIDToContent.get(citeNoteID);
     if (citedContent == null) {
       return null;
@@ -166,7 +170,7 @@ public class WikiHTMLParser {
         System.out.println(extLink);
         if (extLink != null) {
           String link = extLink.attr("href");
-          //System.out.println(link);
+          //System.out.println(link)
           return new Citation(
               "Web",
               citeNoteID,
@@ -281,7 +285,4 @@ public class WikiHTMLParser {
   private static void log(String msg, String... vals) {
     System.out.println(String.format(msg, vals));
   }
-
-
-
 }
