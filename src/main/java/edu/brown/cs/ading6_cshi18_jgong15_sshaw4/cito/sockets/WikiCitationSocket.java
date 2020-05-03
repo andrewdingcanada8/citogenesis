@@ -114,7 +114,7 @@ public class WikiCitationSocket {
       Boolean hasCycles;
       String citeTitle;
       String citeURL;
-      String jGenSources;
+      JsonElement jGenSources;
       citeRefText = citation.getReferenceText();
       citeType = citation.getSourceType();
       citeId = citation.getId();
@@ -122,13 +122,12 @@ public class WikiCitationSocket {
       if ((citeType.equals("Web")) && citation.getInitialWebSource() != null) {
         citeTitle = citation.getInitialWebSource().title();
         citeURL = citation.getInitialWebSource().getURL();
-        jGenSources = GSON.toJson(genSources, type); // title, url
+        jGenSources = GSON.toJsonTree(genSources, type); // title, url
       } else {
         citeTitle = "";
         citeURL = "";
-        jGenSources = "";
+        jGenSources = null;
       }
-
 
       JsonObject citeToSend = new JsonObject();
       citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
@@ -141,7 +140,7 @@ public class WikiCitationSocket {
       citePayload.addProperty("citeType", citeType);
       citePayload.addProperty("citeURL", citeURL);
       citePayload.addProperty("hasCycles", hasCycles);
-      citePayload.addProperty("jGenSources", jGenSources); // TODO: diff between add and addProperty? why does it say i can add a JSON object instead of String to payload.add
+      citePayload.add("jGenSources", jGenSources); // TODO: diff between add and addProperty? why does it say i can add a JSON object instead of String to payload.add
 
       System.out.println(citePayload); // TODO: Delete Later
 

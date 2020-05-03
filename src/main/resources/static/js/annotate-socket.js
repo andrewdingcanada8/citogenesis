@@ -7,6 +7,7 @@ const MESSAGE_TYPE = {
 
 let conn = null;
 let myId = -1;
+const CITATION_TITLE_LENGTH = 60;
 
 $(document).ready(() => {
     setup_hover();
@@ -33,15 +34,10 @@ function newAnnotation(data) {
     let hasCycles = data.payload.hasCycles;
     let srcList;
     if (citeType === 'Web') {
-        let str = data.payload.jGenSources.toString();
-        let text = '{ "genSources" : ' + str + '}';
-        srcList = JSON.parse(text).genSources;
-        // console.log(srcList[0]);
+        srcList = data.payload.jGenSources;
     } else {
         srcList = null;
     }
-
-
 
     let column = document.getElementById("annotationColumn");
 
@@ -52,17 +48,22 @@ function newAnnotation(data) {
 
     let citeLink = document.createElement("a");
     citeLink.href = citeURL;
+    citeRefText = citeRefText.substr(0, CITATION_TITLE_LENGTH); // Shortens string to 50 chars
     citeLink.innerText = citeRefText;
     card.appendChild(citeLink);
 
     let genP = document.createElement("p");
-    // genP.innerText = "Generating Sources (" + genSrcList.length + "):";
+    if (srcList !== null) {
+        genP.innerText = "Generating Sources (" + srcList.length + "):";
+    } else {
+        genP.innerText = "No Generating Sources Found";
+    }
+
     card.appendChild(genP);
 
     let genList = document.createElement("ol");
     card.appendChild(genList);
 
-    let counter = 0;
     if (srcList !== null) {
         for (let i = 0; i < srcList.length; i++) {
             if (i > 5) {
@@ -72,22 +73,10 @@ function newAnnotation(data) {
             let a = document.createElement("a");
             a.innerText = srcList[i].title;
             a.href = srcList[i].url;
-            // console.log(srcList[i].title + " and " + srcList[i].url);
+            console.log(srcList[i].title + " and " + srcList[i].url);
             li.appendChild(a);
             genList.appendChild(li);
         }
-        // for (let source in srcList) {
-        //     if (counter > 5) {
-        //         break;
-        //     }
-        //     counter++;
-        //     let li = document.createElement("li");
-        //     let a = document.createElement("a");
-        //     a.innerText = source.title;
-        //     a.href = source.url;
-        //     li.appendChild(a);
-        //     genList.appendChild(li);
-        // }
     }
 
     let circularReport = document.createElement("p");
