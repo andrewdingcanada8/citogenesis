@@ -11,10 +11,12 @@ import java.util.Calendar;
 public class WikiQuery implements Query<String, Wiki> {
   private Query<String, String> htmlQuery;
   private Query<String, Calendar> timeQuery;
+  private Integer timeOutInSec;
 
   public WikiQuery(int timeOutInSec) {
     htmlQuery = new HTMLQuery(timeOutInSec);
     timeQuery = new TimeStampQuery(timeOutInSec);
+    this.timeOutInSec = timeOutInSec;
   }
 
   @Override
@@ -22,6 +24,7 @@ public class WikiQuery implements Query<String, Wiki> {
     // TODO: figure out image and style support for later
     String html = htmlQuery.query(url);
     Calendar timestamp = timeQuery.query(url);
-    return new Wiki(url, html, timestamp);
+    Integer timeOut = timeOutInSec;
+    return new Wiki(url, html, timestamp, timeOut);
   }
 }
