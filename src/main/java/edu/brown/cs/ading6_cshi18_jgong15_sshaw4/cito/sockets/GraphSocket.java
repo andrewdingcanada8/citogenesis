@@ -97,7 +97,8 @@ public class GraphSocket {
 
     Set<String> citationIDs = new HashSet<>();
     citationIDs = wiki.getCitationIDs();
-    Type type = new TypeToken<List<Source>>() { }.getType();
+    System.out.println("number of IDS: " + citationIDs);
+    Type type = new TypeToken<Graph>() { }.getType();
 
     for (String citationID: citationIDs) {
       // Building Citation

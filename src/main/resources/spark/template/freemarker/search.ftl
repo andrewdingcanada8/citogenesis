@@ -16,7 +16,7 @@
         }
         function graph(){
             let url = $('#pageURL').val();
-            url = url.substr(url.lastIndexOf("/") - 9, url.length);
+            url = url.substr(url.lastIndexOf("/") - 4, url.length);
             if (url !== "") {
                 window.location.href = "http://localhost:4567/graph/" + url;
             }
