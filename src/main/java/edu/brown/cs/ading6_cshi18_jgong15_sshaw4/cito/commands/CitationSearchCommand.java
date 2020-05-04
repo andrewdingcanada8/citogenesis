@@ -77,7 +77,7 @@ public class CitationSearchCommand extends SimpleCommand {
       gens.stream()
           .filter(Objects::nonNull)
           .map(Vertex::getVal)
-          .forEach(src -> out.append("Generating source url: " + src.getURL() + System.lineSeparator()));
+          .forEach(src -> out.append(src.getURL() + System.lineSeparator()));
       pw.write(out.toString());
       pw.flush();
     }
