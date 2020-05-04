@@ -57,12 +57,12 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
   @Override
   public CompletableFuture<HttpResponse<String>> runQuery(HttpRequest queryInput) {
     mySem.acquireUninterruptibly();
-    //System.out.println("acquiring permit. Num left: " + mySem.availablePermits());
+    //System.err.println("acquiring permit. Num left: " + mySem.availablePermits());
     return myClient.sendAsync(queryInput, HttpResponse.BodyHandlers.ofString())
         .orTimeout(SSL_TIMEOUT, TimeUnit.SECONDS) // due to SSL infinite loop bug, implement external timeout
         .thenApply(res -> {
           mySem.release();  // release when done obtaining request info
-          //System.out.println("released, num left: " + mySem.availablePermits());
+          //System.err.println("released, num left: " + mySem.availablePermits());
           return res;
         }).exceptionally(e -> {
           mySem.release();  // if exception is hit (specfically timeout), release semaphore anyway

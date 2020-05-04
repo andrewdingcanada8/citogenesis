@@ -19,12 +19,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 public final class Main {
   private static boolean isMocking;
   private static WireMockServer mockServer;
+  private static boolean isVerbose = true;
 
   private static final int DEFAULT_SPARK_PORT = 4567;
   private static final int DEFAULT_MOCK_PORT = 8089;
@@ -47,11 +47,14 @@ public final class Main {
     parser.accepts("mock");
     parser.accepts("mockport").withRequiredArg().ofType(Integer.class)
         .defaultsTo(DEFAULT_MOCK_PORT);
+    parser.accepts("verbose");
     OptionSet options = parser.parse(args);
 
     if (options.has("gui")) {
       runSparkServer((int) options.valueOf("port"));
     }
+
+    isVerbose = options.has("verbose");
 
     if (options.has("mock")) {
       // start mockserver
@@ -133,5 +136,9 @@ public final class Main {
 
   public static String getMockUrl() {
     return mockServer.baseUrl();
+  }
+
+  public static boolean isVerbose() {
+    return isVerbose;
   }
 }

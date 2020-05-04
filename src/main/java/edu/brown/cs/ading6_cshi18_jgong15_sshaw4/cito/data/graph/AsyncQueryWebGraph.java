@@ -1,5 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.Main;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.*;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DummySource;
@@ -27,12 +28,15 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   public static final Set<URLRule> URL_RULES;
   private String keywords;
   private Source keySource;
+
   static {
     URL_RULES = new HashSet<>();
     URL_RULES.add(new NoInLinking());
     URL_RULES.addAll(HostBlacklistFactory.getDefault());
   }
+
   public static final Set<SourceRule> SRC_RULES;
+
   static {
     SRC_RULES = new HashSet<>();
     SRC_RULES.add(new CosSimThreshold());
@@ -56,7 +60,9 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   @Override
   public Set<Edge<Source, String>> getAllEdges(SourcedVertex<Source, String> rootVert) {
     Source rootSrc = rootVert.getVal();
-    System.out.println("Starting search on: " + rootSrc.getURL());
+    if (Main.isVerbose()) {
+      System.err.println("Starting search on: " + rootSrc.getURL());
+    }
     List<String> links = rootSrc.getLinks();
 
     // If we already have the sources, then just grab them
@@ -79,7 +85,7 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
           try {
             return srcQuery.query(l);
           } catch (Exception e) {
-            System.out.println("Async Graph send error: " + e.getMessage());
+            System.err.println("Async Graph send error: " + e.getMessage());
             CompletableFuture<Source> dud = new CompletableFuture<>();
             dud.complete(new DeadSource(l));
             return dud;
@@ -104,7 +110,7 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
                 )))
         .map(fut ->
             fut.exceptionally(ex -> {
-              System.out.println("Async graph connection error: " + ex.getMessage());
+              System.err.println("Async graph connection error: " + ex.getMessage());
               return NonViableSource.INSTANCE;
             })).collect(Collectors.toSet());
     // wait for all Source processing to finish
@@ -115,12 +121,16 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
         .filter(s -> s != NonViableSource.INSTANCE)
         .map(s -> {
           Vertex<Source, String> nv = this.getVertex(s);
-          System.out.println("adding..." + s.getURL());
+          if (Main.isVerbose()) {
+            System.err.println("adding..." + s.getURL());
+          }
           return new SourcedEdge<Source, String>(s.getURL(), 0, rootVert, nv);
         }).collect(Collectors.toList());
     // add to known edges and return
     knownEs.addAll(newEs);
-    System.out.println("Search on " + rootSrc.getURL() + " complete.");
+    if (Main.isVerbose()) {
+      System.err.println("Search on " + rootSrc.getURL() + " complete.");
+    }
     return knownEs;
   }
 }

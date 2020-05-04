@@ -105,12 +105,12 @@ public class WebSource implements Source {
     }
     try {
       calFut = timestampQuery.query(url).exceptionally(e -> {
-        System.out.println("Error while querying timestamp for " + url + ": "
+        System.err.println("Error while querying timestamp for " + url + ": "
             + e.getMessage());
         return null;
       });
     } catch (QueryException e) {
-      System.out.println("Error while initiating query for calendar for "
+      System.err.println("Error while initiating query for calendar for "
           + url + ": " + e.getMessage());
       calFut = null;
     }
