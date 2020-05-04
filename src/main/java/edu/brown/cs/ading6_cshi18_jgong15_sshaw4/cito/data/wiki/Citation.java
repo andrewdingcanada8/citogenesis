@@ -5,6 +5,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGr
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.QueryCacher;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
@@ -33,6 +34,7 @@ public class Citation {
   private Source initialWebSource;
   private List<Vertex<Source, String>> genSources;
   private List<Set<Vertex<Source, String>>> sccs;
+  private Graph<Source, String> graph;
   private Boolean hasCycles;
 
   private static final int TIME_OUT = 20;
@@ -47,6 +49,7 @@ public class Citation {
       hasCycles = false;
       genSources = new ArrayList<>();
       sccs = new ArrayList<>();
+      graph = null;
     }
   }
 
@@ -65,6 +68,7 @@ public class Citation {
       hasCycles = false;
       genSources = new ArrayList<>();
       sccs = new ArrayList<>();
+      graph = null;
     }
   }
 
@@ -84,6 +88,7 @@ public class Citation {
       hasCycles = false;
       genSources = new ArrayList<>();
       sccs = new ArrayList<>();
+      graph = null;
     } else {
       AsyncSourceQuery sq = new AsyncSourceQuery(TIME_OUT);
       try {
@@ -92,6 +97,7 @@ public class Citation {
         System.out.println("Citation source: " + src);
         AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(
             src, new QueryCacher<>(sq, 500), citedContent, 2);
+        graph = nyGraph;
         nyGraph.load();
         Vertex<Source, String> hv = nyGraph.getHead();
         List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
@@ -122,34 +128,75 @@ public class Citation {
         hasCycles = false;
         genSources = new ArrayList<>();
         sccs = new ArrayList<>();
+        graph = null;
       }
     }
   }
 
+  /**
+   * Returns the id of the Citation. E.g. "cite_note-1"
+   * @return id as string
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * Returns the graph of the web associated with the citation.
+   * Null if the sourceType is "Other" or "Self".
+   * @return the nygraph from AsyncWebGraph.
+   */
+  public Graph<Source, String> getGraph() {
+    return graph;
+  }
+
+  /**
+   * Returns the list of generating sources.
+   * @return list of generating sources.
+   */
   public List<Vertex<Source, String>> getGenSources() {
     return genSources;
   }
 
+  /**
+   * Returns the text of the reference object in wikipedia.
+   * @return text of the reference.
+   */
   public String getReferenceText() {
     return referenceText;
   }
 
+  /**
+   * Word count of the content cited.
+   * @return word count of the content cited.
+   */
   public Number getContentWordCount() {
     return contentWordCount;
   }
 
+  /**
+   * Returns the sccs.
+   * @return the sccs.
+   */
   public List<Set<Vertex<Source, String>>> getSccs() {
     return sccs;
   }
 
+  /**
+   * Returns the number of generating sources.
+   * 0 if the sourceType is "Other" or "Self".
+   * @return number of generating sources.
+   */
   public Number getNumberOfGeneratingSources() {
     return numberOfGeneratingSources;
   }
 
+  /**
+   * Returns true if there's circular citations.
+   * False if there's no circular citations OR
+   * False if the sourceType is "Other" or "Self".
+   * @return boolean if there circular citations.
+   */
   public Boolean getHasCycles() {
     return hasCycles;
   }
