@@ -64,6 +64,7 @@ public final class Main {
 
     FreeMarkerEngine freeMarker = createEngine();
     Spark.webSocket("/citation-socket", WikiCitationSocket.class);
+    Spark.webSocket("/graph-socket", WikiCitationSocket.class);
 //    Spark.webSocket("/socket-process", DemoSocket.class);
 
     // Setup Spark Routes

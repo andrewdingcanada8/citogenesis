@@ -10,11 +10,14 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.SourceSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.VertexSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers.WikiHTMLParser;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.TimeStampQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.HTMLQuery;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 import org.eclipse.jetty.websocket.api.Session;
@@ -77,50 +80,70 @@ public class GraphSocket {
 
     //process the payload
     String url = payload.get("url").getAsString();
-    System.out.println("url: " + url);
-//    Query<String, String> htmlQuery = new HTMLQuery(TIMELIMIT);
-//    Query<String, Calendar> timeQuery = new TimeStampQuery(TIMELIMIT);
-//    Set<Citation> citations = new HashSet<Citation>();
-//    try {
-//      String html = htmlQuery.query(url);
-//      Calendar timestamp = timeQuery.query(url);
-//      WikiHTMLParser parser = new WikiHTMLParser(url, html, timestamp);
-//      citations = parser.parseForRawCitations();
-//    } catch (QueryException e) {
-//      e.printStackTrace();
-//    }
-//    System.out.println("citations: " + citations.size());
-    //pack the results
 
-    //JSON the citation here
-    Type type = new TypeToken<List<Source>>(){}.getType();
-//    for (Citation citation: citations) {
-//      JsonObject toSend = new JsonObject();
-//      toSend.addProperty("type", MESSAGE_TYPE.GRAPH.ordinal());
-//      JsonObject newPayload = new JsonObject();
-//      newPayload.add("id", id);
-//
-//      List<Vertex<Source, String>> genVertices = citation.getGenSources();
-//      List<Source> genSources = new ArrayList<Source>();
-//      for (Vertex<Source, String> vertex: genVertices) {
-//        if (vertex != null) {
-//          genSources.add(vertex.getVal());
-//        }
-//      }
-//      System.out.println("sources: " + genSources.size());
-//      String jSource = GSON.toJson(genSources, type);
-//      String citeSource = GSON.toJson(citation.getInitialWebSource(), Source.class);
-//      newPayload.addProperty("citeSource", citeSource);
-//      newPayload.addProperty("genSources", jSource);
-//      Boolean hasCycles = citation.getHasCycles();
-//      newPayload.addProperty("hasCycles", hasCycles);
-//
-//      System.out.println(newPayload);
-//      toSend.add("payload", newPayload);
-//
-//      String toSendStr = GSON.toJson(toSend);
-//      System.out.println("tosend: " + toSendStr);
-//      SESSIONS.get(id.getAsInt()).getRemote().sendString(toSendStr);
-//    }
+    Wiki wiki = null;
+    System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
+    String html = "";
+    try {
+      wiki = new WikiQuery(TIMELIMIT).query(url);
+      html = wiki.getContentHTML();
+    } catch (QueryException e) {
+      e.printStackTrace();
+    }
+    // If the program exits here, the wiki has failed to be constructed.
+    assert wiki != null;
+    // If the program exits here, wiki was not able to access webpage correctly
+    assert !html.equals("");
+
+    Set<String> citationIDs = new HashSet<>();
+    citationIDs = wiki.getCitationIDs();
+    Type type = new TypeToken<List<Source>>() { }.getType();
+
+    for (String citationID: citationIDs) {
+      // Building Citation
+      Citation citation = wiki.getCitationFromID(citationID);
+      Graph<Source, String> graph = citation.getGraph();
+
+      // Declaring fields in payload
+      String citeRefText;
+      String citeType;
+      String citeId;
+      Boolean hasCycles;
+      String citeTitle;
+      String citeURL;
+      JsonElement jGraph;
+      // Filling fields in payload
+      citeRefText = citation.getReferenceText();
+      citeType = citation.getSourceType();
+      citeId = citation.getId();
+      hasCycles = citation.getHasCycles();
+      if ((citeType.equals("Web")) && citation.getInitialWebSource() != null) {
+        citeTitle = citation.getInitialWebSource().title();
+        citeURL = citation.getInitialWebSource().getURL();
+        jGraph = GSON.toJsonTree(graph, type);
+      } else {
+        citeTitle = "";
+        citeURL = "";
+        jGraph = null;
+      }
+      // Prepare Payload, append fields
+      JsonObject graphPayload = new JsonObject();
+      graphPayload.add("id", id);
+      graphPayload.addProperty("citeRefText", citeRefText);
+      graphPayload.addProperty("citeId", citeId);
+      graphPayload.addProperty("citeTitle", citeTitle);
+      graphPayload.addProperty("citeType", citeType);
+      graphPayload.addProperty("citeURL", citeURL);
+      graphPayload.addProperty("hasCycles", hasCycles);
+      graphPayload.add("jGraph", jGraph);
+
+      JsonObject graphToSend = new JsonObject();
+      graphToSend.addProperty("type", GraphSocket.MESSAGE_TYPE.GRAPH.ordinal());
+      graphToSend.add("payload", graphPayload);
+      // Sent ToSend to client
+      String citeToSendStr = GSON.toJson(graphToSend);
+      System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
+      SESSIONS.get(id.getAsInt()).getRemote().sendString(citeToSendStr);
+    }
   }
 }
