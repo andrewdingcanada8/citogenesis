@@ -1,8 +1,5 @@
 #!/bin/bash
-for SCRIPT in tests/cito/
-do
-if [ -f $SCRIPT -a -x $SCRIPT ]
-then
-echo $SCRIPT
-fi
-done
+(cd tests/cito/;
+for f in *.sh; do
+    bash "$f" -H
+done)
