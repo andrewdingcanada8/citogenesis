@@ -24,6 +24,9 @@
     </script>
 </#assign>
 <#assign body>
+
+
+
     <div class="landing">
         <h1>DISCOVER THE SOURCE OF YOUR INFORMATION</h1>
         <p>./CITOGENESIS.ORG</p>
@@ -31,11 +34,9 @@
     <div class="wrap">
         <div class="search">
             <input type="text" placeholder="enter web url here" id="pageURL">
-
         </div>
         <button id="annotateSubmitButton" onclick="annotate();">Annotate</button>
         <button id="graphSubmitButton" onclick="graph();">Graph</button>
     </div>
 
 </#assign>
-<#include "main.ftl">
