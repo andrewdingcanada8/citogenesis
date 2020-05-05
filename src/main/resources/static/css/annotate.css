@@ -55,7 +55,7 @@
     /*height: 200px;*/
 }
 
-#gen-src-count {
+.ui.src.circular.label {
     float: right;
 }
 

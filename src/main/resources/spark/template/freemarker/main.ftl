@@ -50,7 +50,7 @@
                 </div>
 
             </div>
-            <h2>The annotation tool of the 21st century</h2>
+            <h2>An annotation tool for the 21st century</h2>
             <div class="info-box">
                 <div class="ui statistic">
                     <div class="text value">

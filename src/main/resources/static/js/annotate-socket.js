@@ -11,6 +11,7 @@ const CITATION_TITLE_LENGTH = 60;
 
 $(document).ready(() => {
     // setup_hover();
+    // $(document).getScript("new_annotation.js");
     setup_socket();
 });
 
@@ -123,7 +124,7 @@ function setup_socket () {
                 break;
             case MESSAGE_TYPE.CITATION:
                 console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
-                newAnnotation(data);
+                new_annotation(data);
                 break;
 
         }
