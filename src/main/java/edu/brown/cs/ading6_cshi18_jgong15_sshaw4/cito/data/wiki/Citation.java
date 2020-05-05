@@ -2,6 +2,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.QueryCacher;
@@ -95,7 +96,7 @@ public class Citation {
         Source src = sq.query(url).join();
         initialWebSource = src;
         System.out.println("Citation source: " + src);
-        AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(
+        AsyncWebGraph nyGraph = new AsyncWebGraph(
             src, new QueryCacher<>(sq, 500), citedContent, 2);
         graph = nyGraph;
         nyGraph.load();

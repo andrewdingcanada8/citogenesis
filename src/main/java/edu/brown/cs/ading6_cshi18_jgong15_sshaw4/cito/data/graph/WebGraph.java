@@ -47,11 +47,11 @@ public class WebGraph extends RootedSourcedMemGraph<Source, String> {
           nVert = this.getVertex(nSrc);
         }
         neighbors.add(new SourcedEdge<>(url, 0.0, vert, nVert));
-        System.out.println("adding... " + url);
+        System.err.println("adding... " + url);
       } catch (QueryException | IllegalArgumentException e) {
         // do nothing (i.e, don't attach anything to the source)
         neighbors.add(new SourcedEdge<>(url, 0.0, vert, new Deadend<>(new DeadSource(url))));
-        System.out.println("Graph search encountered error: " + e.getMessage());
+        System.err.println("Graph search encountered error: " + e.getMessage());
       }
     }
     return neighbors;

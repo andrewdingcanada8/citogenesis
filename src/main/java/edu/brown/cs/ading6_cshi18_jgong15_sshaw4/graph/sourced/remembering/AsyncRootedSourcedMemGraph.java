@@ -52,7 +52,7 @@ public abstract class AsyncRootedSourcedMemGraph<T, W> extends RootedSourcedMemG
       try {
         return v.getEdges().stream().map(e -> e.getDest()).collect(Collectors.toSet());
       } catch (GraphException e) {
-        System.out.println("Graph exploration error: " + e.getMessage());
+        System.err.println("Graph exploration error: " + e.getMessage());
         return Set.of(new Deadend<>(null));
       }
     });
