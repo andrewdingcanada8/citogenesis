@@ -10,7 +10,7 @@ let myId = -1;
 const CITATION_TITLE_LENGTH = 60;
 
 $(document).ready(() => {
-    setup_hover();
+    // setup_hover();
     setup_socket();
 });
 
@@ -39,7 +39,7 @@ function newAnnotation(data) {
         srcList = null;
     }
 
-    let column = document.getElementById("annotationColumn");
+    let column = document.getElementById("annotation-column");
 
     let card = document.createElement("div");
     card.className = "annotationCard";

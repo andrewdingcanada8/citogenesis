@@ -3,9 +3,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui;
 import com.google.common.collect.ImmutableMap;
 import spark.*;
 
-import java.io.File;
 import java.util.Map;
-import java.util.Scanner;
 
 public class AnnotateHandler implements TemplateViewRoute {
 

@@ -8,50 +8,109 @@
          avoid minification for clarity. -->
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/html5bp.css">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/annotate.css">
+    <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
     <link rel="stylesheet" href="/css/wiki1.css">
     <link rel="stylesheet" href="/css/wiki2.css">
+    <link rel="stylesheet" href="/css/annotate.css">
 </head>
 
 <body>
-    <div class="sidenav">
-        <a href="http://localhost:4567/search"><h1>CITOGENESIS</h1></a>
-        <h3>Annotations:</h3>
-        <div class="annotationColumn" id="annotationColumn">
-<#--            <div class="annotationCard" id="a-block1">-->
-<#--                <a href="google.com">Name</a>-->
-<#--                <p>Generating Sources (2):</p>-->
-<#--                <ol>-->
-<#--                    <li><a href="1">gen source 1</a></li>-->
-<#--                    <li><a href="2">gen source 2</a></li>-->
-<#--                </ol>-->
-<#--                <p>Circular Reporting: True</p>-->
-<#--                <p></p>-->
-<#--            </div>-->
-<#--            <div class="annotationCard" id="a-block2">-->
-<#--                <a href="google.com">Name</a>-->
-<#--                <p>Generating Sources (2):</p>-->
-<#--                <ol>-->
-<#--                    <li><a href="1">gen source 1</a></li>-->
-<#--                    <li><a href="2">gen source 2</a></li>-->
-<#--                </ol>-->
-<#--                <p>Circular Reporting: True</p>-->
-<#--                <p></p>-->
-<#--            </div>-->
+    <div class="upper-section">
+        <div class="ui menu">
+            <div class="header item">
+                <a href="http://localhost:4567/search">CITOGENESIS</a>
+            </div>
+            <a class="item" href="javascript:history.back()">
+                <i class="arrow left icon"></i>
+            </a>
+            <a class="item" href="javascript:history.forward()">
+                <i class="arrow right icon"></i>
+            </a>
+            <div class="item" id="article-labels">
+                <a class="ui blue label">
+                    <i class="exclamation triangle icon"></i>
+                    5 Generating Sources
+                </a>
+                <a class="ui red label">
+                    <i class="exclamation triangle icon"></i>
+                    Circular Reporting
+                </a>
+
+            </div>
+            <div class="item right">
+                <div class="ui action input" id="url-search-box">
+                    <input type="text" placeholder="Navigate to...">
+                    <div class="ui button">Annotate</div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="ui button">Help</div>
+            </div>
         </div>
     </div>
-    <div class="content">
-        <div id="content" class="mw-body" role="main">
+    <div class="lower-section">
+        <div class="sidenav">
+            <div class="ui raised segment" id="annotation-tray">
+                <a class="ui teal ribbon label" id="annotation-label">Annotations</a>
+
+
+                <div class="ui cards" id="annotation-column">
+
+
+                    <div class="card" id="card-1">
+                        <div class="content">
+                            <div class="header">
+                                <span>Citation 1</span>
+                                <a class="ui green circular label" id="gen-src-count">3</a>
+                            </div>
+                            <div class="meta">
+                                <a href="google.com">Webpage</a>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <h4 class="ui sub header">Generating Sources:</h4>
+                            <div class="ui ordered list">
+                                <a class="item" href="">Src 1</a>
+                                <a class="item" href="">Src 2</a>
+                            </div>
+                            <h5 class="ui red header">Circular reporting found.</h5>
+                            <button class="ui small violet inverted right labeled icon button graph-redirect">
+                                <i class="right arrow icon"></i>
+                                <span>See Graph</span>
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                    <div class="card">
+                        <div class="content">
+                            <div class="header">Cute Dog</div>
+                            <div class="meta">
+                                <span>2 days ago</span>
+                                <a>Animals</a>
+                            </div>
+                            <p></p>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
 
         </div>
+
+        <div class="extracted-wiki-page">
+            <div id="content" class="mw-body" role="main">
+
+            </div>
+        </div>
     </div>
-<#--    ${results}-->
-    <#--    <script src="js/annotate-socket.js"></script>-->
+
     <script src="/js/jquery-2.1.1.js"></script>
     <script src="/js/annotate-socket.js"></script>
-    <#--<script src="js/socket-demo.js"></script>-->
-    <#--<script src="js/websocket.js"></script>-->
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start
      dealing with real world issues like old browsers.  -->

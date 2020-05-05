@@ -2,6 +2,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito;
 
 import com.google.common.collect.ImmutableMap;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.GraphHandler;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.MainHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.DemoSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
@@ -68,6 +69,7 @@ public final class Main {
 
     // Setup Spark Routes
 //    Spark.get("/socket-demo", new SocketDemoHandler(), freeMarker);
+    Spark.get("/main", new MainHandler(), freeMarker);
     Spark.get("/search", new SearchHandler(), freeMarker);
     Spark.get("/wiki/:pageURL", new AnnotateHandler(), freeMarker);
     Spark.get("/graph/:pageURL", new GraphHandler(), freeMarker);
