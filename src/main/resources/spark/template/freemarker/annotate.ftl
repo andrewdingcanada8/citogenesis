@@ -18,7 +18,7 @@
     <div class="upper-section">
         <div class="ui menu">
             <div class="header item">
-                <a href="http://localhost:4567/search">CITOGENESIS</a>
+                <a href="http://localhost:4567/main">CITOGENESIS</a>
             </div>
             <a class="item" href="javascript:history.back()">
                 <i class="arrow left icon"></i>
