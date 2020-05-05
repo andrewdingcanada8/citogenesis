@@ -37,7 +37,7 @@ public class Citation {
   private Graph<Source, String> graph;
   private Boolean hasCycles;
 
-  private static final int TIME_OUT = 20;
+  private static final int TIME_OUT = 40;
 
   public Citation(String sourceType, String id) {
     this.sourceType = sourceType;
