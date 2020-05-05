@@ -1,6 +1,12 @@
+const CITATION_TITLE_LENGTH = 40;
+
 function new_annotation(data) {
     // Extract Payload Properties
     let citeRefText = data.payload.citeRefText;
+    if (citeRefText.length > CITATION_TITLE_LENGTH) {
+        citeRefText = citeRefText.substr(0, CITATION_TITLE_LENGTH); // Shortens string to 50 chars
+        citeRefText = citeRefText.concat('...');
+    }
     let citeId = data.payload.citeId;
     let citeTitle = data.payload.citeTitle;
     let citeType = data.payload.citeType;
@@ -59,7 +65,6 @@ function new_annotation(data) {
     a.innerText = citeTypeText;
     a.href = citeURL;
     meta.appendChild(a);
-    content1.appendChild(span);
 
 
     // Second Section of Card

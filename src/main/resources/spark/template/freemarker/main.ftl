@@ -106,7 +106,7 @@
         </div>
 
     </div>
-    <div class="footer">
+    <div class ="content-block footer">
 
     </div>
 

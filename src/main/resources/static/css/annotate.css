@@ -8,9 +8,9 @@
     position: fixed;
 }
 
-#article-labels {
+/*#article-labels {*/
 
-}
+/*}*/
 
 #url-search-box {
     width: 40vw;
@@ -51,9 +51,9 @@
     overflow-y: scroll;
 }
 
-.card {
-    /*height: 200px;*/
-}
+/*.card {*/
+/*    !*height: 200px;*!*/
+/*}*/
 
 .ui.src.circular.label {
     float: right;

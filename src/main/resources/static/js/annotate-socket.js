@@ -7,7 +7,7 @@ const MESSAGE_TYPE = {
 
 let conn = null;
 let myId = -1;
-const CITATION_TITLE_LENGTH = 60;
+// const CITATION_TITLE_LENGTH = 60;
 
 $(document).ready(() => {
     // setup_hover();
