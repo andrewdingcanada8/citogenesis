@@ -20,6 +20,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.sync.HTMLQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.SourcedMemGraph;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -82,7 +83,7 @@ public class GraphSocket {
     String url = payload.get("url").getAsString();
 
     Wiki wiki = null;
-    System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
+//    System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
     String html = "";
     try {
       wiki = new WikiQuery(TIMELIMIT).query(url);
@@ -97,13 +98,14 @@ public class GraphSocket {
 
     Set<String> citationIDs = new HashSet<>();
     citationIDs = wiki.getCitationIDs();
-    System.out.println("number of IDS: " + citationIDs);
-    Type type = new TypeToken<Graph>() { }.getType();
+//    System.out.println("number of IDS: " + citationIDs);
+    Type type = new TypeToken<RootedSourcedMemGraph<Source, String>>() { }.getType();
 
     for (String citationID: citationIDs) {
       // Building Citation
       Citation citation = wiki.getCitationFromID(citationID);
       Graph<Source, String> graph = citation.getGraph();
+      System.out.println("graph under jason: " + graph);
 
       // Declaring fields in payload
       String citeRefText;
@@ -143,7 +145,7 @@ public class GraphSocket {
       graphToSend.add("payload", graphPayload);
       // Sent ToSend to client
       String citeToSendStr = GSON.toJson(graphToSend);
-      System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
+//      System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
       SESSIONS.get(id.getAsInt()).getRemote().sendString(citeToSendStr);
     }
   }

@@ -4,8 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
@@ -27,7 +29,10 @@ public class GraphSerializer implements JsonSerializer<RootedSourcedMemGraph> {
     JsonObject jsonSrc = new JsonObject();
     Collection<Vertex> vertices = graph.getLoadedVertices();
 //    JsonElement vertexArray = jsonSerializationContext.serialize(vertices);
-    Map<Vertex, Set<Vertex>> adjacencyMap = new HashMap();
+//    Map<Vertex, Set<Vertex>> adjacencyMap = new HashMap();
+    JsonObject adjacencyMap = new JsonObject();
+
+    Type neighborSetType = new TypeToken<Set<Vertex>>() { }.getType();
     for (Vertex vertex : vertices) {
       Set<Vertex> neighborSet = new HashSet<>();
       try {
@@ -36,16 +41,19 @@ public class GraphSerializer implements JsonSerializer<RootedSourcedMemGraph> {
           neighborSet.add(edge.getDest());
         }
       } catch (GraphException e) {
-        adjacencyMap.put(vertex, neighborSet);
+        adjacencyMap.add(vertex.getVal().toString(),
+            jsonSerializationContext.serialize(neighborSet, neighborSetType));
         continue;
       }
-      adjacencyMap.put(vertex, neighborSet);
+      adjacencyMap.add(vertex.getVal().toString(),
+          jsonSerializationContext.serialize(neighborSet, neighborSetType));
     }
-
-    JsonElement vertexArray = jsonSerializationContext.serialize(vertices);
-    JsonElement vertexMap = jsonSerializationContext.serialize(adjacencyMap);
+    Type verticesType = new TypeToken<Collection<Vertex>>() { }.getType();
+    Type adjMType = new TypeToken<Map<Vertex, Set<Vertex>>>() { }.getType();
+    JsonElement vertexArray = jsonSerializationContext.serialize(vertices, verticesType);
+//    JsonElement vertexMap = jsonSerializationContext.serialize(adjacencyMap, adjMType);
     jsonSrc.add("vertices", vertexArray);
-    jsonSrc.add("map", vertexMap);
+    jsonSrc.add("map", adjacencyMap);
     return jsonSrc;
   }
 }

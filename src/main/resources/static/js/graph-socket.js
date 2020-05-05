@@ -56,6 +56,8 @@ function setup_socket () {
             case MESSAGE_TYPE.GRAPH:
                 // newAnnotation(data);
                 // console.log(data.payload);
+                console.log(data.payload.citeURL);
+                console.log(data.payload);
                 break;
         }
     };

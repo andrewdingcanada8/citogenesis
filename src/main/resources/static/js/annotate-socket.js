@@ -123,6 +123,7 @@ function setup_socket () {
                 break;
             case MESSAGE_TYPE.CITATION:
                 console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
+                console.log(data.payload);
                 newAnnotation(data);
                 break;
 

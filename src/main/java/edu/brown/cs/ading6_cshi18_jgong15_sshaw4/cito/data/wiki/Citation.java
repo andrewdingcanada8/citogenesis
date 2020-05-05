@@ -98,6 +98,7 @@ public class Citation {
         AsyncQueryWebGraph nyGraph = new AsyncQueryWebGraph(
             src, new QueryCacher<>(sq, 500), citedContent, 2);
         graph = nyGraph;
+        System.out.println("Graph under Charles: " + graph);
         nyGraph.load();
         Vertex<Source, String> hv = nyGraph.getHead();
         List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
@@ -122,7 +123,10 @@ public class Citation {
             return 0;
           }
         }).reduce(0, Integer::sum);
+//        graph = nyGraph;
+//        System.out.println("Graph under Charles: " + graph);
       } catch (Exception e) {
+        System.out.println("Charles Catch triggered!: " + e.getMessage());
         numberOfGeneratingSources = 1;
         initialWebSource = null;
         hasCycles = false;
