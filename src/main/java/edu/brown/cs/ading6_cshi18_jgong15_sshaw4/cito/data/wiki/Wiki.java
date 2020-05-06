@@ -152,4 +152,9 @@ public class Wiki implements Source {
   public Set<Citation> getCitationSet() {
     return citationSet;
   }
+
+  @Override
+  public boolean isValid() {
+    return true;
+  }
 }

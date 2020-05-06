@@ -153,4 +153,9 @@ public class WebSource implements Source {
         + "url='" + url + '\''
         + '}';
   }
+
+  @Override
+  public boolean isValid() {
+    return true;
+  }
 }

@@ -46,4 +46,9 @@ public final class NonViableSource implements Source {
   public Calendar getTimestamp() {
     return null;
   }
+
+  @Override
+  public boolean isValid() {
+    return false;
+  }
 }

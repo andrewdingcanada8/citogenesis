@@ -69,4 +69,9 @@ public class DummySource implements Source {
   public int hashCode() {
     return Objects.hash(url);
   }
+
+  @Override
+  public boolean isValid() {
+    return false;
+  }
 }
