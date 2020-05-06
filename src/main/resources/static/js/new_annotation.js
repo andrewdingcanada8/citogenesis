@@ -1,6 +1,15 @@
 const CITATION_TITLE_LENGTH = 45;
 
 function new_annotation(data) {
+
+    let curd = {
+        citeId: "",
+        name: "",
+        srcLen: 0,
+        metaLink: "",
+        genSrcList: null
+    }
+
     // Extract Payload Properties
     let citeRefText = data.payload.citeRefText;
     if (citeRefText.length > CITATION_TITLE_LENGTH) {

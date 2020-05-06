@@ -125,9 +125,6 @@
                 <div>
                     <h1>SAMPLE GRAPH DISPLAY OUTPUT</h1>
                 </div>
-<#--                <div class="content">-->
-<#--                    -->
-<#--                </div>-->
             </div>
         </div>
     </div>
