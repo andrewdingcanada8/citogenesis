@@ -5,17 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.GraphSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.SourceSerializer;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.VertexSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -28,11 +24,8 @@ import java.util.*;
 
 @WebSocket
 public class WikiCitationSocket {
-  private static final Gson GSON = new GsonBuilder()
-          .registerTypeAdapter(Source.class, new SourceSerializer())
-          .registerTypeAdapter(RootedSourcedMemGraph.class, new GraphSerializer())
-          .registerTypeAdapter(Vertex.class, new VertexSerializer())
-          .create();
+  private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Source.class,
+          new SourceSerializer()).create();
   private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;
   private static final int TIME_LIMIT = 10;
@@ -134,8 +127,6 @@ public class WikiCitationSocket {
           genSources.add(vertex.getVal());
         }
       }
-      Graph<Source, String> graph = citation.getGraph();
-
       // Declaring fields in payload
       String citeRefText;
       String citeType;
@@ -144,7 +135,6 @@ public class WikiCitationSocket {
       String citeTitle;
       String citeURL;
       JsonElement jGenSources;
-      JsonElement jGraph;
       // Filling fields in payload
       citeRefText = citation.getReferenceText();
       citeType = citation.getType();
@@ -154,12 +144,10 @@ public class WikiCitationSocket {
         citeTitle = citation.getInitialWebSource().title();
         citeURL = citation.getInitialWebSource().getURL();
         jGenSources = GSON.toJsonTree(genSources, type); // title, url
-        jGraph = GSON.toJsonTree(graph, type); // vertices, map
       } else {
         citeTitle = "";
         citeURL = "";
         jGenSources = null;
-        jGraph = null;
       }
       // Prepare Payload, append fields
       JsonObject citePayload = new JsonObject();
@@ -171,8 +159,6 @@ public class WikiCitationSocket {
       citePayload.addProperty("citeURL", citeURL);
       citePayload.addProperty("hasCycles", hasCycles);
       citePayload.add("jGenSources", jGenSources);
-      citePayload.add("jGraph", jGraph);
-
       // Preparing ToSend object with payload and message type inside
       JsonObject citeToSend = new JsonObject();
       citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());

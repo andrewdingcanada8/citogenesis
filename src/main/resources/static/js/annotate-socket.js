@@ -7,6 +7,7 @@ const MESSAGE_TYPE = {
 
 let conn = null;
 let myId = -1;
+let graphs = {};
 
 // Fires on page load.
 $(document).ready(() => {
@@ -39,6 +40,10 @@ function setup_socket () {
             case MESSAGE_TYPE.CITATION:
                 console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
                 new_annotation(data);
+                let id = data.payload.citeId;
+                let graph = data.payload.jGraph;
+                graphs[id] = graph;
+                console.log(graph); // TODO: Delete Later
                 break;
         }
     };
