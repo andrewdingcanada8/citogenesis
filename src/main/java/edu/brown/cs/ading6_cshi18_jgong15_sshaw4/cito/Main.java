@@ -104,7 +104,7 @@ public final class Main {
     Spark.get("/main", new MainHandler(), freeMarker);
     Spark.get("/search", new SearchHandler(), freeMarker);
     Spark.get("/wiki/:pageURL", new AnnotateHandler(), freeMarker);
-    Spark.get("/graph/:pageURL", new GraphHandler(), freeMarker);
+    Spark.get("/graph", new GraphHandler(), freeMarker);
   }
 
   private class SocketDemoHandler implements TemplateViewRoute {

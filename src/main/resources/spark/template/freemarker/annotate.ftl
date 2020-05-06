@@ -120,10 +120,14 @@
         </div>
 
         <div class="extracted-wiki-page" id="wiki-page">
-            <div class="ui dimmer graph">
-
-
-
+            <div class="ui inverted dimmer graph">
+                <i class="close icon"></i>
+                <div>
+                    <h1>SAMPLE GRAPH DISPLAY OUTPUT</h1>
+                </div>
+<#--                <div class="content">-->
+<#--                    -->
+<#--                </div>-->
             </div>
         </div>
     </div>
