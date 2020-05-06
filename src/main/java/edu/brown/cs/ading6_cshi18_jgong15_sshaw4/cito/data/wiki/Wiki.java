@@ -242,4 +242,9 @@ public class Wiki implements Source {
     }
     return citationSet;
   }
+
+  @Override
+  public boolean isValid() {
+    return true;
+  }
 }
