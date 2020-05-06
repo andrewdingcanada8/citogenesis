@@ -42,7 +42,7 @@ public class WikiTest {
         "#cite_note-1", 120, 3, 0.2);
     System.out.println(citationOne);
     Citation citationOneBuilded =
-        new CitationBuilder("Web", "#cite_note-1")
+        new CitationBuilder(Citation.NON_HTML_TYPE, "#cite_note-1")
                 .setTimeout(120)
                 .setDepth(3)
                 .setThreshold(0.2)
@@ -52,16 +52,7 @@ public class WikiTest {
                         "L=ADS-L&P=R432&I=-3")))
                 .build();
     System.out.println(citationOneBuilded);
-    //    assertEquals(citationOne,
-//        new CitationBuilder("Web", "#cite_note-1")
-//            .setTimeout(120)
-//            .setDepth(3)
-//            .setThreshold(0.2)
-//            .setUrl(new ArrayList<>(
-//                List.of("https://web.archive.org/web/20080312052959/" +
-//                    "http://listserv.linguistlist.org/cgi-bin/wa?A2=" +
-//                    "ind0710B&amp;L=ADS-L&amp;P=R432&amp;I=-3")))
-//            .build());
+    assertEquals(citationOne, citationOneBuilded);
   }
 
   @Test
@@ -70,7 +61,7 @@ public class WikiTest {
         "#cite_note-7", 120, 3, 0.2);
     System.out.println(citationSeven);
     Citation citationSevenBuilded =
-        new CitationBuilder("Web", "#cite_note-7")
+        new CitationBuilder(Citation.WEB_TYPE, "#cite_note-7")
             .setTimeout(120)
             .setDepth(3)
             .setThreshold(0.2)
@@ -80,7 +71,6 @@ public class WikiTest {
                     + "-the-very-latest.html")))
             .build();
     System.out.println("Builded: " + citationSevenBuilded);
-
     assertEquals(citationSeven, citationSevenBuilded);
   }
 }

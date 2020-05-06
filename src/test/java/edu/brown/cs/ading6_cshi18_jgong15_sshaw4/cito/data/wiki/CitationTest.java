@@ -12,7 +12,7 @@ public class CitationTest {
   @Before
   public void setUp() {
     citationOne = new Citation(
-        "Web",
+        Citation.WEB_TYPE,
         "cite_note-1",
         "hello",
         "Book.org");

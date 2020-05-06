@@ -193,10 +193,10 @@ public class WikiHTMLParser {
         }
         if (links.isEmpty()) {
           return new CitationBuilder(
-              "Other", citeNoteID, citedContent, referenceText).build();
+              Citation.OTHER_TYPE, citeNoteID, citedContent, referenceText).build();
         } else {
           return new CitationBuilder(
-              "Web", citeNoteID, citedContent, referenceText)
+              Citation.WEB_TYPE, citeNoteID, citedContent, referenceText)
               .setTimeout(timeout)
               .setDepth(depth)
               .setThreshold(threshold)
@@ -205,7 +205,7 @@ public class WikiHTMLParser {
         }
       } else {
         return new CitationBuilder(
-            "Other", citeNoteID, citedContent, referenceText).build();
+            Citation.OTHER_TYPE, citeNoteID, citedContent, referenceText).build();
       }
     }
   }

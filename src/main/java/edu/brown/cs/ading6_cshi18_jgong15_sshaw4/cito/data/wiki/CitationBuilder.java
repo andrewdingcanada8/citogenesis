@@ -100,27 +100,21 @@ public class CitationBuilder {
    * @return a citation.
    */
   public Citation build() {
-    if (type == "Other") {
-      return new Citation(
-          type,
-          id,
-          citedContent,
-          referenceText);
-    } else if (type == "Web") {
-      Citation citation = new Citation(
-          type,
-          id,
-          citedContent,
-          referenceText);
+    if (type.equals(Citation.OTHER_TYPE)) {
+      return new Citation(type, id, citedContent, referenceText);
+    } else if (type.equals(Citation.WEB_TYPE)
+        || type.equals(Citation.NON_HTML_TYPE)
+        || type.equals(Citation.TIME_OUT_TYPE)
+        || type.equals(Citation.SELF_TYPE)) {
+      Citation citation = new Citation(type, id, citedContent, referenceText);
       citation.setTimeout(timeout);
       citation.setDepth(depth);
       citation.setThreshold(threshold);
       citation.webSetUp(url);
       return citation;
     } else {
-      return new Citation(
-          type,
-          id);
+      System.out.println("ERROR: Not a accepted citation type.");
+      return null;
     }
   }
 }

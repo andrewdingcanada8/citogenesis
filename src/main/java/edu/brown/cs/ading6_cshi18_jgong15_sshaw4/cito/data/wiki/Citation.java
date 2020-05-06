@@ -2,6 +2,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncSearchWebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.QueryCacher;
@@ -85,6 +86,12 @@ public class Citation {
    */
   private Double threshold = DEFAULT_THRESHOLD;
 
+  public static final String WEB_TYPE = "Web";
+  public static final String TIME_OUT_TYPE = "Time Out";
+  public static final String NON_HTML_TYPE = "Non-HTML";
+  public static final String SELF_TYPE = "Self";
+  public static final String OTHER_TYPE = "Other";
+
   private static final int DEFAULT_TIME_OUT = 60;
   private static final int DEFAULT_DEPTH = 5;
   private static final double DEFAULT_THRESHOLD = 0.200;
@@ -100,7 +107,7 @@ public class Citation {
     this.id = id;
     this.citedContent = "";
     this.referenceText = "";
-    if (type.equals("Self") || type.equals("Other")) {
+    if (type.equals(SELF_TYPE) || type.equals(OTHER_TYPE)) {
       numberOfGeneratingSources = 1;
       initialWebSource = null;
       hasCycles = false;
@@ -127,7 +134,7 @@ public class Citation {
     this.id = id;
     this.citedContent = citedContent;
     this.referenceText = referenceText;
-    if (type.equals("Self") || type.equals("Other")) {
+    if (type.equals(SELF_TYPE) || type.equals(OTHER_TYPE)) {
       numberOfGeneratingSources = 1;
       initialWebSource = null;
       hasCycles = false;
@@ -143,15 +150,30 @@ public class Citation {
    * @param links list of urls
    */
   public void webSetUp(List<String> links) {
-    //TODO: finalize this logic
-    // Find a link that doesn't time out or not html
-    // If both are, choose the first one.
+    // Find a link that doesn't time out or non html
+    // If all time out or is non html, choose the first one.
     String url = links.get(0);
     AsyncSourceQuery sq = new AsyncSourceQuery(timeout);
+    for (String link : links) {
+      // Check if link is a dead source
+      if (checkLink(link, sq)) {
+        // Set url to the link that is not a dead source
+        url = link;
+        break;
+      }
+    }
     try {
       Source src = sq.query(url).join();
+      if (src instanceof DeadSource) {
+        if (src.title().equals(AsyncSourceQuery.TIMEOUT_ERROR)) {
+          this.type = TIME_OUT_TYPE;
+        } else if (src.title().equals(AsyncSourceQuery.NOT_HTML_ERROR)) {
+          this.type = NON_HTML_TYPE;
+        }
+      } else {
+        this.type = WEB_TYPE;
+      }
       initialWebSource = src;
-      System.out.println("Citation source: " + src);
       AsyncSearchWebGraph nyGraph = new AsyncSearchWebGraph(
           src, new QueryCacher<>(sq, 500), citedContent,
           depth, threshold);
@@ -181,19 +203,49 @@ public class Citation {
         }
       }).reduce(0, Integer::sum);
     } catch (QueryException | GraphException | CompletionException e) {
-      this.type = "Time Out";
-      System.out.println("ERROR: Url query timeout: " + e.getMessage());
+      System.out.println("ERROR: " + e.getMessage());
     }
   }
 
+  /**
+   * Check if the link is not a deadsource.
+   * @param link url
+   * @param sq query class
+   * @return true if the link is not a deadsource.
+   */
+  public boolean checkLink(String link, AsyncSourceQuery sq) {
+    boolean b = true;
+    try {
+      if (sq.query(link).join() instanceof DeadSource) {
+        b = false;
+      }
+    } catch (QueryException e) {
+      System.out.println(e.getMessage());
+      b = false;
+    }
+    return b;
+  }
+
+  /**
+   * Setter for timeout value.
+   * @param timeout timeout in seconds.
+   */
   public void setTimeout(Integer timeout) {
     this.timeout = timeout;
   }
 
+  /**
+   * Setter for depth value.
+   * @param depth depth integer
+   */
   public void setDepth(Integer depth) {
     this.depth = depth;
   }
 
+  /**
+   * Setter for threshold of async search web.
+   * @param threshold double between 0 and 1.
+   */
   public void setThreshold(Double threshold) {
     this.threshold = threshold;
   }
@@ -258,30 +310,34 @@ public class Citation {
     return hasCycles;
   }
 
+  /**
+   * Returns the cited content.
+   * @return the cited content as string.
+   */
   public String getCitedContent() {
     return citedContent;
   }
 
+  /**
+   * Returns the initial web source.
+   * @return the initial web source as a Source.
+   */
   public Source getInitialWebSource() {
     return initialWebSource;
   }
 
+  /**
+   * Returns the type of the citation.
+   * One of the following: Web, Self, Other
+   * If the type is "Web", it is a typical citation.
+   * If the type is "Time Out", the url timed out.
+   * If the type is "Non-HTML", the algorithm cannot work on a non html page.
+   * If the type is "Self", the generating source IS the wikipedia page.
+   * If the type is "Other", all other fields are null.
+   * @return type of the citation as a string.
+   */
   public String getType() {
     return type;
-  }
-
-  /**
-   *
-   * @param type
-   */
-  public void setType(String type) {
-    this.type = type;
-    if (type.equals("Self")) {
-      numberOfGeneratingSources = 1;
-      initialWebSource = null;
-      genSources = null;
-      sccs = null;
-    }
   }
 
   /**

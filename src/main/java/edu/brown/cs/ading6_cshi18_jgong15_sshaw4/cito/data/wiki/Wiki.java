@@ -243,6 +243,10 @@ public class Wiki implements Source {
     return citationSet;
   }
 
+  /**
+   * From Validatable interface.
+   * @return is valid.
+   */
   @Override
   public boolean isValid() {
     return true;
