@@ -9,12 +9,14 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.source.CosSimThres
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.source.SourceRule;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.HostBlacklistFactory;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.filters.url.URLRule;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.CosSim;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedEdge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.AsyncRootedSourcedMemGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -23,24 +25,42 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
+public class AsyncSearchWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
   public static final int DEFAULT_DEPTH = 10;
+  public static final double DEFAULT_THRESH = 0.2;
   private Query<String, CompletableFuture<Source>> srcQuery;
   private Source keySource;
+  private double relThresh;
 
-  public AsyncWebGraph(Source headVal,
-                       Query<String, CompletableFuture<Source>> srcQuery,
-                       String keyText) {
+  public AsyncSearchWebGraph(Source headVal,
+                             Query<String, CompletableFuture<Source>> srcQuery,
+                             String keyText) {
     this(headVal, srcQuery, keyText, DEFAULT_DEPTH);
   }
 
-  public AsyncWebGraph(Source headVal,
-                       Query<String, CompletableFuture<Source>> srcQuery,
-                       String keyText,
-                       int depth) {
+  public AsyncSearchWebGraph(Source headVal,
+                             Query<String, CompletableFuture<Source>> srcQuery,
+                             String keyText,
+                             int depth) {
+    this(headVal, srcQuery, keyText, depth, DEFAULT_THRESH);
+  }
+
+  public AsyncSearchWebGraph(Source headVal,
+                             Query<String, CompletableFuture<Source>> srcQuery,
+                             String keyText,
+                             int depth,
+                             double relThresh) {
     super(headVal, depth);
     this.srcQuery = srcQuery;
     this.keySource = new DummySource("keywords dummy", keyText);
+
+    if (relThresh < 0 || relThresh > 1.0) {
+      throw new IllegalArgumentException("relThresh must be between [0, 1.0] (inclusive)");
+    }
+
+    this.relThresh = relThresh;
+    SRC_RULES.add((src, prevSrc, graph)
+        -> new CosSim().apply(src.getContent(), prevSrc.getContent()) >= relThresh);
   }
 
   @Override
@@ -146,6 +166,5 @@ public class AsyncWebGraph extends AsyncRootedSourcedMemGraph<Source, String> {
 
   static {
     SRC_RULES = new HashSet<>();
-    SRC_RULES.add(new CosSimThreshold());
   }
 }
