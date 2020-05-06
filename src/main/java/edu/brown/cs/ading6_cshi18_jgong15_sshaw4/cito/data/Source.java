@@ -1,9 +1,11 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.components.Validatable;
+
 import java.util.Calendar;
 import java.util.List;
 
-public interface Source {
+public interface Source extends Validatable {
 
   String title();
 

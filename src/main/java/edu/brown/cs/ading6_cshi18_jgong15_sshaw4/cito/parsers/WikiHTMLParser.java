@@ -1,14 +1,17 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.builders.CitationBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -158,9 +161,13 @@ public class WikiHTMLParser {
    * Returns a citation from an id.
    *
    * @param citeNoteID String that is a citation id.
+   * @param timeout timeout time out value in seconds
+   * @param depth depth of the graph search
+   * @param threshold threshold for graph search between 0 and 1
    * @return a citation corresponding to the id.
    */
-  public Citation parserForCitationFromID(String citeNoteID)  {
+  public Citation parserForCitationFromID(
+      String citeNoteID, Integer timeout, Integer depth, Double threshold)  {
     if (citationIDToContent == null) {
       citationIDToContent = createCitationIDToContent(doc);
     }
@@ -174,31 +181,29 @@ public class WikiHTMLParser {
       Element timeAccessed = refContent.select(".reference-accessdate").first();
       // If there are more than one external links:
       // Use the first archive one for link; the second one is the unaccessble original
-      System.out.println(extLinks);
       if (extLinks != null) {
-        Element extLink = extLinks.first();
-        System.out.println(extLink);
-        if (extLink != null) {
-          String link = extLink.attr("href");
-          return new Citation(
-              "Web",
-              citeNoteID,
-              citedContent,
-              referenceText,
-              link);
+        List<String> links = new ArrayList<>();
+        for (Element extLink : extLinks) {
+          if (extLink != null) {
+            String link = extLink.attr("href");
+            links.add(link);
+          }
+        }
+        if (links.isEmpty()) {
+          return new CitationBuilder(
+              Citation.OTHER_TYPE, citeNoteID, citedContent, referenceText).build();
         } else {
-          return new Citation(
-              "Other",
-              citeNoteID,
-              citedContent,
-              referenceText);
+          return new CitationBuilder(
+              Citation.WEB_TYPE, citeNoteID, citedContent, referenceText)
+              .setTimeout(timeout)
+              .setDepth(depth)
+              .setThreshold(threshold)
+              .setUrl(links)
+              .build();
         }
       } else {
-        return new Citation(
-            "Other",
-            citeNoteID,
-            citedContent,
-            referenceText);
+        return new CitationBuilder(
+            Citation.OTHER_TYPE, citeNoteID, citedContent, referenceText).build();
       }
     }
   }
@@ -207,48 +212,24 @@ public class WikiHTMLParser {
    * Parse the wiki html for citations.
    *
    * @return a set of citation that hasn't been checked for revision date
+   * @param timeout timeout time out value in seconds
+   * @param depth depth of the graph search
+   * @param threshold threshold for graph search between 0 and 1
    */
-  public Set<Citation> parseForRawCitations() {
+  public Set<Citation> parseForRawCitations(
+      Integer timeout, Integer depth, Double threshold) {
     Set<Citation> uncheckedCitations = new HashSet<>();
     if (citationIDToContent == null) {
       citationIDToContent = createCitationIDToContent(doc);
     }
     Set<String> citationIDs = citationIDToContent.keySet();
     for (String citationID : citationIDs) {
-      Citation newCitation = parserForCitationFromID(citationID);
+      Citation newCitation = parserForCitationFromID(
+          citationID, timeout, depth, threshold);
       if (newCitation != null) {
         uncheckedCitations.add(newCitation);
       }
     }
     return uncheckedCitations;
-  }
-
-  /**
-   * Parse the wiki html for citations.
-   *
-   * @return a set of citation that has been checked for revision date
-   */
-  public Set<Citation> parseForCitations() {
-    Set<Citation> checkedCitations = new HashSet<>();
-    Set<Citation> uncheckedCitations = parseForRawCitations();
-    for (Citation citation : uncheckedCitations) {
-      if (!checkCitation(citation)) {
-        citation.setSourceType("Self");
-      }
-      checkedCitations.add(citation);
-    }
-    return checkedCitations;
-  }
-
-  /**
-   * Return true if cited content of the citation is not present
-   * before citation is made.
-   *
-   * @param citation citation to check
-   * @return true or false
-   */
-  public boolean checkCitation(Citation citation) {
-    // TODO: check revision timestamp.
-    return true;
   }
 }

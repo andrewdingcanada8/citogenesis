@@ -10,14 +10,21 @@ import java.util.Objects;
 public class DeadSource implements Source {
 
   private String url;
+  private String reasonOfFailure;
 
   public DeadSource(String url) {
     this.url = url;
+    this.reasonOfFailure = "something went wrong";
+  }
+
+  public DeadSource(String url, String reasonOfFailure) {
+    this.url = url;
+    this.reasonOfFailure = reasonOfFailure;
   }
 
   @Override
   public String title() {
-    return "ded boi";
+    return reasonOfFailure;
   }
 
   @Override
@@ -64,5 +71,18 @@ public class DeadSource implements Source {
   @Override
   public int hashCode() {
     return Objects.hash(url);
+  }
+
+  @Override
+  public boolean isValid() {
+    return false;
+  }
+
+  @Override
+  public String toString() {
+    return "DeadSource{"
+        + "url='" + url + '\''
+        + ", reasonOfFailure='" + reasonOfFailure + '\''
+        + '}';
   }
 }

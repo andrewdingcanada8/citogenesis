@@ -16,21 +16,19 @@ import java.util.concurrent.TimeUnit;
 public class AsyncHttpSource implements DataSource<HttpRequest,
     CompletableFuture<HttpResponse<String>>,
     HttpClient> {
-  public static final int SSL_TIMEOUT = 5;
   private static volatile Map<String, HttpClient> clients;
   private static volatile Map<String, Semaphore> semaphores;
+  private static volatile Map<String, Integer> sslTimeouts;
   private static final int NUM_STREAMS = 15;
   private HttpClient myClient;
   private Semaphore mySem;
-  private String myKey;
+  private int myTimeout;
 
   public AsyncHttpSource(int myTimeoutInSec) {
     this(myTimeoutInSec, "default");
   }
 
   public AsyncHttpSource(int timeOutInSec, String clientKey) {
-    myKey = clientKey;
-
     // initialize client map if called for the first time
     if (clients == null) {
       clients = new HashMap<>();
@@ -38,6 +36,10 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
 
     if (semaphores == null) {
       semaphores = new HashMap<>();
+    }
+
+    if (sslTimeouts == null) {
+      sslTimeouts = new HashMap<>();
     }
 
     // check if we have any clients with the key
@@ -48,9 +50,11 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
               .connectTimeout(Duration.ofSeconds(timeOutInSec))
               .build());
       semaphores.put(clientKey, new Semaphore(NUM_STREAMS));
+      sslTimeouts.put(clientKey, timeOutInSec);
     }
     myClient = clients.get(clientKey);
     mySem = semaphores.get(clientKey);
+    myTimeout = sslTimeouts.get(clientKey);
   }
 
 
@@ -59,7 +63,7 @@ public class AsyncHttpSource implements DataSource<HttpRequest,
     mySem.acquireUninterruptibly();
     //System.err.println("acquiring permit. Num left: " + mySem.availablePermits());
     return myClient.sendAsync(queryInput, HttpResponse.BodyHandlers.ofString())
-        .orTimeout(SSL_TIMEOUT, TimeUnit.SECONDS) // due to SSL infinite loop bug, implement external timeout
+        .orTimeout(myTimeout, TimeUnit.SECONDS) // due to SSL infinite loop bug, implement external timeout
         .thenApply(res -> {
           mySem.release();  // release when done obtaining request info
           //System.err.println("released, num left: " + mySem.availablePermits());

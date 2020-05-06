@@ -119,7 +119,7 @@ public class WikiCitationSocket {
     // Sequentially building and sending citation information to client
     for (String citationID: citationIDs) {
       // Building Citation
-      Citation citation = wiki.getCitationFromID(citationID);
+      Citation citation = wiki.getCitationFromID(citationID, 60, 3, 0.2);
       List<Vertex<Source, String>> genVertices = citation.getGenSources();
       List<Source> genSources = new ArrayList<Source>();
       for (Vertex<Source, String> vertex: genVertices) {
@@ -137,7 +137,7 @@ public class WikiCitationSocket {
       JsonElement jGenSources;
       // Filling fields in payload
       citeRefText = citation.getReferenceText();
-      citeType = citation.getSourceType();
+      citeType = citation.getType();
       citeId = citation.getId();
       hasCycles = citation.getHasCycles();
       if ((citeType.equals("Web")) && citation.getInitialWebSource() != null) {

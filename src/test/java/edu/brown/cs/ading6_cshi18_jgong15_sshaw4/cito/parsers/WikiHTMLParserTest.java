@@ -103,6 +103,4 @@ public class WikiHTMLParserTest {
         " Wikidata Coordinates on Wikidata All stub articles";
     assertEquals(parserCastel.parseForContent(), castelMenardoContent);
   }
-
-
 }

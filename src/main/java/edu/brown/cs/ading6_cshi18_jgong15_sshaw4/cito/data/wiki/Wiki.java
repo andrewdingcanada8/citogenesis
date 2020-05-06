@@ -130,7 +130,7 @@ public class Wiki implements Source {
   public List<String> getLinks() {
     List<String> links = new ArrayList<>();
     for (Citation citation : citationSet) {
-      if (citation.getSourceType().equals("Web")) {
+      if (citation.getType().equals("Web")) {
         links.add(citation.getInitialWebSource().getURL());
       }
     }
@@ -197,10 +197,18 @@ public class Wiki implements Source {
   /**
    * Returns a citation from the corresponding id.
    * @param id citation id.
+   * @param timeout time out value in seconds.
+   * @param depth depth of the graph search
+   * @param threshold threshold for graph search between 0 and 1.
    * @return a citation.
    */
-  public Citation getCitationFromID(String id) {
-    Citation citation = parser.parserForCitationFromID(id);
+  public Citation getCitationFromID(
+      String id,
+      Integer timeout,
+      Integer depth,
+      Double threshold) {
+    Citation citation = parser
+        .parserForCitationFromID(id, timeout, depth, threshold);
     if (citation != null) {
       return citation;
     } else {
@@ -211,19 +219,36 @@ public class Wiki implements Source {
 
   /**
    * Queries the entire citation set. Expensive.
+   * @param timeout timeout time out value in seconds
+   * @param depth depth of the graph search
+   * @param threshold threshold for graph search between 0 and 1
    */
-  public void queryCitationSet() {
-    citationSet = parser.parseForRawCitations();
+  public void queryCitationSet(
+      Integer timeout, Integer depth, Double threshold) {
+    citationSet = parser.parseForRawCitations(timeout, depth, threshold);
   }
 
   /**
    * Get the total set of citations.
    * @return set of citations.
+   * @param timeout timeout time out value in seconds
+   * @param depth depth of the graph search
+   * @param threshold threshold for graph search between 0 and 1
    */
-  public Set<Citation> getCitationSet() {
+  public Set<Citation> getCitationSet(
+      Integer timeout, Integer depth, Double threshold) {
     if (citationSet == null) {
-      queryCitationSet();
+      queryCitationSet(timeout, depth, threshold);
     }
     return citationSet;
+  }
+
+  /**
+   * From Validatable interface.
+   * @return is valid.
+   */
+  @Override
+  public boolean isValid() {
+    return true;
   }
 }
