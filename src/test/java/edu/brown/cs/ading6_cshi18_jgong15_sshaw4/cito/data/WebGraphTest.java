@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -135,5 +136,48 @@ public class WebGraphTest {
     mockServer.stop();
   }
 
+  @Test
+  public void noTimeStampStillWorksTest() throws QueryException, GraphException {
+    Query<String, CompletableFuture<Source>> sq = new AsyncSourceQuery(WebTestUtils.HTTP_TIMEOUT);
+    Source hdSrc = sq.query("http://localhost:63342/"
+        + "term-project-ading6-cshi18-jgong15-sshaw4-1/"
+        + "dummies/pair.html").join();
+
+    assertEquals(hdSrc.title(), "Pair");
+
+    AsyncSearchWebGraph webGraph = new AsyncSearchWebGraph(
+        hdSrc, sq, hdSrc.getContent(), 5, 0.8);
+    webGraph.load();
+    Vertex<Source, String> hv = webGraph.getHead();
+    List<Set<Vertex<Source, String>>> sccs = new Tarjan<Source, String>().search(hv);
+
+    assertEquals(sccs.size(), 2);
+    assertEquals(sccs.get(0).size(), 1);
+    assertEquals(sccs.get(1).size(), 1);
+
+    List<Vertex<Source, String>> gens = sccs.stream().map(c -> {
+      try {
+        return new GeneratingSourceFinder().search(c);
+      } catch (GraphException e) {
+        System.out.println("serious problem: " + e.getMessage());
+        return null;
+      }
+    }).collect(Collectors.toList());
+
+    assertEquals(gens.size(), 2);
+    assertTrue(gens.get(0) == null && gens.get(1) != null
+        || gens.get(1) == null && gens.get(0) != null);
+    Vertex<Source, String> gen = gens.stream()
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList())
+        .get(0);
+    assertNotNull(gen);
+
+    Source genSrc = gen.getVal();
+    assertNotNull(genSrc);
+    assertEquals(genSrc.getURL(), "http://localhost:63342/"
+        + "term-project-ading6-cshi18-jgong15-sshaw4-1/"
+        + "dummies/singleton.html");
+  }
 
 }
