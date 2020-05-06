@@ -40,6 +40,7 @@ public class Tarjan<T, W> implements ComponentSearch<T, W> {
       if (!disc.containsKey(nv)) {
         // if we haven't visited neighbor, recur
         tarjanEngine(nv);
+        lowlink.put(v, Math.min(lowlink.get(v), lowlink.get(nv)));
       } else if (stack.contains(nv)) {
         // if we have, and if on the stack (not part of SCC), nv may be
         // the lowlink node

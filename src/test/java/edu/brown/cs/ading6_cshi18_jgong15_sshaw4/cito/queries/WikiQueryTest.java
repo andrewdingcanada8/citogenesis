@@ -22,8 +22,8 @@ public class WikiQueryTest {
 
   @Before
   public void setUp() {
-    _query = new WikiQuery(30);
-    //assumeTrue(WebTestUtils.checkURL("https://en.wikipedia.org/wiki/Murphy%27s_law"));
+    assumeTrue(WebTestUtils.checkURL("https://en.wikipedia.org/wiki/Murphy%27s_law"));
+    _query = new WikiQuery(WebTestUtils.HTTP_TIMEOUT);
   }
 
   @After

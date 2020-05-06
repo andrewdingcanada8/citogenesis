@@ -31,4 +31,10 @@ public class WikiTest {
     assertEquals(wikiMurphysLaw.getCitationIDs().size(), 27);
     assertEquals(wikiBrownUniversity.getCitationIDs().size(), 151);
   }
+
+  @Test
+  public void runGetCitationFromID() {
+    wikiMurphysLaw.getCitationFromID("#cite_note-7");
+
+  }
 }

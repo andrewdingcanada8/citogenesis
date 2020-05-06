@@ -1,5 +1,6 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.WebTestUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.WebGraph;
@@ -18,6 +19,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.junit.Assume.assumeTrue;
 
 public class WebGraphTest {
 
@@ -65,18 +68,18 @@ public class WebGraphTest {
     gens.stream().forEach(v -> System.out.println("generator: " + v));
   }
 
-  @Ignore
   @Test
   public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
-    //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
-    AsyncSourceQuery sq = new AsyncSourceQuery(10);
-    Source src = sq.query("https://www.nytimes.com/2020/04/26/health/can-antibody-tests-help-end-the-coronavirus-pandemic.html").join();
-    AsyncWebGraph nyGraph = new AsyncWebGraph(src, sq, 5);
-    nyGraph.load();
-    Collection<Vertex<Source, String>> loadedVertices = nyGraph.getLoadedVertices();
+    assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
+    String key = "that has no specific goals to accomplish, allowing players a large amount of freedom in choosing how to play the game.";
+    AsyncSourceQuery sq = new AsyncSourceQuery(30);
+    Source src = sq.query("https://www.ign.com/articles/2011/11/24/minecraft-review").join();
+    AsyncWebGraph graph = new AsyncWebGraph(src, sq, key,3);
+    graph.load();
+    Collection<Vertex<Source, String>> loadedVertices = graph.getLoadedVertices();
     loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
 
-    Vertex<Source, String> hv = nyGraph.getHead();
+    Vertex<Source, String> hv = graph.getHead();
     List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
 
     comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());

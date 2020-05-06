@@ -32,15 +32,22 @@ public class AsyncHTMLQuery extends AsyncHttpQuery<String, String> {
     return result.thenCompose(res ->
         CompletableFuture.supplyAsync(() -> {
           List<String> contentTypes = res.headers().map().get("content-type");
+          String content = res.body();
+          boolean isHtml;
           try {
-            boolean isHtml = contentTypes
+            isHtml = contentTypes
                 .stream()
                 .anyMatch(str -> str.contains("text/html"));
-            if (!isHtml) {
-              throw new CompletionException(new QueryException(curURL + " is not an html page."));
-            }
           } catch (NullPointerException e) {
-            throw new CompletionException(new QueryException("cannot obtain headers"));
+            try {
+              isHtml = res.body().contains("<!DOCTYPE html>");
+            } catch (NullPointerException ex) {
+              throw new CompletionException(
+                  new QueryException("cannot detect page type of " + curURL));
+            }
+          }
+          if (!isHtml) {
+            throw new CompletionException(new QueryException(curURL + " is not an html page."));
           }
           return res.body();
         }));

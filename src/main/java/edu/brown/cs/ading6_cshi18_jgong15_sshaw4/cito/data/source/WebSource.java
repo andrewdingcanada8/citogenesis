@@ -38,7 +38,6 @@ public class WebSource implements Source {
   public WebSource(String url, String html) {
     this.html = html;
     this.url = url;
-    this.timestamp = timestamp;
 
     // extract all links (href attributes in anchor tags)
     Document doc = Jsoup.parse(html, url);
@@ -106,12 +105,12 @@ public class WebSource implements Source {
     }
     try {
       calFut = timestampQuery.query(url).exceptionally(e -> {
-        System.out.println("Error while querying timestamp for " + url + ": "
+        System.err.println("Error while querying timestamp for " + url + ": "
             + e.getMessage());
         return null;
       });
     } catch (QueryException e) {
-      System.out.println("Error while initiating query for calendar for "
+      System.err.println("Error while initiating query for calendar for "
           + url + ": " + e.getMessage());
       calFut = null;
     }

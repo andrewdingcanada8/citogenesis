@@ -8,7 +8,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.async.AsyncHttpQuery;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -18,8 +17,15 @@ import java.util.concurrent.CompletableFuture;
  * Also implements Source to work with web search.
  */
 public class Wiki implements Source {
+  /**
+   * Parser to parse the html of the wiki page.
+   */
   private WikiHTMLParser parser;
+  /**
+   * The set of citation ids. E.g. "#cite_note-1"
+   */
   private Set<String> citationIDs;
+
   private Set<Citation> citationSet;
   private Calendar timestamp;
   private String url;
@@ -69,7 +75,7 @@ public class Wiki implements Source {
   @Override
   public String title() {
     if (title == null) {
-      title = parser.parserForTitle();
+      title = parser.parseForTitle();
     }
     return title;
   }
