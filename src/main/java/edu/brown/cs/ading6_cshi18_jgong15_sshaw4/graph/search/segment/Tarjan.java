@@ -7,6 +7,11 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of Tarjan's algorithm.
+ * @param <T> type stored in Vertex
+ * @param <W> type stored in Edge
+ */
 public class Tarjan<T, W> implements ComponentSearch<T, W> {
 
   private int index;
@@ -15,6 +20,13 @@ public class Tarjan<T, W> implements ComponentSearch<T, W> {
   private Map<Vertex<T, W>, Integer> disc;
   private Map<Vertex<T, W>, Integer> lowlink;
 
+  /**
+   * Given a Vertex, return a list of strongly-connected components of all
+   * vertices accessible from that vertex.
+   * @param start Vertex from which to start segmentation
+   * @return List of SCCs
+   * @throws GraphException Exception while obtaining neighboring edges and vertices
+   */
   @Override
   public List<Set<Vertex<T, W>>> search(Vertex<T, W> start) throws GraphException {
     // reset global variables
@@ -27,6 +39,11 @@ public class Tarjan<T, W> implements ComponentSearch<T, W> {
     return sccs;
   }
 
+  /**
+   * Recursive component of Tarjan's algorithm: the fancy depth-first search.
+   * @param v Vertex to be processed
+   * @throws GraphException Exception while obtaining neighboring vertices
+   */
   private void tarjanEngine(Vertex<T, W> v) throws GraphException {
     // set discovery index to the smallest unused index
     disc.put(v, index);
@@ -40,6 +57,7 @@ public class Tarjan<T, W> implements ComponentSearch<T, W> {
       if (!disc.containsKey(nv)) {
         // if we haven't visited neighbor, recur
         tarjanEngine(nv);
+        lowlink.put(v, Math.min(lowlink.get(v), lowlink.get(nv)));
       } else if (stack.contains(nv)) {
         // if we have, and if on the stack (not part of SCC), nv may be
         // the lowlink node

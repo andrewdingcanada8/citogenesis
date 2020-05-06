@@ -1,30 +1,30 @@
-<#assign head>
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>${title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- In real-world webapps, css is usually minified and
+         concatenated. Here, separate normalize from our code, and
+         avoid minification for clarity. -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/html5bp.css">
+    <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="css/socket-demo.css">
-</#assign>
+</head>
 
-<#assign body>
-
+<body>
 <h1>Sockets Demo</h1>
 <div id="content">
     <input id="socket-form" name="socket-form" class="u-full-width"
            type="text"
            placeholder="What you say here should appear below when you press the button:">
-<#--        <form method="GET" id="socket-form" action="/socket-demo">-->
-<#--        <label for="urlbox" class="input-label">What you say here should appear below when you press the button:</label><br>-->
-<#--        <textarea name="urlbox" id="urlbox"></textarea><br>-->
-<#--    </form>-->
     <button id="submit">Submit</button>
     <p class="hover-demo">Hover on me!</p>
     <p id="result"></p>
 </div>
 
-</#assign>
-<#include "main.ftl">
-
-
-<#--<script>-->
-<#--    $(document).ready(function() {-->
-<#--        setup_click();-->
-<#--        setup_socket();-->
-<#--    });-->
-<#--</script>-->
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/annotate-socket.js"></script>
+<#--<script src="js/websocket.js"></script>-->
+</body>
+</html>

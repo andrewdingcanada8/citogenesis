@@ -1,51 +1,22 @@
 const MESSAGE_TYPE = {
-
-    SUBMIT1: 0,
-    // SUBMIT1: when the user clicks on 'Annotate'
-    // payload: id, url
-
-    SUBMIT2: 1,
-    // SUBMIT2: when the user clicks on 'Graph'
-    // payload: id, url
-
-    ANNOTATION: 2,
-    // ANNOTATION: Server sent annotation information
-    // payload: TODO: tbd
-
-    GRAPH: 3
-    // GRAPH: Server sent graphh information
-    // payload: TODO: tbd
+    CONNECT: 0,
+    URLSUBMISSION: 1,
+    HTML: 2,
+    CITATION: 3
 };
 
 let conn = null;
 let myId = -1;
+let graphs = {};
 
+// Fires on page load.
 $(document).ready(() => {
-    setup_click();
     setup_socket();
 });
 
-
-
-
-function setup_click() {
-    // For Annotation Submit Button
-    $('#annotateSubmitButton').click(function(evt) {
-        evt.preventDefault();
-        let url = $('#pageURL').val();
-        annotate(url);
-    });
-    // For Graph Submit Button
-    $('#graphSubmitButton').click(function(evt) {
-        evt.preventDefault();
-        let url = $('#pageURL').val();
-        graph(url);
-    });
-}
-
 // Setup the WebSocket connection for live updating of scores.
 function setup_socket () {
-    conn = new WebSocket('ws://' + window.location.host + '/socket-process');
+    conn = new WebSocket('ws://' + window.location.host + '/citation-socket');
 
     conn.onerror = err => {
         console.log('Connection error:', err);
@@ -57,35 +28,46 @@ function setup_socket () {
             default:
                 console.log('Unknown message type!', data.type);
                 break;
-            case MESSAGE_TYPE.ANNOTATION:
-                const url = data.payload.url;
-                console.log(url);
-                $('#result').text(url);
+            case MESSAGE_TYPE.CONNECT:
+                myId = parseInt(data.payload.id, 10);
+                console.log("CONNECT MESSAGE RECIEVED: " + myId); // TODO: Delete Later
+                urlSubmit();
                 break;
-            case MESSAGE_TYPE.GRAPH:
+            case MESSAGE_TYPE.HTML:
+                console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
+                insertHTML(data);
+                break;
+            case MESSAGE_TYPE.CITATION:
+                console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
+                new_annotation(data);
+                let id = data.payload.citeId;
+                let graph = data.payload.jGraph;
+                graphs[id] = graph;
+                console.log(graph); // TODO: Delete Later
                 break;
         }
     };
 }
 
-/**
- * Called when a user clicks the annotate button
- * @param url - a string that contains the website url to be annotated
- */
-const annotate = url => {
-    conn.send(JSON.stringify({type: MESSAGE_TYPE.ANNOTATE, payload: {
+// Called when a user clicks the annotate button
+function urlSubmit() {
+    let submitURL = window.location.href;
+    submitURL = submitURL.substr(submitURL.lastIndexOf("/")-4, submitURL.length);
+    conn.send(JSON.stringify({type: MESSAGE_TYPE.URLSUBMISSION, payload: {
             id: myId,
-            url: url
+            url: "https://en.wikipedia.org/" + submitURL
         }}));
 }
 
 /**
- * Called when a user clicks the graph button
- * @param url - a string that contains the website url to be graphed
+ * Helper function that inserts the shortened content HTML of the wikipedia
+ * article. HTML should be pre-shortened and have its tags already added.
+ * @param data
  */
-const graph = url => {
-    conn.send(JSON.stringify({type: MESSAGE_TYPE.GRAPH, payload: {
-            id: myId,
-            url: url
-        }}));
+function insertHTML(data) {
+    let html = data.payload.html;
+    let htm = html.substr(0, 200);
+    console.log(htm);
+    let div = document.getElementById("wiki-page");
+    div.insertAdjacentHTML("beforeend", html);
 }

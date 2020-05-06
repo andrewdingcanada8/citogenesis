@@ -1,14 +1,10 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.forgetful;
 
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.SourceParseException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.SourcedVertex;
-
-import java.util.Set;
 
 /**
  * An implementation of {@link Graph} if there is an external source.

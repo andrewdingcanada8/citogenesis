@@ -66,7 +66,7 @@ public class CosSim implements BiFunction<String, String, Double> {
     try {
       words = Files.readAllLines(Paths.get("data/cito/english_nltk.txt"));
     } catch (IOException e) {
-      System.out.println("Cannot find english_nltk.txt");
+      System.err.println("Cannot find english_nltk.txt");
       words = Collections.emptyList();
     }
     List<String> puncs = List.of("!", "@", "#", "$", "%", "^", "&", "*", "(", ")", ":",

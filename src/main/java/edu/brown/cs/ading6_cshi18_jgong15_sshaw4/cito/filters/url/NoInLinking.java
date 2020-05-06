@@ -19,7 +19,7 @@ public class NoInLinking implements URLRule {
       srcURL = new URL(prev);
       dstURL = new URL(url);
     } catch (MalformedURLException e) {
-      System.out.println(url + " is a malformed URL");
+      System.err.println(url + " is a malformed URL");
       return false;
     }
 

@@ -4,6 +4,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.CosSim;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 
+@Deprecated
 public class CosSimThreshold implements SourceRule {
 
   private static final double THRESHOLD = 0.2;
