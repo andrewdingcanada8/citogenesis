@@ -12,47 +12,81 @@
     <link rel="stylesheet" href="/css/wiki1.css">
     <link rel="stylesheet" href="/css/wiki2.css">
     <link rel="stylesheet" href="/css/annotate.css">
+    <script src="/js/jquery-2.1.1.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
+    <script src="/js/new_annotation.js"></script>
+    <script src="/js/cards/regular_card.js"></script>
+    <script src="/js/cards/null_list_card.js"></script>
+    <script src="/js/cards/deprecated_card.js"></script>
+    <script src="/js/cards/not_a_webpage_card.js"></script>
+    <script src="/js/cards/other_card.js"></script>
+    <script src="/js/cards/timeout_card.js"></script>
+    <script src="/js/annotate-socket.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/graph.js"></script>
 </head>
 
 <body>
     <div class="upper-section">
         <div class="ui menu">
-            <div class="header item">
-                <a href="http://localhost:4567/main">CITOGENESIS</a>
+            <div class="header item" id="logo">
+                <a href="http://localhost:4567/main" id="logo-text">CITOGENESIS</a>
             </div>
-            <a class="item" href="javascript:history.back()">
-                <i class="arrow left icon"></i>
-            </a>
-            <a class="item" href="javascript:history.forward()">
-                <i class="arrow right icon"></i>
-            </a>
+            <a class="item" href="javascript:history.back()"><i class="arrow left icon"></i></a>
+            <a class="item" href="javascript:history.forward()"><i class="arrow right icon"></i></a>
             <div class="item" id="article-labels">
-                <a class="ui blue label">
-                    <i class="exclamation triangle icon"></i>
-                    5 Generating Sources
-                </a>
-                <a class="ui red label">
-                    <i class="exclamation triangle icon"></i>
-                    Circular Reporting
-                </a>
+                <a class="ui blue label" id="menu-citation-stat"><i class="globe icon"></i>50</a>
+                <a class="ui red label" id="menu-cr-stat"><i class="exclamation triangle icon"></i>CR Found</a>
+            </div>
 
-            </div>
-            <div class="item right">
-                <div class="ui action input" id="url-search-box">
-                    <input type="text" placeholder="Navigate to...">
-                    <div class="ui button">Annotate</div>
+            <div class="right item">
+                <div class="ui action input">
+                    <input type="text" placeholder="Navigate to..." id="pageURL">
+                    <button class="ui teal button" onclick="annotate()">Annotate</button>
                 </div>
+                <div class="ui basic button" id="help-button" onclick="show_help()">Help</div>
             </div>
-            <div class="item">
-                <div class="ui button">Help</div>
+        </div>
+    </div>
+    <div class="ui page dimmer">
+        <script>
+            function show_help() {$('.ui.page.dimmer').dimmer('show');}
+        </script>
+        <div class="help overlay content">
+
+            <div class="help top">
+                <p><i class="arrow up icon"></i>Menu, Backwards/Forwards, #Sources, Circular Reporting Label, Search Bar, Help Section</p>
             </div>
+
+            <div class="help left">
+                <i class="arrow left icon"></i>
+                <p>Each Wikipedia citation is displayed as a card.</p>
+                <a class="ui green circular label">3</a>
+                <p style="display: inline;">There's </p>
+                <br>
+                <a class="ui green circular label">3</a>
+                <p style="display: inline;">There's </p>
+                <br>
+                <a class="ui green circular label">3</a>
+                <p style="display: inline;">There's </p>
+            </div>
+            <div class="help center" style="float: right;">
+                <p>To use Citogenesis, simply input the url of an existing Wikipedia article and click annotate.</p>
+                <p>Citogenesis will go and help you discover all of the generating sources for each Wikipedia citation.</p>
+                <button class="ui mini purple inverted button">
+                    See Graph
+                </button>
+
+                <p><i style="display: inline;" class="arrow up icon"></i>Click on this button in the sidebar to see a internet graph with the generating sources of a given citation.</p>
+            </div>
+
+
         </div>
     </div>
     <div class="lower-section">
         <div class="sidenav">
             <div class="ui raised segment" id="annotation-tray">
                 <a class="ui teal ribbon label" id="annotation-label">Annotations</a>
-
 
                 <div class="ui cards" id="annotation-column">
 
@@ -74,7 +108,7 @@
 <#--                                <a class="item" href="">Src 2</a>-->
 <#--                            </div>-->
 <#--                            <h5 class="ui red header">Circular reporting found.</h5>-->
-<#--                            <button class="ui small violet inverted right labeled icon button graph-redirect">-->
+<#--                            <button class="ui small violet inverted right labeled icon button graph">-->
 <#--                                <i class="right arrow icon"></i>-->
 <#--                                <span>See Graph</span>-->
 <#--                            </button>-->
@@ -91,16 +125,15 @@
 
         </div>
 
-        <div class="extracted-wiki-page">
-            <div id="content" class="mw-body" role="main">
-
+        <div class="extracted-wiki-page" id="wiki-page">
+            <div class="ui inverted dimmer graph">
+                <i class="close icon"></i>
+                <div>
+                    <h1>SAMPLE GRAPH DISPLAY OUTPUT</h1>
+                </div>
             </div>
         </div>
     </div>
-
-    <script src="/js/jquery-2.1.1.js"></script>
-    <script src="/js/new_annotation.js"></script>
-    <script src="/js/annotate-socket.js"></script>
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start
      dealing with real world issues like old browsers.  -->

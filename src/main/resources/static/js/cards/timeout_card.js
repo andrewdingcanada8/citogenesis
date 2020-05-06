@@ -1,0 +1,3 @@
+function timeoutCard (card, data) {
+
+}

@@ -1,25 +1,25 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.google.common.collect.ImmutableMap;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.GraphHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.MainHandler;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.WikiCitationSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.run.REPL;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import spark.*;
+import spark.ExceptionHandler;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -104,16 +104,8 @@ public final class Main {
     Spark.get("/main", new MainHandler(), freeMarker);
     Spark.get("/search", new SearchHandler(), freeMarker);
     Spark.get("/wiki/:pageURL", new AnnotateHandler(), freeMarker);
-    Spark.get("/graph/:pageURL", new GraphHandler(), freeMarker);
-  }
-
-  private class SocketDemoHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      Map<String, Object> variables = ImmutableMap.of("title", "Demo");
-      return new ModelAndView(variables, "socket-demo.ftl");
-    }
+    Spark.get("/graph", new GraphHandler(), freeMarker);
+//    Spark.get("/graph/wiki/:pageURL", new GraphHandler(), freeMarker);
   }
 
   /**
