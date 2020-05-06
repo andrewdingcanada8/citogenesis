@@ -15,6 +15,12 @@
     <script src="/js/jquery-2.1.1.js"></script>
     <script src="/semantic/dist/semantic.min.js"></script>
     <script src="/js/new_annotation.js"></script>
+    <script src="/js/cards/regular_card.js"></script>
+    <script src="/js/cards/null_list_card.js"></script>
+    <script src="/js/cards/deprecated_card.js"></script>
+    <script src="/js/cards/not_a_webpage_card.js"></script>
+    <script src="/js/cards/other_card.js"></script>
+    <script src="/js/cards/timeout_card.js"></script>
     <script src="/js/annotate-socket.js"></script>
     <script src="/js/search.js"></script>
     <script src="/js/graph.js"></script>
