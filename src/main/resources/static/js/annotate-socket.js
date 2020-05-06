@@ -2,7 +2,8 @@ const MESSAGE_TYPE = {
     CONNECT: 0,
     URLSUBMISSION: 1,
     HTML: 2,
-    CITATION: 3
+    CITATION: 3,
+    GRAPH: 4
 };
 
 let conn = null;

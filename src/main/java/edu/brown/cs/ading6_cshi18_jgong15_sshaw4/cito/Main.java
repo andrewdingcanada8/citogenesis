@@ -6,6 +6,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.GraphHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.MainHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.GraphSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.WikiCitationSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.run.REPL;
 import freemarker.template.Configuration;
@@ -97,6 +98,7 @@ public final class Main {
 
     FreeMarkerEngine freeMarker = createEngine();
     Spark.webSocket("/citation-socket", WikiCitationSocket.class);
+    Spark.webSocket("/graph-socket", GraphSocket.class);
 //    Spark.webSocket("/socket-process", DemoSocket.class);
 
     // Setup Spark Routes
@@ -105,15 +107,7 @@ public final class Main {
     Spark.get("/search", new SearchHandler(), freeMarker);
     Spark.get("/wiki/:pageURL", new AnnotateHandler(), freeMarker);
     Spark.get("/graph", new GraphHandler(), freeMarker);
-  }
-
-  private class SocketDemoHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      Map<String, Object> variables = ImmutableMap.of("title", "Demo");
-      return new ModelAndView(variables, "socket-demo.ftl");
-    }
+//    Spark.get("/graph/wiki/:pageURL", new GraphHandler(), freeMarker);
   }
 
   /**
