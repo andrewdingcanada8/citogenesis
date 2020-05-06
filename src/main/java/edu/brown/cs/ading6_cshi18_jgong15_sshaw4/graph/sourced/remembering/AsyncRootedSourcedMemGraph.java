@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
  * An implementation of RootedSourcedMemGraph that uses a concurrent shared-memory
  * approach to the BFS exploration algorithm.
  *
- * @param <T>
- * @param <W>
+ * @param <T> type stored in Vertex
+ * @param <W> type stored in Edge
  */
 public abstract class AsyncRootedSourcedMemGraph<T, W> extends RootedSourcedMemGraph<T, W> {
 
