@@ -8,12 +8,34 @@
     position: fixed;
 }
 
-/*#article-labels {*/
+#logo {
+    background-color: #32416c;
+}
 
-/*}*/
+#logo-text {
+    color: white;
+}
 
-#url-search-box {
-    width: 40vw;
+#pageURL {
+    width: 30vw;
+}
+
+#help-button {
+    margin-left: 16px;
+}
+
+
+
+#menu-citation-stat {
+    margin-left: 0;
+}
+
+#menu-cr-stat {
+
+}
+
+@media all and (max-width: 1100px) {
+    #article-labels { display: none; }
 }
 
 .lower-section {

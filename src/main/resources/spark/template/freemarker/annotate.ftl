@@ -12,13 +12,17 @@
     <link rel="stylesheet" href="/css/wiki1.css">
     <link rel="stylesheet" href="/css/wiki2.css">
     <link rel="stylesheet" href="/css/annotate.css">
+    <script src="/js/jquery-2.1.1.js"></script>
+    <script src="/js/new_annotation.js"></script>
+    <script src="/js/annotate-socket.js"></script>
+    <script src="/js/search.js"></script>
 </head>
 
 <body>
     <div class="upper-section">
         <div class="ui menu">
-            <div class="header item">
-                <a href="http://localhost:4567/main">CITOGENESIS</a>
+            <div class="header item" id="logo">
+                <a href="http://localhost:4567/main" id="logo-text">CITOGENESIS</a>
             </div>
             <a class="item" href="javascript:history.back()">
                 <i class="arrow left icon"></i>
@@ -27,24 +31,23 @@
                 <i class="arrow right icon"></i>
             </a>
             <div class="item" id="article-labels">
-                <a class="ui blue label">
-                    <i class="exclamation triangle icon"></i>
-                    5 Generating Sources
+                <a class="ui blue label" id="menu-citation-stat">
+                    <i class="globe icon"></i>
+                    50
                 </a>
-                <a class="ui red label">
+                <a class="ui red label" id="menu-cr-stat">
                     <i class="exclamation triangle icon"></i>
-                    Circular Reporting
+                    CR Found
                 </a>
 
             </div>
-            <div class="item right">
-                <div class="ui action input" id="url-search-box">
-                    <input type="text" placeholder="Navigate to...">
-                    <div class="ui button">Annotate</div>
+            <div class="right item">
+                <div class="ui action input">
+                    <input type="text" placeholder="Navigate to..." id="pageURL">
+                    <button class="ui teal button" onclick="annotate()">Annotate</button>
+
                 </div>
-            </div>
-            <div class="item">
-                <div class="ui button">Help</div>
+                <div class="ui basic button" id="help-button">Help</div>
             </div>
         </div>
     </div>
@@ -97,10 +100,6 @@
             </div>
         </div>
     </div>
-
-    <script src="/js/jquery-2.1.1.js"></script>
-    <script src="/js/new_annotation.js"></script>
-    <script src="/js/annotate-socket.js"></script>
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start
      dealing with real world issues like old browsers.  -->

@@ -95,15 +95,15 @@ function new_annotation(data) {
             htmlList.appendChild(a);
         }
         // Changing Color of Bubble
-        if (srcList.length() === 0) { // TODO: modifying a after a has already been added might cause issues
+        if (srcList.length === 0) { // TODO: modifying a after a has already been added might cause issues
             bubbleCount.className = "ui src orange circular label";
             bubbleCount.innerText = "1";
-        } else if (srcList.length() < 1) {
+        } else if (srcList.length < 1) {
             bubbleCount.className = "ui src yellow circular label";
-            bubbleCount.innerText = srcList.length() + 1;
+            bubbleCount.innerText = srcList.length + 1;
         } else {
             bubbleCount.className = "ui src green circular label";
-            bubbleCount.innerText = srcList.length() + 1;
+            bubbleCount.innerText = srcList.length + 1;
         }
         if (hasCycles === true) {
             bubbleCount.className = "ui src red circular label";
@@ -113,7 +113,6 @@ function new_annotation(data) {
             crWarning.innerText = "Circular reporting found.";
             content2.appendChild(crWarning);
         }
-        span.innerText = srcList.length;
     } else {
         bubbleCount.className = "ui src orange circular label";
         bubbleCount.innerText = "1"; // TODO: not sure how we want to handle this behavior. 1 or 0?
@@ -122,55 +121,16 @@ function new_annotation(data) {
         a.className = "item";
         htmlList.appendChild(a);
     }
-    // Graph Toggle Button
-    let graphButton = document.createElement("button");
-    graphButton.className = "ui small violet inverted right labeled icon button graph-redirect";
-    content2.appendChild(graphButton);
-    let rightArrow = document.createElement("i");
-    rightArrow.className = "right arrow icon";
-    let graphButtonText = document.createElement("span");
-    graphButtonText.innerText = "See Graph";
-    graphButton.appendChild(rightArrow);
-    graphButton.appendChild(graphButtonText);
-    //
-    //
-    // let citeLink = document.createElement("a");
-    // citeLink.href = citeURL;
-    // if (citeRefText.length > CITATION_TITLE_LENGTH) {
-    //     citeRefText = citeRefText.substr(0, CITATION_TITLE_LENGTH); // Shortens string to 50 chars
-    //     citeRefText = citeRefText.concat('...');
-    // }
-    // citeLink.innerText = citeRefText;
-    // card.appendChild(citeLink);
-    //
-    // let genP = document.createElement("p");
-    // if (srcList !== null) {
-    //     genP.innerText = "Generating Sources (" + srcList.length + "):";
-    // } else {
-    //     genP.innerText = "No Generating Sources Found";
-    // }
-    //
-    // card.appendChild(genP);
-    //
-    // let genList = document.createElement("ol");
-    // card.appendChild(genList);
-    //
-    // if (srcList !== null) {
-    //     for (let i = 0; i < srcList.length; i++) {
-    //         if (i > 5) {
-    //             break;
-    //         }
-    //         let li = document.createElement("li");
-    //         let a = document.createElement("a");
-    //         a.innerText = srcList[i].title;
-    //         a.href = srcList[i].url;
-    //         // console.log(srcList[i].title + " and " + srcList[i].url); // TODO: Delete Later
-    //         li.appendChild(a);
-    //         genList.appendChild(li);
-    //     }
-    // }
-    //
-    // let circularReport = document.createElement("p");
-    // circularReport.innerText = "Circular Reporting: " + hasCycles;
-    // card.appendChild(circularReport);
+    if (srcList !== null) {
+        // Graph Toggle Button
+        let graphButton = document.createElement("button");
+        graphButton.className = "ui small violet inverted right labeled icon button graph-redirect";
+        content2.appendChild(graphButton);
+        let rightArrow = document.createElement("i");
+        rightArrow.className = "right arrow icon";
+        let graphButtonText = document.createElement("span");
+        graphButtonText.innerText = "See Graph";
+        graphButton.appendChild(rightArrow);
+        graphButton.appendChild(graphButtonText);
+    }
 }
