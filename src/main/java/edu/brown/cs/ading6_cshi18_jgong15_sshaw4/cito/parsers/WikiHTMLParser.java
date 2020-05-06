@@ -1,7 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.parsers;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.CitationBuilder;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.builders.CitationBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -181,13 +181,11 @@ public class WikiHTMLParser {
       Element timeAccessed = refContent.select(".reference-accessdate").first();
       // If there are more than one external links:
       // Use the first archive one for link; the second one is the unaccessble original
-      System.out.println(extLinks);
       if (extLinks != null) {
         List<String> links = new ArrayList<>();
         for (Element extLink : extLinks) {
           if (extLink != null) {
             String link = extLink.attr("href");
-            System.out.println(link);
             links.add(link);
           }
         }

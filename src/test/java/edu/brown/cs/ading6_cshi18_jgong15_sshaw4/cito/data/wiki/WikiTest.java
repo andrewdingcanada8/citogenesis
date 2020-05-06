@@ -1,8 +1,8 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki;
 
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.builders.CitationBuilder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

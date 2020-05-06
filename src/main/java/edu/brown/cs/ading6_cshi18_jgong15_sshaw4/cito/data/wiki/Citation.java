@@ -219,7 +219,7 @@ public class Citation {
       if (sq.query(link).join() instanceof DeadSource) {
         b = false;
       }
-    } catch (QueryException e) {
+    } catch (QueryException | IllegalArgumentException e) {
       System.out.println(e.getMessage());
       b = false;
     }
