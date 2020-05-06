@@ -28,7 +28,7 @@ public class WikiCitationSocket {
           new SourceSerializer()).create();
   private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;
-  private static final int TIMELIMIT = 10;
+  private static final int TIME_LIMIT = 10;
 
   private static enum MESSAGE_TYPE {
     CONNECT,
@@ -37,6 +37,12 @@ public class WikiCitationSocket {
     CITATION
   }
 
+  /**
+   * When WebSocket first connects, this method messages the client to let it know of the
+   * connection, and supplies a Session ID.
+   * @param session - Session Object
+   * @throws IOException - IOException
+   */
   @OnWebSocketConnect
   public void connected(Session session) throws IOException {
     SESSIONS.put(nextId, session);
@@ -48,38 +54,47 @@ public class WikiCitationSocket {
     session.getRemote().sendString(GSON.toJson(message));
     nextId++;
   }
-
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
+    System.out.println("[Server] INFO: Socket closed due to: " + reason);
     SESSIONS.remove(session);
   }
 
+  /**
+   * OnWebSocketMessage is called whenever a new WebSocket message is sent from the client to the
+   * server. After the server sends a CONNECT message, the client sends back a URLSUBMISSION, which
+   * can be used to initiate the Wiki object. This class will then sequentially send messages to the
+   * client with information for the page like HTML, citation data etc.
+   * @param session - Session object
+   * @param message - JSON String that contains an MESSAGE_TYPE 'type' and JsonObject 'payload' in
+   *                its top level
+   * @throws IOException - IOException
+   */
   @OnWebSocketMessage
   public void message(Session session, String message) throws IOException {
     JsonObject received = GSON.fromJson(message, JsonObject.class);
     assert received.get("type").getAsInt() == MESSAGE_TYPE.URLSUBMISSION.ordinal();
 
-    //unpack the payload
+    // Extract message payload
     JsonObject payload = received.get("payload").getAsJsonObject();
     JsonElement id = payload.get("id");
 
-    //process the payload
+    // Creating Wiki
+    Wiki wiki = null;
     String url = payload.get("url").getAsString();
-    System.out.println("url: " + url);
-    Set<Citation> citations = new HashSet<>();
+    System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
     String html = "";
     try {
-      Wiki wiki = new WikiQuery(TIMELIMIT).query(url);
+      wiki = new WikiQuery(TIME_LIMIT).query(url);
       html = wiki.getContentHTML();
-      citations = wiki.getCitationSet();
     } catch (QueryException e) {
       e.printStackTrace();
     }
-    System.out.println("citations: " + citations.size());
-    //pack the results
-
+    // If the program exits here, the wiki has failed to be constructed.
+    assert wiki != null;
+    // If the program exits here, wiki was not able to access webpage correctly
     assert !html.equals("");
-    System.out.println(html);
+
     // Preparing HTML payload
     JsonObject htmlPayload = new JsonObject();
     htmlPayload.add("id", id);
@@ -96,9 +111,15 @@ public class WikiCitationSocket {
     SESSIONS.get(id.getAsInt()).getRemote().sendString(htmlToSendStr);
 
 
-    //JSON the citation here
-    Type type = new TypeToken<List<Source>>(){}.getType();
-    for (Citation citation: citations) {
+    // Getting Citation ID
+    Set<String> citationIDs = new HashSet<>();
+    citationIDs = wiki.getCitationIDs();
+    Type type = new TypeToken<List<Source>>() { }.getType();
+
+    // Sequentially building and sending citation information to client
+    for (String citationID: citationIDs) {
+      // Building Citation
+      Citation citation = wiki.getCitationFromID(citationID, 60, 3, 0.2);
       List<Vertex<Source, String>> genVertices = citation.getGenSources();
       List<Source> genSources = new ArrayList<Source>();
       for (Vertex<Source, String> vertex: genVertices) {
@@ -106,33 +127,29 @@ public class WikiCitationSocket {
           genSources.add(vertex.getVal());
         }
       }
-      System.out.println("sources: " + genSources.size()); // TODO: Delete Later
-
+      // Declaring fields in payload
       String citeRefText;
       String citeType;
       String citeId;
       Boolean hasCycles;
       String citeTitle;
       String citeURL;
-      String jGenSources;
+      JsonElement jGenSources;
+      // Filling fields in payload
       citeRefText = citation.getReferenceText();
-      citeType = citation.getSourceType();
+      citeType = citation.getType();
       citeId = citation.getId();
       hasCycles = citation.getHasCycles();
       if ((citeType.equals("Web")) && citation.getInitialWebSource() != null) {
         citeTitle = citation.getInitialWebSource().title();
         citeURL = citation.getInitialWebSource().getURL();
-        jGenSources = GSON.toJson(genSources, type); // title, url
+        jGenSources = GSON.toJsonTree(genSources, type); // title, url
       } else {
         citeTitle = "";
         citeURL = "";
-        jGenSources = "";
+        jGenSources = null;
       }
-
-
-      JsonObject citeToSend = new JsonObject();
-      citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
-
+      // Prepare Payload, append fields
       JsonObject citePayload = new JsonObject();
       citePayload.add("id", id);
       citePayload.addProperty("citeRefText", citeRefText);
@@ -141,11 +158,12 @@ public class WikiCitationSocket {
       citePayload.addProperty("citeType", citeType);
       citePayload.addProperty("citeURL", citeURL);
       citePayload.addProperty("hasCycles", hasCycles);
-      citePayload.addProperty("jGenSources", jGenSources); // TODO: diff between add and addProperty? why does it say i can add a JSON object instead of String to payload.add
-
-      System.out.println(citePayload); // TODO: Delete Later
-
+      citePayload.add("jGenSources", jGenSources);
+      // Preparing ToSend object with payload and message type inside
+      JsonObject citeToSend = new JsonObject();
+      citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
       citeToSend.add("payload", citePayload);
+      // Sent ToSend to client
       String citeToSendStr = GSON.toJson(citeToSend);
       System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
       SESSIONS.get(id.getAsInt()).getRemote().sendString(citeToSendStr);
