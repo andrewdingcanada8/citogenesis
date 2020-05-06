@@ -1,4 +1,4 @@
-const CITATION_TITLE_LENGTH = 40;
+const CITATION_TITLE_LENGTH = 45;
 
 function new_annotation(data) {
     // Extract Payload Properties
@@ -54,6 +54,7 @@ function new_annotation(data) {
     content1.appendChild(header);
     let span = document.createElement("span");
     span.innerText = citeRefText;
+    span.className = "citation-title";
     header.appendChild(span);
     let bubbleCount = document.createElement("a");
     header.appendChild(bubbleCount); // The contents of bubbleCount are set up later in srcList section

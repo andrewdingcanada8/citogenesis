@@ -60,7 +60,7 @@
 <#--                    <div class="card" id="card-1">-->
 <#--                        <div class="content">-->
 <#--                            <div class="header">-->
-<#--                                <span>Citation 1</span>-->
+<#--                                <span class="citation-title">Citation 1</span>-->
 <#--                                <a class="ui src green circular label">3</a>-->
 <#--                            </div>-->
 <#--                            <div class="meta">-->
