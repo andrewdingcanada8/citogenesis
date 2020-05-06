@@ -32,11 +32,13 @@ function new_annotation(data) {
     let hasCycles = data.payload.hasCycles;
     let srcList = data.payload.jGenSources;
 
-
     // Logic for selecting card type
     switch (citeType) {
         default:
             console.log("Error: Card " + card.citeId + " not created properly");
+            break;
+        case "Self":
+            citeTypeText = "Other";
             break;
         case "Other":
             citeTypeText = "Other";
@@ -44,9 +46,10 @@ function new_annotation(data) {
         case "Time Out":
             citeTypeText = "Other";
             break;
-        case "Non Html": // TODO: confirm if this is correct
+        case "Non-HTML": // TODO: confirm if this is correct
             citeTypeText = "Other";
             break;
+
         case "Web":
             if ((srcList !== null) && (srcList.length > 0)) {
                 if (!isDeprecated(srcList)) {
