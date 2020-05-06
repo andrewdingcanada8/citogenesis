@@ -125,7 +125,7 @@ function new_annotation(data) {
         // Graph Toggle Button
         let graphButton = document.createElement("button");
         graphButton.className = "ui small violet inverted right labeled icon button graph";
-        graphButton.onclick = function() {graph(13)};
+        graphButton.onclick = function() {graph(citeId)};
         content2.appendChild(graphButton);
         let rightArrow = document.createElement("i");
         rightArrow.className = "right arrow icon";

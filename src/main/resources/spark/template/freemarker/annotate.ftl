@@ -21,12 +21,6 @@
 </head>
 
 <body>
-    <div class="ui page dimmer">
-        <div class="content">
-            Hello
-
-        </div>
-    </div>
     <div class="upper-section">
         <div class="ui menu">
             <div class="header item" id="logo">
@@ -44,15 +38,23 @@
                     <input type="text" placeholder="Navigate to..." id="pageURL">
                     <button class="ui teal button" onclick="annotate()">Annotate</button>
                 </div>
-                <div class="ui basic button" id="help-button">Help</div>
+                <div class="ui basic button" id="help-button" onclick="show_help()">Help</div>
             </div>
+        </div>
+    </div>
+    <div class="ui page dimmer">
+        <script>
+            function show_help() {$('.ui.page.dimmer').dimmer('show');}
+        </script>
+        <div class="content">
+            Hello
+
         </div>
     </div>
     <div class="lower-section">
         <div class="sidenav">
             <div class="ui raised segment" id="annotation-tray">
                 <a class="ui teal ribbon label" id="annotation-label">Annotations</a>
-
 
                 <div class="ui cards" id="annotation-column">
 
@@ -91,8 +93,11 @@
 
         </div>
 
-        <div class="extracted-wiki-page">
-            <div id="content" class="mw-body" role="main">
+        <div class="extracted-wiki-page" id="wiki-page">
+            <div class="ui dimmer graph">
+
+
+
 
             </div>
         </div>
