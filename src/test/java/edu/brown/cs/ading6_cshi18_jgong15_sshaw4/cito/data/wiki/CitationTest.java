@@ -4,6 +4,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
