@@ -2,8 +2,8 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.WebTestUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGraph;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncWebGraph;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.WebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncSearchWebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.SyncWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
@@ -30,7 +30,7 @@ public class WebGraphTest {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
     SourceQuery sq = new SourceQuery(1);
     Source src = sq.query("https://www.nytimes.com/2020/04/24/us/coronavirus-us-usa-updates.html");
-    WebGraph nyGraph = new WebGraph(src, sq, 1);
+    SyncWebGraph nyGraph = new SyncWebGraph(src, sq, 1);
     nyGraph.getHead();
   }
 
@@ -74,7 +74,7 @@ public class WebGraphTest {
     String key = "that has no specific goals to accomplish, allowing players a large amount of freedom in choosing how to play the game.";
     AsyncSourceQuery sq = new AsyncSourceQuery(30);
     Source src = sq.query("https://www.ign.com/articles/2011/11/24/minecraft-review").join();
-    AsyncWebGraph graph = new AsyncWebGraph(src, sq, key,3);
+    AsyncSearchWebGraph graph = new AsyncSearchWebGraph(src, sq, key,3);
     graph.load();
     Collection<Vertex<Source, String>> loadedVertices = graph.getLoadedVertices();
     loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));

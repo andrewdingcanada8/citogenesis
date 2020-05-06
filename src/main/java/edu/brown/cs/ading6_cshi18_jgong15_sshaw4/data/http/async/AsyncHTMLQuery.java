@@ -35,16 +35,10 @@ public class AsyncHTMLQuery extends AsyncHttpQuery<String, String> {
           String content = res.body();
           boolean isHtml;
           try {
-            isHtml = contentTypes
-                .stream()
-                .anyMatch(str -> str.contains("text/html"));
-          } catch (NullPointerException e) {
-            try {
-              isHtml = res.body().contains("<!DOCTYPE html>");
-            } catch (NullPointerException ex) {
-              throw new CompletionException(
-                  new QueryException("cannot detect page type of " + curURL));
-            }
+            isHtml = res.body().toLowerCase().contains("<!doctype html>");
+          } catch (NullPointerException ex) {
+            throw new CompletionException(
+                new QueryException("cannot detect page type of " + curURL));
           }
           if (!isHtml) {
             throw new CompletionException(new QueryException(curURL + " is not an html page."));

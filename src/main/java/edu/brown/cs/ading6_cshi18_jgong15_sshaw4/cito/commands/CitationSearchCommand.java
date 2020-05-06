@@ -1,7 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncWebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncSearchWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
@@ -11,7 +11,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.IntArg;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.QuotedStringArg;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.RawStringArg;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.CommandRunner;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.InvalidInputException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.SimpleCommand;
@@ -51,7 +50,7 @@ public class CitationSearchCommand extends SimpleCommand {
       } catch (QueryException e) {
         throw new WorldException(e.getMessage());
       }
-      AsyncWebGraph graph = new AsyncWebGraph(citedSrc, sourceQuery, keywords);
+      AsyncSearchWebGraph graph = new AsyncSearchWebGraph(citedSrc, sourceQuery, keywords);
       List<Vertex<Source, String>> gens;
       try {
         graph.load();

@@ -15,15 +15,16 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.Roote
 
 import java.util.*;
 
-public class WebGraph extends RootedSourcedMemGraph<Source, String> {
+@Deprecated
+public class SyncWebGraph extends RootedSourcedMemGraph<Source, String> {
 
   public static final int DEFAULT_DEPTH = 10;
   private Query<String, Source> srcQuery;
 
-  public WebGraph(Source headVal, Query<String, Source> srcQuery) {
+  public SyncWebGraph(Source headVal, Query<String, Source> srcQuery) {
     this(headVal, srcQuery, DEFAULT_DEPTH);
   }
-  public WebGraph(Source headVal, Query<String, Source> srcQuery, int depth) {
+  public SyncWebGraph(Source headVal, Query<String, Source> srcQuery, int depth) {
     super(headVal, depth);
     this.srcQuery = srcQuery;
   }

@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   public static final Set<URLRule> URL_RULES;
   private String keywords;
@@ -50,7 +51,9 @@ public class AsyncQueryWebGraph extends RootedSourcedMemGraph<Source, String> {
   }
 
   public AsyncQueryWebGraph(Source headVal,
-                            Query<String, CompletableFuture<Source>> srcQuery, String keywords, int depth) {
+                            Query<String, CompletableFuture<Source>> srcQuery,
+                            String keywords,
+                            int depth) {
     super(headVal, depth);
     this.srcQuery = srcQuery;
     this.keywords = keywords;
