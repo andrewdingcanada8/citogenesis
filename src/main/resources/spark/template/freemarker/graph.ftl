@@ -16,7 +16,7 @@
     <script src="/semantic/dist/semantic.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
-    <script src="/js/graph-socket.js"></script>
+<#--    <script src="/js/graph-socket.js"></script>-->
 
     <style type="text/css">
         #mynetwork {

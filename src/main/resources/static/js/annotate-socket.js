@@ -2,8 +2,7 @@ const MESSAGE_TYPE = {
     CONNECT: 0,
     URLSUBMISSION: 1,
     HTML: 2,
-    CITATION: 3,
-    GRAPH: 4
+    CITATION: 3
 };
 
 let conn = null;
@@ -41,10 +40,6 @@ function setup_socket () {
                 console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
                 new_annotation(data);
                 break;
-            case MESSAGE_TYPE.GRAPH:
-                console.log("GRAPH MESSAGE RECIEVED");
-                break;
-
         }
     };
 }

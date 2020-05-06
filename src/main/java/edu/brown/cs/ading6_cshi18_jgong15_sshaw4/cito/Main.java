@@ -1,26 +1,25 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.google.common.collect.ImmutableMap;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.GraphHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.MainHandler;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.AnnotateHandler;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.gui.SearchHandler;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.GraphSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.sockets.WikiCitationSocket;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.run.REPL;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import spark.*;
+import spark.ExceptionHandler;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
-
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -98,7 +97,6 @@ public final class Main {
 
     FreeMarkerEngine freeMarker = createEngine();
     Spark.webSocket("/citation-socket", WikiCitationSocket.class);
-    Spark.webSocket("/graph-socket", GraphSocket.class);
 //    Spark.webSocket("/socket-process", DemoSocket.class);
 
     // Setup Spark Routes

@@ -13,27 +13,6 @@ $(document).ready(() => {
     setup_socket();
 });
 
-// function newAnnotation(data) {
-//     let id = data.payload.id;
-//     let hasCycles = data.payload.hasCycles;
-//     let citeSource = data.payload.citeSource;
-//     let list = data.genSources;
-//     console.log(id + hasCycles + citeSource + list);
-//     $('#result').text(id + hasCycles + citeSource + list);
-//     // let newDiv = document.createElement("div");
-//
-//     // document.body.appendChild(newDiv);
-// }
-//
-// function setup_hover () {
-//     $(".a-link1").mouseover(function (evt) {
-//         evt.preventDefault();
-//         console.log("hey");
-//         // window.location.href = "#"+anchor;
-//         window.location.href = "#annotation0";
-//     });
-// }
-
 // Setup the WebSocket connection for live updating of scores.
 function setup_socket () {
     conn = new WebSocket('ws://' + window.location.host + '/graph-socket');
