@@ -74,12 +74,9 @@
     overflow-y: scroll;
 }
 
-/*.card {*/
-/*    !*height: 200px;*!*/
-/*}*/
+
 
 .citation-title {
-    /*padding-right: 40px;*/
     font-size: 0.8em;
     display: inline-block;
     width: 222px;
@@ -87,12 +84,8 @@
 }
 
 .ui.src.circular.label {
-    /*margin-left: 6px;*/
     display: inline-block;
     vertical-align: top;
-    /*position: absolute;*/
-    /*top: 0px;*/
-    /*right: 0;*/
 }
 
 #annotation-column::-webkit-scrollbar {
