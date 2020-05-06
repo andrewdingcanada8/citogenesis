@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
 public class CitationSearchCommand extends SimpleCommand {
@@ -47,8 +48,8 @@ public class CitationSearchCommand extends SimpleCommand {
       Source citedSrc;
       try {
         citedSrc = sourceQuery.query(url).join();
-      } catch (QueryException e) {
-        throw new WorldException(e.getMessage());
+      } catch (Exception e) {
+        throw new WorldException("invalid URL");
       }
       AsyncSearchWebGraph graph = new AsyncSearchWebGraph(citedSrc, sourceQuery, keywords);
       List<Vertex<Source, String>> gens;

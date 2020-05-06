@@ -105,6 +105,7 @@ public class WebGraphTest {
 
   @Test
   public void cycleAlgoIntegrationTest() throws QueryException, GraphException {
+    assumeTrue(WebTestUtils.HTTP_TIMEOUT > 0);
     Query<String, CompletableFuture<Source>> sq = new AsyncSourceQuery(WebTestUtils.HTTP_TIMEOUT);
 
     WireMockServer mockServer = new WireMockServer(options().port(8089));
@@ -138,6 +139,7 @@ public class WebGraphTest {
 
   @Test
   public void noTimeStampStillWorksTest() throws QueryException, GraphException {
+    assumeTrue(WebTestUtils.HTTP_TIMEOUT > 0);
     Query<String, CompletableFuture<Source>> sq = new AsyncSourceQuery(WebTestUtils.HTTP_TIMEOUT);
     Source hdSrc = sq.query("http://localhost:63342/"
         + "term-project-ading6-cshi18-jgong15-sshaw4-1/"
