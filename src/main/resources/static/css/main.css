@@ -7,8 +7,12 @@
 /*    font-family: 'Lato', sans-serif;*/
 /*}*/
 
+html {
+    scroll-behavior: smooth;
+}
+
 .main-column {
-    padding-top: 16vw;
+    padding-top: 6vw;
     margin: auto;
     width: 60vw;
 }
@@ -33,7 +37,8 @@ a {
 }
 
 .content-block {
-    padding-bottom: 20vw;
+    padding-top: 10vw;
+    padding-bottom: 10vw;
 
 }
 

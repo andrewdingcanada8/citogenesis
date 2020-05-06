@@ -18,7 +18,7 @@
     <div class="upper-section">
         <div class="ui menu">
             <div class="header item">
-                <a href="http://localhost:4567/search">CITOGENESIS</a>
+                <a href="http://localhost:4567/main">CITOGENESIS</a>
             </div>
             <a class="item" href="javascript:history.back()">
                 <i class="arrow left icon"></i>
@@ -57,42 +57,31 @@
                 <div class="ui cards" id="annotation-column">
 
 
-                    <div class="card" id="card-1">
-                        <div class="content">
-                            <div class="header">
-                                <span>Citation 1</span>
-                                <a class="ui green circular label" id="gen-src-count">3</a>
-                            </div>
-                            <div class="meta">
-                                <a href="google.com">Webpage</a>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <h4 class="ui sub header">Generating Sources:</h4>
-                            <div class="ui ordered list">
-                                <a class="item" href="">Src 1</a>
-                                <a class="item" href="">Src 2</a>
-                            </div>
-                            <h5 class="ui red header">Circular reporting found.</h5>
-                            <button class="ui small violet inverted right labeled icon button graph-redirect">
-                                <i class="right arrow icon"></i>
-                                <span>See Graph</span>
-                            </button>
-                        </div>
-                    </div>
+<#--                    <div class="card" id="card-1">-->
+<#--                        <div class="content">-->
+<#--                            <div class="header">-->
+<#--                                <span class="citation-title">Citation 1</span>-->
+<#--                                <a class="ui src green circular label">3</a>-->
+<#--                            </div>-->
+<#--                            <div class="meta">-->
+<#--                                <a href="google.com">Webpage</a>-->
+<#--                            </div>-->
+<#--                        </div>-->
+<#--                        <div class="content">-->
+<#--                            <h4 class="ui sub header">Generating Sources:</h4>-->
+<#--                            <div class="ui ordered list">-->
+<#--                                <a class="item" href="">Src 1</a>-->
+<#--                                <a class="item" href="">Src 2</a>-->
+<#--                            </div>-->
+<#--                            <h5 class="ui red header">Circular reporting found.</h5>-->
+<#--                            <button class="ui small violet inverted right labeled icon button graph-redirect">-->
+<#--                                <i class="right arrow icon"></i>-->
+<#--                                <span>See Graph</span>-->
+<#--                            </button>-->
+<#--                        </div>-->
+<#--                    </div>-->
 
 
-
-                    <div class="card">
-                        <div class="content">
-                            <div class="header">Cute Dog</div>
-                            <div class="meta">
-                                <span>2 days ago</span>
-                                <a>Animals</a>
-                            </div>
-                            <p></p>
-                        </div>
-                    </div>
 
 
                 </div>
@@ -110,6 +99,7 @@
     </div>
 
     <script src="/js/jquery-2.1.1.js"></script>
+    <script src="/js/new_annotation.js"></script>
     <script src="/js/annotate-socket.js"></script>
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start

@@ -8,20 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
     <link rel="stylesheet" href="/css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
-
-    <script>
-        function annotate(){
-            let url = $('#pageURL').val();
-            url = url.substr(url.lastIndexOf("/") - 4, url.length);
-            if (url !== "") {
-                // TODO: Modify this when using deployed
-                window.location.href = "http://localhost:4567/" + url;
-            }
-            // TODO: add some string cutting here so only the important wikipedia page info is shown
-            // It's actually only the last word that is the article title. everything after the last /
-
-        }
-    </script>
+    <script src="/js/search.js"></script>
 </head>
 
 <body>
@@ -50,7 +37,7 @@
                 </div>
 
             </div>
-            <h2>The annotation tool of the 21st century</h2>
+            <h2>An annotation tool for the 21st century</h2>
             <div class="info-box">
                 <div class="ui statistic">
                     <div class="text value">
@@ -58,7 +45,7 @@
                         Thousand
                     </div>
                     <div class="label">
-                        Signups
+                        Searches
                     </div>
                 </div>
                 <div id="contact-buttons">
@@ -119,7 +106,7 @@
         </div>
 
     </div>
-    <div class="footer">
+    <div class ="content-block footer">
 
     </div>
 
