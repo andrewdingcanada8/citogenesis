@@ -46,8 +46,34 @@
         <script>
             function show_help() {$('.ui.page.dimmer').dimmer('show');}
         </script>
-        <div class="content">
-            Hello
+        <div class="help overlay content">
+
+            <div class="help top">
+                <p><i class="arrow up icon"></i>Menu, Backwards/Forwards, #Sources, Circular Reporting Label, Search Bar, Help Section</p>
+            </div>
+
+            <div class="help left">
+                <i class="arrow left icon"></i>
+                <p>Each Wikipedia citation is displayed as a card.</p>
+                <a class="ui green circular label">3</a>
+                <p style="display: inline;">There's </p>
+                <br>
+                <a class="ui green circular label">3</a>
+                <p style="display: inline;">There's </p>
+                <br>
+                <a class="ui green circular label">3</a>
+                <p style="display: inline;">There's </p>
+            </div>
+            <div class="help center" style="float: right;">
+                <p>To use Citogenesis, simply input the url of an existing Wikipedia article and click annotate.</p>
+                <p>Citogenesis will go and help you discover all of the generating sources for each Wikipedia citation.</p>
+                <button class="ui mini purple inverted button">
+                    See Graph
+                </button>
+
+                <p><i style="display: inline;" class="arrow up icon"></i>Click on this button in the sidebar to see a internet graph with the generating sources of a given citation.</p>
+            </div>
+
 
         </div>
     </div>
@@ -95,7 +121,6 @@
 
         <div class="extracted-wiki-page" id="wiki-page">
             <div class="ui dimmer graph">
-
 
 
 

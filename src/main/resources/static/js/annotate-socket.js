@@ -21,6 +21,8 @@ $(document).ready(() => {
  */
 function insertHTML(data) {
     let html = data.payload.html;
+    let htm = html.substr(0, 200);
+    console.log(htm);
     let div = document.getElementById("wiki-page");
     div.insertAdjacentHTML("beforeend", html);
 }
