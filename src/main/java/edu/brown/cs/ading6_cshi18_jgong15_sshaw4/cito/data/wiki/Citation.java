@@ -12,6 +12,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -60,7 +61,7 @@ public class Citation {
   /**
    * List of generating sources.
    */
-  private List<Vertex<Source, String>> genSources;
+  private List<Vertex<Source, String>> genSources = new ArrayList<>();
   /**
    * Strongly connected component of the graph.
    */
@@ -111,7 +112,7 @@ public class Citation {
       numberOfGeneratingSources = 1;
       initialWebSource = null;
       hasCycles = false;
-      genSources = null;
+      genSources = new ArrayList<>();
       sccs = null;
       graph = null;
     }
@@ -138,7 +139,7 @@ public class Citation {
       numberOfGeneratingSources = 1;
       initialWebSource = null;
       hasCycles = false;
-      genSources = null;
+      genSources = new ArrayList<>();
       sccs = null;
       graph = null;
     }
@@ -194,7 +195,11 @@ public class Citation {
             }
           })
           .collect(Collectors.toList());
-      genSources = gens;
+      if (gens == null) {
+        genSources = new ArrayList<>();
+      } else {
+        genSources = gens;
+      }
       numberOfGeneratingSources = genSources.stream().map(source -> {
         if (source == null) {
           return 0;
