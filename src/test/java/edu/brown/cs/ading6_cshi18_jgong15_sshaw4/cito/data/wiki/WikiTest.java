@@ -39,12 +39,12 @@ public class WikiTest {
   @Test
   public void testGetCitationFromIDForCitationOne() {
     Citation citationOne = wikiMurphysLaw.getCitationFromID(
-        "#cite_note-1", 120, 3, 0.2);
+        "#cite_note-1", 30, 2, 0.2);
     System.out.println(citationOne);
     Citation citationOneBuilded =
         new CitationBuilder(Citation.NON_HTML_TYPE, "#cite_note-1")
-                .setTimeout(120)
-                .setDepth(3)
+                .setTimeout(30)
+                .setDepth(2)
                 .setThreshold(0.2)
                 .setUrl(new ArrayList<>(
                     List.of("https://web.archive.org/web/20080312052959/http://" +
@@ -58,12 +58,12 @@ public class WikiTest {
   @Test
   public void testGetCitationFromIDForCitationSeven() {
     Citation citationSeven = wikiMurphysLaw.getCitationFromID(
-        "#cite_note-7", 120, 3, 0.2);
+        "#cite_note-7", 30, 2, 0.2);
     System.out.println(citationSeven);
     Citation citationSevenBuilded =
         new CitationBuilder(Citation.WEB_TYPE, "#cite_note-7")
-            .setTimeout(120)
-            .setDepth(3)
+            .setTimeout(30)
+            .setDepth(2)
             .setThreshold(0.2)
             .setUrl(new ArrayList<>(
                 List.of("https://www.nytimes.com/1948/06/13/archives/"
