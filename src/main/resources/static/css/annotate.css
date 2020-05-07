@@ -8,12 +8,64 @@
     position: fixed;
 }
 
-/*#article-labels {*/
+#logo {
+    background-color: #32416c;
+}
 
-/*}*/
+#logo-text {
+    color: white;
+}
 
-#url-search-box {
-    width: 40vw;
+#pageURL {
+    width: 30vw;
+}
+
+#help-button {
+    margin-left: 16px;
+}
+
+
+
+#menu-citation-stat {
+    margin-left: 0;
+}
+
+#menu-cr-stat {
+
+}
+
+@media all and (max-width: 1100px) {
+    #article-labels { display: none; }
+}
+
+.ui.page.dimmer {
+    background-color: rgba(0,0,0,.90);
+}
+
+.help.top {
+    float: top;
+    top: 0;
+    margin-bottom: 200px;
+}
+
+.help.left {
+    float: left;
+    left: 0;
+    margin-right: 100px;
+    width: 200px;
+    text-align: left;
+    line-height: 30px;
+}
+
+.help.center {
+    padding: 16px;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 500px;
+    text-align: left;
+    line-height: 30px;
+    margin-bottom: 300px;
+    margin-right: 100px;
 }
 
 .lower-section {
@@ -52,12 +104,9 @@
     overflow-y: scroll;
 }
 
-/*.card {*/
-/*    !*height: 200px;*!*/
-/*}*/
+
 
 .citation-title {
-    /*padding-right: 40px;*/
     font-size: 0.8em;
     display: inline-block;
     width: 222px;
@@ -65,12 +114,8 @@
 }
 
 .ui.src.circular.label {
-    /*margin-left: 6px;*/
     display: inline-block;
     vertical-align: top;
-    /*position: absolute;*/
-    /*top: 0px;*/
-    /*right: 0;*/
 }
 
 #annotation-column::-webkit-scrollbar {
@@ -87,12 +132,14 @@ body {
     background-color: white;
 }
 
-.graph-redirect {
+.graph.ui.button {
     width: 100%;
-    /*float: right;*/
-    /*position: relative;*/
 }
 
-/*html, body {*/
-/*    overflow-y: scroll;*/
-/*}*/
+.ui.inverted.dimmer.graph {
+    background-color: rgba(255,255,255,.95);
+}
+
+.graph.content {
+    /*vertical-align: top;*/
+}

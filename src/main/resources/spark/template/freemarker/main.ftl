@@ -68,11 +68,7 @@
                         </a>
                     </div>
                 </div>
-        </div>
-
-
-
-
+            </div>
         </div>
 
 
@@ -83,12 +79,24 @@
         <div class="content-block" id="faq-block">
             <h2>Frequently Asked</h2>
             <div class="ui divider"></div>
-            <h3>Q: How do I use this?</h3>
-            <p>We use this by blah blah blah</p>
-            <h3>Q: How do I use this?</h3>
-            <p>We use this by blah blah blah</p>
-            <h3>Q: How do I use this?</h3>
-            <p>We use this by blah blah blah</p>
+            <h3>Q: What is a Citogenesis?</h3>
+            <p>Citogenesis is a tool that will help you discover all forms of useful information about the citations on your Wikipedia articles. Are they backed by other sources? Are they deprecated? Cases of circular reporting? Use Citogenesis to find out!</p>
+            <h3>Q: Great! What's next?</h3>
+            <p>First, find a Wikipedia article online that you want to annotate. Copy the <i>URL</i> of the article page and paste it into the search box above. Search and Voila!</p>
+            <p><i style="color: #7a7a7a">*If you need more help, there will be a help button after you have submitted your article for further instructions.</i></p>
+            <h3>Q: Where's the lamb sauce?</h3>
+            <p>The <b><i>magic</i></b> of Citogenesis is achieved through our two main our algorithms of citation website exploration and generating-source detection.</p>
+            <img src="assets/document.svg" alt="Citation Checking" align="right" style="float: right; width: 200px; margin: 25px;">
+            <h4>Citation Wesbite Exploration?</h4>
+            <p>When our server receives a citation URL from the Wikipedia page, it starts browsing the current citation and all of its linked web pages (and the links of those links, etc).To ensure the web pages are feasible sources for our original cited Wikipedia text, we run an algorithm that scores the relevance of a web page based on the frequency of common words to the original text. On all of the web pages that pass the relevancy score, we build a network (or graph) that represents the sourcing relationships between each of the pages.</p>
+            <h4>Generating-Source wuh?</h4>
+            <p>Once we compute the citation's network of source pages, we can then look for circular reporting and find the citation's generating sources. We first run an algorithm to segment the network into cycles of pages. Typically, those "cycles" only contain one web page (which is good), but if there is a cycle present with more than one website, then we know there is some form of circular reporting happening. Our server will let you know if this is true.</p>
+            <p>We then examine each cycle possible generating sources, with a maximum of one per cycle. We call a candidate web site a generating source if it satisfies the following criteria:</p>
+            <div class="ui list">
+                <div class="item">- the candidate source is the oldest source in its cycle</div>
+                <div class="item">- the candidate source's linked sources are present in the candidate's cycle</div>
+            </div>
+            <p>After computing these generating sources, our server will compile them in a list and send them back to you!</p></p>
         </div>
 
 
@@ -98,11 +106,15 @@
             <h2>About Us</h2>
             <div class="ui divider"></div>
             <h3>Project</h3>
-            <p>We use this by blah blah blah</p>
+            <p>The idea for this project initially came to us from a <a href="https://xkcd.com/978/">webcomic</a> by the famous XKCD. We saw Citogenesis (the app) as our own way of coming to terms with our fragile systems of information. Run the program on any Wikipedia page, and you'll find it rife with un-backed claims, missing links and circular reporting. While we don't claim to be the solution, and neither do we take sides on what sources are reputable—we hope that this experimental tool can bring more information awareness to researchers and average joes alike.</p>
             <h3>Background</h3>
-            <p>We use this by blah blah blah</p>
-            <h3>Future Interests</h3>
-            <p>We use this by blah blah blah</p>
+            <p>We are the <i>Pasta Coders</i>, a team of CS undergraduate students from Brown University. This project was initially created as our <i>CSCI0320: Software Eng.</i> term project.</p>
+            <h3>Future Plans</h3>
+            <p>Having a nice relaxing summer. Coding this project during the covid-19 outbreak was not without challenges. 10 hour zoom calls are definitely not recommended.</p>
+            <img src="assets/flamingo.svg" alt="Imaginary Vacations in Quarantine Times" align="left" style="float: left; width: 200px; margin-top: 20px; margin-right: 20px;">
+            <p style="margin-top: 160px;"><b>See you on the beach,</b></p>
+            <p><b>Pasta Coders Dev. Team</b></p>
+
         </div>
 
     </div>

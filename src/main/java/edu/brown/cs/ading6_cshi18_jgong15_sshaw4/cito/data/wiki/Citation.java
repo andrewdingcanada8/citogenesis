@@ -127,10 +127,10 @@ public class Citation {
    * @param referenceText text of reference at the bottom of wikipedia.
    */
   public Citation(
-      String type,
-      String id,
-      String citedContent,
-      String referenceText) {
+          String type,
+          String id,
+          String citedContent,
+          String referenceText) {
     this.type = type;
     this.id = id;
     this.citedContent = citedContent;
@@ -176,8 +176,8 @@ public class Citation {
       }
       initialWebSource = src;
       AsyncSearchWebGraph nyGraph = new AsyncSearchWebGraph(
-          src, new QueryCacher<>(sq, 500), citedContent,
-          depth, threshold);
+              src, new QueryCacher<>(sq, 500), citedContent,
+              depth, threshold);
       graph = nyGraph;
       nyGraph.load();
       Vertex<Source, String> hv = nyGraph.getHead();
@@ -368,8 +368,8 @@ public class Citation {
     }
     Citation citation = (Citation) o;
     return type.equals(citation.type)
-        && id.equals(citation.id)
-        && Objects.equals(initialWebSource, citation.initialWebSource);
+            && id.equals(citation.id)
+            && Objects.equals(initialWebSource, citation.initialWebSource);
   }
 
   /**
@@ -388,19 +388,19 @@ public class Citation {
   @Override
   public String toString() {
     return "Citation{"
-        +
-        "type='" + type + '\''
-        +
-        ", id='" + id + '\''
-        +
-        ", referenceText='" + referenceText + '\''
-        +
-        ", numberOfGeneratingSources=" + numberOfGeneratingSources
-        +
-        ", initialWebSource=" + initialWebSource
-        +
-        ", genSources=" + genSources
-        +
-        '}';
+            +
+            "type='" + type + '\''
+            +
+            ", id='" + id + '\''
+            +
+            ", referenceText='" + referenceText + '\''
+            +
+            ", numberOfGeneratingSources=" + numberOfGeneratingSources
+            +
+            ", initialWebSource=" + initialWebSource
+            +
+            ", genSources=" + genSources
+            +
+            '}';
   }
 }

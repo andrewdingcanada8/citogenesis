@@ -1,4 +1,4 @@
-function annotate(){
+function annotate() {
     let url = $('#pageURL').val();
     url = url.substr(url.lastIndexOf("/") - 4, url.length);
     if (url !== "") {

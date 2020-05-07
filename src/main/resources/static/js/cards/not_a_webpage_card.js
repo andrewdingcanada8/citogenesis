@@ -1,0 +1,3 @@
+function notAWebpageCard (card, data) {
+
+}

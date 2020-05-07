@@ -7,96 +7,12 @@ const MESSAGE_TYPE = {
 
 let conn = null;
 let myId = -1;
+let graphs = {};
 
+// Fires on page load.
 $(document).ready(() => {
-    // setup_hover();
-    // $(document).getScript("new_annotation.js");
     setup_socket();
 });
-
-/**
- * Helper function that inserts the shortened content HTML of the wikipedia
- * article. HTML should be pre-shortened and have its tags already added.
- * @param data
- */
-function insertHTML(data) {
-    let html = data.payload.html;
-    let div = document.getElementById("content");
-    div.insertAdjacentHTML("beforeend", html);
-}
-
-// function newAnnotation(data) {
-//     let citeRefText = data.payload.citeRefText;
-//     let citeId = data.payload.citeId;
-//     let citeTitle = data.payload.citeTitle;
-//     let citeType = data.payload.citeType;
-//     let citeURL = data.payload.citeURL;
-//     let hasCycles = data.payload.hasCycles;
-//     let srcList;
-//     if (citeType === 'Web') {
-//         srcList = data.payload.jGenSources;
-//     } else {
-//         srcList = null;
-//     }
-//
-//     let column = document.getElementById("annotation-column");
-//
-//     let card = document.createElement("div");
-//     card.className = "annotationCard";
-//     card.id = citeId;
-//     column.appendChild(card);
-//
-//     let citeLink = document.createElement("a");
-//     citeLink.href = citeURL;
-//     if (citeRefText.length > CITATION_TITLE_LENGTH) {
-//         citeRefText = citeRefText.substr(0, CITATION_TITLE_LENGTH); // Shortens string to 50 chars
-//         citeRefText = citeRefText.concat('...');
-//     }
-//     citeLink.innerText = citeRefText;
-//     card.appendChild(citeLink);
-//
-//     let genP = document.createElement("p");
-//     if (srcList !== null) {
-//         genP.innerText = "Generating Sources (" + srcList.length + "):";
-//     } else {
-//         genP.innerText = "No Generating Sources Found";
-//     }
-//
-//     card.appendChild(genP);
-//
-//     let genList = document.createElement("ol");
-//     card.appendChild(genList);
-//
-//     if (srcList !== null) {
-//         for (let i = 0; i < srcList.length; i++) {
-//             if (i > 5) {
-//                 break;
-//             }
-//             let li = document.createElement("li");
-//             let a = document.createElement("a");
-//             a.innerText = srcList[i].title;
-//             a.href = srcList[i].url;
-//             // console.log(srcList[i].title + " and " + srcList[i].url); // TODO: Delete Later
-//             li.appendChild(a);
-//             genList.appendChild(li);
-//         }
-//     }
-//
-//     let circularReport = document.createElement("p");
-//     circularReport.innerText = "Circular Reporting: " + hasCycles;
-//     card.appendChild(circularReport);
-// }
-
-
-function setup_hover () {
-    $(".a-link1").mouseover(function (evt) {
-        evt.preventDefault();
-        console.log("hey");
-        // window.location.href = "#"+anchor;
-        window.location.href = "#annotation0";
-    });
-}
-
 
 // Setup the WebSocket connection for live updating of scores.
 function setup_socket () {
@@ -124,15 +40,16 @@ function setup_socket () {
             case MESSAGE_TYPE.CITATION:
                 console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
                 new_annotation(data);
+                let id = data.payload.citeId;
+                let graph = data.payload.jGraph;
+                graphs[id] = graph;
+                console.log(graph); // TODO: Delete Later
                 break;
-
         }
     };
 }
 
-/**
- * Called when a user clicks the annotate button
- */
+// Called when a user clicks the annotate button
 function urlSubmit() {
     let submitURL = window.location.href;
     submitURL = submitURL.substr(submitURL.lastIndexOf("/")-4, submitURL.length);
@@ -140,4 +57,17 @@ function urlSubmit() {
             id: myId,
             url: "https://en.wikipedia.org/" + submitURL
         }}));
+}
+
+/**
+ * Helper function that inserts the shortened content HTML of the wikipedia
+ * article. HTML should be pre-shortened and have its tags already added.
+ * @param data
+ */
+function insertHTML(data) {
+    let html = data.payload.html;
+    let htm = html.substr(0, 200);
+    console.log(htm);
+    let div = document.getElementById("wiki-page");
+    div.insertAdjacentHTML("beforeend", html);
 }

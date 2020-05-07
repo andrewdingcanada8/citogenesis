@@ -9,7 +9,21 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Finds the vertex of a set of vertices that minimizes a specified property, whose adjacent
+ * vertices are a subset of the original set.
+ * @param <T> Type stored in Vertex
+ * @param <W> Type stored in Edge
+ */
 public interface GeneratingVertexFinder<T, W> extends VertexFinder<T, W> {
+
+  /**
+   * Returns the minimum vertices whose neighboring vertices are a subset of component.
+   * @param component set of vertices
+   * @return minimum vertex whose neighboring vertices are a subset of component, null
+   * if minimum vertex doesn not satisfy subset property
+   * @throws GraphException error in neighboring vertex access
+   */
   @Override
   default Vertex<T, W> search(Set<Vertex<T, W>> component) throws GraphException {
     Comparator<Vertex<T, W>> vertCompr = (v1, v2) -> getCompr().compare(v1.getVal(), v2.getVal());
