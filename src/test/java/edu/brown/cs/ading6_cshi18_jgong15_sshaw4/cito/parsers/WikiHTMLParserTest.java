@@ -50,7 +50,7 @@ public class WikiHTMLParserTest {
 
   @Test
   public void testParseForTitle() throws QueryException {
-    assertEquals(parserMurphy.parseForTitle(), "Murphy's law - Wikipedia");
+    assertEquals(parserMurphy.parseForTitle(), "Murphy's Law - Wikipedia");
     assertEquals(parserCastel.parseForTitle(), "Castel Menardo - Wikipedia");
   }
 
