@@ -8,6 +8,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncSearchWebG
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.SyncWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GraphSaver;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async.AsyncSourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.sync.SourceQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
@@ -75,14 +76,13 @@ public class WebGraphTest {
     gens.stream().forEach(v -> System.out.println("generator: " + v));
   }
 
-  @Ignore
   @Test
   public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
-    assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
-    AsyncSourceQuery sq = new AsyncSourceQuery(3);
+    //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
+    AsyncSourceQuery sq = new AsyncSourceQuery(10);
     Source src = sq.query("https://www.nytimes.com/2020/05/05/us/jared-kushner-fema-coronavirus.html").join();
     String key = src.getContent();
-    AsyncSearchWebGraph graph = new AsyncSearchWebGraph(src, sq, key, 3);
+    AsyncSearchWebGraph graph = new AsyncSearchWebGraph(src, sq, key, 1, 0.8);
     graph.load();
     Collection<Vertex<Source, String>> loadedVertices = graph.getLoadedVertices();
     loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
@@ -101,6 +101,8 @@ public class WebGraphTest {
         })
         .collect(Collectors.toList());
     gens.stream().forEach(v -> System.out.println("generator: " + v));
+    GraphSaver saver = new GraphSaver("blah");
+    saver.saveGraph(graph);
   }
 
   @Test
