@@ -6,6 +6,7 @@
     <!-- In real-world webapps, css is usually minified and
          concatenated. Here, separate normalize from our code, and
          avoid minification for clarity. -->
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32" href="/assets/favicon.ico">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/html5bp.css">
     <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
@@ -24,6 +25,7 @@
     <script src="/js/annotate-socket.js"></script>
     <script src="/js/search.js"></script>
     <script src="/js/graph.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 
 <body>
@@ -44,7 +46,8 @@
                     <input type="text" placeholder="Navigate to..." id="pageURL">
                     <button class="ui teal button" onclick="annotate()">Annotate</button>
                 </div>
-                <div class="ui basic button" id="help-button" onclick="show_help()">Help</div>
+                <div class="ui basic button" id="help-button" onclick="graph('test-id')">Help</div>
+<#--                // TODO: change this back to show_help();-->
             </div>
         </div>
     </div>
@@ -127,10 +130,17 @@
 
         <div class="extracted-wiki-page" id="wiki-page">
             <div class="ui inverted dimmer graph">
-                <i class="close icon"></i>
-                <div>
-                    <h1>SAMPLE GRAPH DISPLAY OUTPUT</h1>
+                <h1>GRAPH STUFF HERE!</h1>
+                <#--                // TODO: the box containing the graph, as well as dimension settings for it-->
+                <div id="mynetwork">
                 </div>
+                <style type="text/css">
+                    #mynetwork {
+                        width: 600px;
+                        height: 600px;
+                        border: 1px solid lightgray;
+                    }
+                </style>
             </div>
         </div>
     </div>

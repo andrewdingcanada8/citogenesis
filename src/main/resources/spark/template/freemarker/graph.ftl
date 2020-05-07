@@ -16,8 +16,6 @@
     <script src="/semantic/dist/semantic.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
-<#--    <script src="/js/graph-socket.js"></script>-->
-
     <style type="text/css">
         #mynetwork {
             width: 600px;
@@ -28,13 +26,14 @@
 </head>
 
 <body>
+
 <div id="mynetwork"></div>
 
 <script type="text/javascript">
     let node1 = {
-        id: '1',
-        label: 'AHHA',
-        group: '5'
+        id: 'alex', // URL
+        label: 'ALEX', // TITLE
+        group: '5' // COLORS
     };
 
     // create an array with nodes
@@ -48,8 +47,8 @@
 
     // create an array with edges
     let edges = new vis.DataSet([
-        {from: 1, to: 3},
-        {from: 1, to: 2},
+        {from: 'alex', to: 3},
+        {from: 'alex', to: 2},
         {from: 2, to: 4},
         {from: 2, to: 5}
     ]);

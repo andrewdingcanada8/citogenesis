@@ -141,5 +141,5 @@ body {
 }
 
 .graph.content {
-    /*vertical-align: top;*/
+    float: top;
 }

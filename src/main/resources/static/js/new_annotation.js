@@ -53,11 +53,14 @@ function new_annotation(data) {
         case "Web":
             if ((srcList !== null) && (srcList.length > 0)) {
                 if (!isDeprecated(srcList)) {
+                    console.log("*Regular Card Created*");
                     regularCard(card, data);
                 } else {
+                    console.log("*Deprecated Card Created*");
                     deprecatedCard(card, data);
                 }
             } else {
+                console.log("*Null List Card Created*");
                 nullListCard(card, data);
             }
             break;
