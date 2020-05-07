@@ -1,8 +1,6 @@
-package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops;
+package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph;
 
-import com.google.common.collect.Streams;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.WebSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
@@ -14,7 +12,6 @@ import org.jsoup.select.Elements;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public final class GraphSaver {
