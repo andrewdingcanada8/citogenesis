@@ -76,6 +76,7 @@ public class WebGraphTest {
     gens.stream().forEach(v -> System.out.println("generator: " + v));
   }
 
+  @Ignore
   @Test
   public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
@@ -101,8 +102,6 @@ public class WebGraphTest {
         })
         .collect(Collectors.toList());
     gens.stream().forEach(v -> System.out.println("generator: " + v));
-    GraphSaver saver = new GraphSaver("blah");
-    saver.saveGraph(graph);
   }
 
   @Test
