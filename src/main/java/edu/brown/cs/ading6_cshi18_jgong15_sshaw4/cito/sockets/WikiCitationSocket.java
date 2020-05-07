@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.CitoWorld;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.GraphSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.SourceSerializer;
@@ -35,10 +36,8 @@ public class WikiCitationSocket {
       .create();
   private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;
-  private static final int TIME_LIMIT = 10;
-  private static final int TIMEOUT = 60;
-  private static final int DEPTH = 3;
-  private static final double THRESHOLD = 0.2;
+  private static final int WIKI_QUERY_TIMEOUT = 10;
+
 
   private static enum MESSAGE_TYPE {
     CONNECT,
@@ -98,7 +97,7 @@ public class WikiCitationSocket {
     System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
     String html = "";
     try {
-      wiki = new WikiQuery(TIME_LIMIT).query(url);
+      wiki = new WikiQuery(WIKI_QUERY_TIMEOUT).query(url);
       html = wiki.getContentHTML();
     } catch (QueryException e) {
       e.printStackTrace();
@@ -135,7 +134,10 @@ public class WikiCitationSocket {
     // Sequentially building and sending citation information to client
     for (String citationID : citationIDs) {
       // Building Citation
-      Citation citation = wiki.getCitationFromID(citationID, TIMEOUT, DEPTH, THRESHOLD);
+      Citation citation = wiki.getCitationFromID(citationID,
+          CitoWorld.getInstance().getTimeout(),
+          CitoWorld.getInstance().getDepth(),
+          CitoWorld.getInstance().getThresh());
       List<Vertex<Source, String>> genVertices = citation.getGenSources(); // non-null value
       List<Source> genSources = new ArrayList<Source>();
       for (Vertex<Source, String> vertex : genVertices) {
