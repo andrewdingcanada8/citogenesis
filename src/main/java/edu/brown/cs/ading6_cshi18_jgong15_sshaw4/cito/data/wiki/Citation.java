@@ -93,9 +93,9 @@ public class Citation {
   public static final String SELF_TYPE = "Self";
   public static final String OTHER_TYPE = "Other";
 
-  private static final int DEFAULT_TIME_OUT = 60;
-  private static final int DEFAULT_DEPTH = 5;
-  private static final double DEFAULT_THRESHOLD = 0.200;
+  private static final int DEFAULT_TIME_OUT = 10;
+  private static final int DEFAULT_DEPTH = 1;
+  private static final double DEFAULT_THRESHOLD = 0.500;
 
   /**
    * Basic Constructor with type and id.

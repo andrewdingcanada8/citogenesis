@@ -80,9 +80,6 @@ public class DeadSource implements Source {
 
   @Override
   public String toString() {
-    return "DeadSource{"
-        + "url='" + url + '\''
-        + ", reasonOfFailure='" + reasonOfFailure + '\''
-        + '}';
+    return url;
   }
 }
