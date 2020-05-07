@@ -3,6 +3,13 @@
     <script>
         function annotate(){
             let url = $('#pageURL').val();
+
+            // check if input url matches wikipedia format
+            if (/https:\/\/en\.wikipedia\.org\/wiki\/([\w%]+)/g.test(url)) {
+                alert("Invalid Wikipedia URL");
+                return;
+            }
+
             url = url.substr(url.lastIndexOf("/") - 4, url.length);
             if (url !== "") {
                 // TODO: Modify this when using deployed
