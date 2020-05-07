@@ -4,7 +4,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands.CitationSearchCom
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands.WikiLoadCommand;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.DoubleArg;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.IntArg;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.NaturalNumberArg;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.CommandRunner;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.command.InvalidInputException;
