@@ -1,3 +1,0 @@
-function notAWebpageCard (card, data) {
-
-}

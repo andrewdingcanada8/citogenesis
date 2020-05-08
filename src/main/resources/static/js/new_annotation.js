@@ -68,3 +68,8 @@ function isDeprecated (list) {
     }
     return false;
 }
+
+function annotate_again(data) {
+    // delete the old one
+    // create a new one
+}

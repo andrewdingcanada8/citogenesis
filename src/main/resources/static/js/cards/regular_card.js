@@ -30,8 +30,16 @@ function regularCard (data) {
                 let bubble =
                     document.createElement("a");
                     // TODO: CODE FOR BUBBLE DATA
-                    bubble.className = "ui src circular label";
-                    bubble.innerText = "";
+                    if (srcList.length === 1) {
+                        bubble.className = "ui src blue circular label";
+                        bubble.innerText = srcList.length;
+                    } else if (srcList.length > 1) {
+                        bubble.className = "ui src green circular label";
+                        bubble.innerText = srcList.length;
+                    } else {
+                        bubble.className = "ui src circular label";
+                        bubble.innerText = srcList.length;
+                    }
 
 
                 header.appendChild(bubble);
@@ -44,7 +52,7 @@ function regularCard (data) {
                 let a =
                     document.createElement("a");
                     // TODO: CODE FOR META DATA
-                    a.innerText = "Generating Sources:";
+                    a.innerText = "Webpage";
                     a.href =  data.payload.citeURL;
                 meta.appendChild(a);
             cardTop.appendChild(meta);
@@ -58,7 +66,7 @@ function regularCard (data) {
                 document.createElement("h4");
                 sourceTitle.className = "ui sub header";
                 // TODO: Source Title specific text
-                sourceTitle.innerText = "";
+                sourceTitle.innerText = "Generating Sources:";
             cardBottom.appendChild(sourceTitle);
 
             // TODO: Maybe don't include the following:
@@ -74,7 +82,7 @@ function regularCard (data) {
                     oList.appendChild(a);
                 }
             cardBottom.appendChild(oList);
-            if (data.payload.hasCycles){
+            if ((data.payload.hasCycles) && (srcList.length > 1)){
                 let crLabel =
                     document.createElement("h5");
                 crLabel.className = "ui red header";
@@ -83,22 +91,23 @@ function regularCard (data) {
             }
 
             // TODO: might delete this section:
-            let graphButton =
-                document.createElement("button");
-                graphButton.className = "ui small violet inverted right labeled icon button graph";
-                graphButton.onclick = function() {graph(data.payload.citeId)};
+            if (srcList.length > 1) {
+                let graphButton =
+                    document.createElement("button");
+                    graphButton.className = "ui small violet inverted right labeled icon button graph";
+                    graphButton.onclick = function() {graph(data.payload.citeId)};
 
-                let rightArrow =
-                    document.createElement("i");
-                    rightArrow.className = "right arrow icon";
-                graphButton.appendChild(rightArrow);
+                    let rightArrow =
+                        document.createElement("i");
+                        rightArrow.className = "right arrow icon";
+                    graphButton.appendChild(rightArrow);
 
-                let graphButtonText =
-                    document.createElement("span");
-                    graphButtonText.innerText = "See Graph";
-                graphButton.appendChild(graphButtonText);
-
-            cardBottom.appendChild(graphButton);
+                    let graphButtonText =
+                        document.createElement("span");
+                        graphButtonText.innerText = "See Graph";
+                    graphButton.appendChild(graphButtonText);
+                cardBottom.appendChild(graphButton);
+            }
         card.appendChild(cardBottom);
     column.appendChild(card);
 }
