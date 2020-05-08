@@ -5,6 +5,7 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.WebTestUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.MockServerUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncQueryWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.AsyncSearchWebGraph;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.GraphSaver;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.SyncWebGraph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DeadSource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.ops.GeneratingSourceFinder;
@@ -75,7 +76,6 @@ public class WebGraphTest {
     gens.stream().forEach(v -> System.out.println("generator: " + v));
   }
 
-  @Ignore
   @Test
   public void asyncBfsSanityCheckTest() throws QueryException, GraphException {
     //assumeTrue(WebTestUtils.checkURL("https://www.nytimes.com/"));
@@ -102,6 +102,37 @@ public class WebGraphTest {
         .collect(Collectors.toList());
     gens.stream().forEach(v -> System.out.println("generator: " + v));
   }
+
+  @Test
+  public void downloadedSourceSanityCheck() throws QueryException, GraphException {
+    WireMockServer mockServer = new WireMockServer(options().port(8089));
+    mockServer.start();
+    MockServerUtils.setUpMockServer(8089);
+    AsyncSourceQuery sq = new AsyncSourceQuery(10);
+    Source src = sq.query("http://localhost:63342/term-project-ading6-cshi18-jgong15-sshaw4-1/dummies/source0.html").join();
+    String key = src.getContent();
+    AsyncSearchWebGraph graph = new AsyncSearchWebGraph(src, sq, key, 1, 0.8);
+    graph.load();
+    Collection<Vertex<Source, String>> loadedVertices = graph.getLoadedVertices();
+    loadedVertices.stream().forEach(v -> System.out.println("loaded: " + v.getVal().getURL()));
+
+    Vertex<Source, String> hv = graph.getHead();
+    List<Set<Vertex<Source, String>>> comps = new Tarjan().search(hv);
+    comps.stream().flatMap(Collection::stream).forEach(v -> v.getVal().queryTimestamp());
+    List<Vertex<Source, String>> gens = comps.stream()
+        .map(comp -> {
+          try {
+            return new GeneratingSourceFinder().search(comp);
+          } catch (GraphException e) {
+            System.out.println("Error while finding gen sources: " + e.getMessage());
+            return null;
+          }
+        })
+        .collect(Collectors.toList());
+    gens.stream().forEach(v -> System.out.println("generator: " + v));
+    mockServer.stop();
+  }
+
 
   @Test
   public void cycleAlgoIntegrationTest() throws QueryException, GraphException {

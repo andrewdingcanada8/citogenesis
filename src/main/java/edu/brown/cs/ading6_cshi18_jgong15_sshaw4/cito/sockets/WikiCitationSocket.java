@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.CitoWorld;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.Main;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.MockServerUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.GraphSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.SourceSerializer;
@@ -23,6 +25,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -97,6 +100,18 @@ public class WikiCitationSocket {
     System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
     String html = "";
     try {
+      // if mocking is enabled, check if we currently have the
+      // wiki article downloaded. If not, pass through to the internet
+      if (Main.isMocking()) {
+        String wikiName = url.replace("https://en.wikipedia.org/wiki/", "");
+        File wikiFile = new File("dummies/" + wikiName + ".html");
+        if (wikiFile.exists()) {
+          System.err.println("Found " + wikiName + " on internal server, using internal version...");
+          url = MockServerUtils.PAGES_SERVER_PATH + wikiName + ".html";
+        } else {
+          System.err.println("Did not find " + wikiName + " on internal server, forwarding...");
+        }
+      }
       wiki = new WikiQuery(WIKI_QUERY_TIMEOUT).query(url);
       html = wiki.getContentHTML();
     } catch (QueryException e) {
@@ -162,7 +177,7 @@ public class WikiCitationSocket {
       citeId = citation.getId();
       hasCycles = citation.getHasCycles();
 
-      if ((citeType.equals("Web"))
+      if ((citeType.equals(Citation.WEB_TYPE))
           && (citation.getInitialWebSource() != null)) {
         // TODO: Add testing for timeout and notawebpage
         citeTitle = citation.getInitialWebSource().title();
