@@ -54,7 +54,7 @@ function otherCard (data) {
                 document.createElement("h4");
                 sourceTitle.className = "ui sub header";
                 // TODO: Source Title specific text
-                sourceTitle.innerText = "Primary source. No further connections.";
+                sourceTitle.innerText = data.payload.citeId + " is a primary source. No further connections.";
             cardBottom.appendChild(sourceTitle);
         card.appendChild(cardBottom);
     column.appendChild(card);

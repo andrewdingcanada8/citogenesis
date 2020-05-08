@@ -22,7 +22,7 @@ function deprecatedCard (data) {
                 let cName =
                     document.createElement("span");
                     cName.className = "citation-title";
-                    cName.innerText = data.payload.citeTitle;
+                    cName.innerText = data.payload.citeTitle ": " + data.payload.citeId;
                 header.appendChild(cName);
 
                 let bubble =

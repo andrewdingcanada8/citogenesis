@@ -22,7 +22,7 @@ function timeoutCard (data) {
                 let cName =
                     document.createElement("span");
                     cName.className = "citation-title";
-                    cName.innerText = data.payload.citeTitle;
+                    cName.innerText = "Citation Timed Out: " + data.payload.citeId;
                 header.appendChild(cName);
 
                 let bubble =
@@ -43,7 +43,7 @@ function timeoutCard (data) {
                     document.createElement("a");
                     // TODO: CODE FOR META DATA
                     a.innerText = "Query Timeout";
-                    a.href =  data.payload.citeURL;
+                    a.href =  "";
                 meta.appendChild(a);
             cardTop.appendChild(meta);
         card.appendChild(cardTop);

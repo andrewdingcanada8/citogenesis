@@ -28,7 +28,9 @@
                     <h1>CITO -</h1>
                     <h1>GENESIS</h1>
                 </div>
-
+                <div class="ui icon button" data-content="Add users to your feed">
+                    <i class="question icon"></i>
+                </div>
                 <div class="ui mini action input" id="search-bar">
                     <input type="text" placeholder="Search..." id="pageURL">
                     <button class="ui icon button" onclick="annotate()">

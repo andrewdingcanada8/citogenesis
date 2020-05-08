@@ -35,7 +35,9 @@ function graph(id) {
     ]);*/
 
     let nodes = new vis.DataSet(jGraph.vertices.map(src => {
-        return {id: src.url, label: src.title}
+        if (src.url !== "NOT HTML PAGE") {
+            return {id: src.url, label: src.title}
+        }
     }));
 
     let edges = new vis.DataSet(

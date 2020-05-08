@@ -129,7 +129,6 @@
 
         <div class="extracted-wiki-page" id="wiki-page">
             <div class="ui inverted dimmer graph">
-                <h1>GRAPH STUFF HERE!</h1>
                 <#--                // TODO: the box containing the graph, as well as dimension settings for it-->
                 <div id="mynetwork">
                 </div>
