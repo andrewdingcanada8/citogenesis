@@ -44,7 +44,7 @@ function regularCard (data) {
                 let a =
                     document.createElement("a");
                     // TODO: CODE FOR META DATA
-                    a.innerText = "";
+                    a.innerText = "Generating Sources:";
                     a.href =  data.payload.citeURL;
                 meta.appendChild(a);
             cardTop.appendChild(meta);
