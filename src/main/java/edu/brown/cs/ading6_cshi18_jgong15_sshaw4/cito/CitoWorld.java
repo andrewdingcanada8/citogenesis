@@ -1,6 +1,7 @@
 package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito;
 
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands.CitationSearchCommand;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands.DownloadWikiCommand;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands.WikiLoadCommand;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.repl.arg_types.DoubleArg;
@@ -42,7 +43,7 @@ public final class CitoWorld extends World {
     globalDepth = DEFAULT_DEPTH;
     globalThresh = DEFAULT_THRESHOLD;
     globalTimeout = DEFAULT_TIME_OUT;
-    addCommands(new CitationSearchCommand(), new WikiLoadCommand(), new SetParamsCommand());
+    addCommands(new CitationSearchCommand(), new WikiLoadCommand(), new SetParamsCommand(), new DownloadWikiCommand());
   }
 
   public void setWiki(Wiki wiki) {
