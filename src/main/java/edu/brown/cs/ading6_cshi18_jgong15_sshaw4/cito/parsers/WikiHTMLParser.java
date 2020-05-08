@@ -175,7 +175,7 @@ public class WikiHTMLParser {
     if (citedContent == null) {
       return null;
     } else {
-      Elements refContent = doc.select(citeNoteID);
+      Elements refContent = doc.getElementById(citeNoteID.substring(1)).getAllElements();
       String referenceText = refContent.select(".reference-text").text();
       Elements extLinks = refContent.select(".external");
       Element timeAccessed = refContent.select(".reference-accessdate").first();
