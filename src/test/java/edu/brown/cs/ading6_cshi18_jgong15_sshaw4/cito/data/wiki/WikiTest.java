@@ -15,6 +15,8 @@ import static org.junit.Assert.assertEquals;
 public class WikiTest {
   Wiki wikiMurphysLaw;
   Wiki wikiBrownUniversity;
+  Wiki wikiReptilianCons;
+  Wiki wikiAvatar;
 
   @Before
   public void setUp() throws QueryException {
@@ -23,6 +25,12 @@ public class WikiTest {
 
     String urlBrownUniversity = "https://en.wikipedia.org/wiki/Brown_University";
     wikiBrownUniversity = new WikiQuery(30).query(urlBrownUniversity);
+
+    String urlRep = "https://en.wikipedia.org/wiki/Reptilian_conspiracy_theory";
+    wikiReptilianCons = new WikiQuery(40).query(urlRep);
+
+    String urlAvatar = "https://en.wikipedia.org/wiki/Avatar:_The_Last_Airbender";
+    wikiAvatar = new WikiQuery(40).query(urlAvatar);
   }
 
   @After
@@ -34,6 +42,9 @@ public class WikiTest {
   public void testGetCitationIDs() {
     assertEquals(wikiMurphysLaw.getCitationIDs().size(), 27);
     assertEquals(wikiBrownUniversity.getCitationIDs().size(), 151);
+    assertEquals(wikiReptilianCons.getCitationIDs().size(), 27);
+    assertEquals(wikiAvatar.getCitationIDs().size(), 102);
+    System.out.println(wikiReptilianCons.getCitationIDs());
   }
 
   @Test
@@ -72,5 +83,13 @@ public class WikiTest {
             .build();
     System.out.println("Builded: " + citationSevenBuilded);
     assertEquals(citationSeven, citationSevenBuilded);
+  }
+
+  @Test
+  public void runGetCitationFromID() {
+    wikiReptilianCons.getCitationFromID(
+        "#cite_note-book,_synonym-1", 30, 2, 0.2);
+    wikiAvatar.getCitationFromID(
+        "#cite_note-:0-30", 30, 2, 0.2);
   }
 }
