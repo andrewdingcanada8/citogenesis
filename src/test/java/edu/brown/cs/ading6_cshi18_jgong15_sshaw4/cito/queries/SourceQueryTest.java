@@ -21,9 +21,9 @@ public class SourceQueryTest {
 
   @Before
   public void setUp() {
-    //assumeTrue(WebTestUtils.checkURL("https://www.google.com"));
-    //_query = new SourceQuery(WebTestUtils.HTTP_TIMEOUT);
-    //_asyncQuery = new AsyncSourceQuery(WebTestUtils.HTTP_TIMEOUT);
+    assumeTrue(WebTestUtils.checkURL("https://www.google.com"));
+    _query = new SourceQuery(WebTestUtils.HTTP_TIMEOUT);
+    _asyncQuery = new AsyncSourceQuery(WebTestUtils.HTTP_TIMEOUT);
   }
 
   @After

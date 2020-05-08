@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,16 +58,15 @@ public final class GraphSaver {
           .filter(e -> e.getDest().getVal().isValid())
           .collect(Collectors.toSet());
       String newHtml;
+      Document doc = Jsoup.parse(src.getHTML(), src.getURL());
+      Elements ps = doc.getElementsByTag("p");
+      Elements lis = doc.getElementsByTag("li");
       if (edges.isEmpty()) {
         // clean out all urls
-        Document doc = Jsoup.parse(src.getHTML(), src.getURL());
-        Elements ps = doc.getElementsByTag("p");
-        Elements lis = doc.getElementsByTag("li");
         Stream.concat(ps.stream(), lis.stream())
             .flatMap(e -> e.getElementsByTag("a").stream())
             .filter(a -> a.hasAttr("href"))
             .forEach(a -> a.attr("href", ""));
-        newHtml = doc.html();
       } else { // recur case - if there are child sources
         // obtain filenames of sources
         List<String> childPaths = edges.stream()
@@ -76,9 +76,6 @@ public final class GraphSaver {
             .collect(Collectors.toList());
 
         // next, clean out links, and replace them with new ones (and leave the rest empty)
-        Document doc = Jsoup.parse(src.getHTML(), src.getURL());
-        Elements ps = doc.getElementsByTag("p");
-        Elements lis = doc.getElementsByTag("li");
         List<Element> as = Stream.concat(ps.stream(), lis.stream())
             .flatMap(e -> e.getElementsByTag("a").stream())
             .filter(a -> a.hasAttr("href"))
@@ -87,8 +84,16 @@ public final class GraphSaver {
         for (int i = 0; i < Math.min(childPaths.size(), as.size()); i++) {
           as.get(i).attr("href", childPaths.get(i));
         }
-        newHtml = doc.html();
       }
+      // append time source
+      Calendar cal = src.getTimestamp();
+      if (cal == null) {
+        cal = new GregorianCalendar();
+      }
+      String timeStr = ((GregorianCalendar) cal).toZonedDateTime()
+          .format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+      doc.append("<p data-timestamp=\"" + timeStr + "\">timestring: " + timeStr + "</p>");
+      newHtml = doc.html();
       // write result to a file
       File fileDir = new File(dir + name);
       try {
