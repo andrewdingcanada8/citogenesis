@@ -43,11 +43,10 @@
 
             <div class="right item">
                 <div class="ui action input">
-                    <input type="text" placeholder="Navigate to..." id="pageURL">
+                    <input type="text" placeholder="Enter Wikipedia URL Here" id="pageURL">
                     <button class="ui teal button" onclick="annotate()">Annotate</button>
                 </div>
-                <div class="ui basic button" id="help-button" onclick="graph('test-id')">Help</div>
-<#--                // TODO: change this back to show_help();-->
+                <div class="ui basic button" id="help-button" onclick="show_help()">Help</div>
             </div>
         </div>
     </div>
