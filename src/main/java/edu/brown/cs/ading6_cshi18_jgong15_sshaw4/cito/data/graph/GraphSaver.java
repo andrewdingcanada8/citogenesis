@@ -92,7 +92,10 @@ public final class GraphSaver {
       }
       String timeStr = ((GregorianCalendar) cal).toZonedDateTime()
           .format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
-      doc.append("<p data-timestamp=\"" + timeStr + "\">timestring: " + timeStr + "</p>");
+      doc.select("body").first()
+          .children()
+          .first()
+          .before("<p data-timestamp=\"" + timeStr + "\">timestring: " + timeStr + "</p>");
       newHtml = doc.html();
       // write result to a file
       File fileDir = new File(dir + name);

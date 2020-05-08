@@ -6,6 +6,8 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -24,14 +26,17 @@ public final class MockServerUtils {
   public static void setUpMockServer(int port) {
     configureFor("localhost", port);
     File folder = new File(PAGES_DIR_PATH);
-    String[] files = folder.list();
-    for (String htmlPath : files) {
-      loadPage(htmlPath);
+    try {
+      Files.walk(Paths.get(PAGES_DIR_PATH))
+          .filter(Files::isRegularFile)
+          .forEach(p -> loadPage(p.toString()));
+    } catch (IOException e) {
+      System.out.println("Error while walking on " + PAGES_DIR_PATH + ": " + e.getMessage());
     }
   }
 
   private static void loadPage(String filepath) {
-    File input = new File(PAGES_DIR_PATH + filepath);
+    File input = new File(filepath);
     Document doc;
     try {
       doc = Jsoup.parse(input, "UTF-8", PAGES_SERVER_PATH);
@@ -45,7 +50,7 @@ public final class MockServerUtils {
       return;
     }
     stubFor(get(urlEqualTo("/?url="
-        + doc.baseUri() + filepath
+        + doc.baseUri() + filepath.replace("dummies/", "")
         + "&fl=timestamp&output=json&limit=1")).willReturn(aResponse()
         .withHeader("Content-type", "application/json")
         .withBody("[[\"timestamp\"],\n"
