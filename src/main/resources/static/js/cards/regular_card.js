@@ -1,102 +1,104 @@
-function regularCard (card, data) {
-
-    // Building Annotation Card HTML
-    // Annotation Column
+/**
+ * NOTE: These js lines have a custom code structure where each new indentation
+ * describes the properties of the html tag above it.
+ */
+function regularCard (data) {
+    console.log("regularCard is being created...");
+    const LIST_LENGTH = 5;
     let column = document.getElementById("annotation-column");
-    // Card Container
-    let card = document.createElement("div");
-    card.className = "card";
-    card.id = citeId;
-    column.appendChild(card);
+    let srcList = data.payload.jGenSources;
 
-    // First Section of Card
-    let content1 = document.createElement("div");
-    content1.className = "content";
-    card.appendChild(content1);
-    // Citation Title
-    let header = document.createElement("div");
-    header.className = "header";
-    content1.appendChild(header);
-    let span = document.createElement("span");
-    span.innerText = citeRefText;
-    span.className = "citation-title";
-    header.appendChild(span);
-    let bubbleCount = document.createElement("a");
-    header.appendChild(bubbleCount); // The contents of bubbleCount are set up later in srcList section
-    // Citation Type
-    let meta = document.createElement("div");
-    meta.className = "meta";
-    content1.appendChild(meta);
-    let a = document.createElement("a"); // TODO: reassignment of a might cause issues.
-    a.innerText = citeTypeText;
-    a.href = citeURL;
-    meta.appendChild(a);
+    let card = // Card Container
+        document.createElement("div");
+        card.className = "card";
+        card.id = data.payload.citeId;
+
+        let cardTop = // Top Content Box
+            document.createElement("div");
+            cardTop.className = "content";
+
+            let header =
+                document.createElement("div");
+                header.className = "header";
+
+                let cName =
+                    document.createElement("span");
+                    cName.className = "citation-title";
+                    cName.innerText = data.payload.citeTitle;
+                header.appendChild(cName);
+
+                let bubble =
+                    document.createElement("a");
+                    // TODO: CODE FOR BUBBLE DATA
+                    bubble.className = "ui src circular label";
+                    bubble.innerText = "";
 
 
-    // Second Section of Card
-    let content2 = document.createElement("div");
-    content2.className = "content";
-    card.appendChild(content2);
-    // Generating Sources Subtitle
-    let h4 = document.createElement("h4");
-    h4.className = "ui sub header";
-    h4.innerText = "Generating Sources:";
-    content2.appendChild(h4);
-    // List
-    let htmlList = document.createElement("div");
-    htmlList.className = "ui ordered list";
-    content2.appendChild(htmlList);
-    // Finding All Generating Sources
-    if (srcList !== null) {
-        // Adding Generating Sources
-        for (let i = 0; i < srcList.length; i++) {
-            if (i > 5) {
-                break;
+                header.appendChild(bubble);
+            cardTop.appendChild(header);
+
+            let meta =
+                document.createElement("div");
+                meta.className = "meta";
+
+                let a =
+                    document.createElement("a");
+                    // TODO: CODE FOR META DATA
+                    a.innerText = "";
+                    a.href =  data.payload.citeURL;
+                meta.appendChild(a);
+            cardTop.appendChild(meta);
+        card.appendChild(cardTop);
+
+        let cardBottom = // Bottom Content Box
+            document.createElement("div");
+            cardBottom.className = "content";
+
+            let sourceTitle =
+                document.createElement("h4");
+                sourceTitle.className = "ui sub header";
+                // TODO: Source Title specific text
+                sourceTitle.innerText = "";
+            cardBottom.appendChild(sourceTitle);
+
+            // TODO: Maybe don't include the following:
+            let oList =
+                document.createElement("div");
+                oList.className = "ui ordered list";
+                for (let i = 0; i < srcList.length; i++) {
+                    if (i > LIST_LENGTH) {break;}
+                    let a = document.createElement("a");
+                    a.className = "item";
+                    a.href = srcList[i].url;
+                    a.innerText = srcList[i].title;
+                    oList.appendChild(a);
+                }
+            cardBottom.appendChild(oList);
+            if (data.payload.hasCycles){
+                let crLabel =
+                    document.createElement("h5");
+                crLabel.className = "ui red header";
+                crLabel.innerText = "Circular reporting found.";
+                cardBottom.appendChild(crLabel);
             }
-            let a = document.createElement("a");
-            a.innerText = srcList[i].title;
-            a.className = "item";
-            a.href = srcList[i].url;
-            htmlList.appendChild(a);
-        }
-        // Changing Color of Bubble
-        if (srcList.length === 0) { // TODO: modifying a after a has already been added might cause issues
-            bubbleCount.className = "ui src orange circular label";
-            bubbleCount.innerText = "1";
-        } else if (srcList.length < 1) {
-            bubbleCount.className = "ui src yellow circular label";
-            bubbleCount.innerText = srcList.length + 1;
-        } else {
-            bubbleCount.className = "ui src green circular label";
-            bubbleCount.innerText = srcList.length + 1;
-        }
-        if (hasCycles === true) {
-            bubbleCount.className = "ui src red circular label";
-            let crWarning = document.createElement("h5");
-            // Circular Reporting Warning Label
-            crWarning.className = "ui red header";
-            crWarning.innerText = "Circular reporting found.";
-            content2.appendChild(crWarning);
-        }
-    } else {
-        bubbleCount.className = "ui src orange circular label";
-        bubbleCount.innerText = "1"; // TODO: not sure how we want to handle this behavior. 1 or 0?
-        let a = document.createElement("a");
-        a.innerText = 'Self Referenced.'; // TODO: not sure how we want to handle this behavior
-        a.className = "item";
-        htmlList.appendChild(a);
-    }
-    if (srcList !== null) {
-        // Graph Toggle Button
-        let graphButton = document.createElement("button");
-        graphButton.className = "ui small violet inverted right labeled icon button graph";
-        graphButton.onclick = function() {graph(citeId)};
-        content2.appendChild(graphButton);
-        let rightArrow = document.createElement("i");
-        rightArrow.className = "right arrow icon";
-        let graphButtonText = document.createElement("span");
-        graphButtonText.innerText = "See Graph";
-        graphButton.appendChild(rightArrow);
-        graphButton.appendChild(graphButtonText);
-    }
+
+            // TODO: might delete this section:
+            let graphButton =
+                document.createElement("button");
+                graphButton.className = "ui small violet inverted right labeled icon button graph";
+                graphButton.onclick = function() {graph(data.payload.citeId)};
+
+                let rightArrow =
+                    document.createElement("i");
+                    rightArrow.className = "right arrow icon";
+                graphButton.appendChild(rightArrow);
+
+                let graphButtonText =
+                    document.createElement("span");
+                    graphButtonText.innerText = "See Graph";
+                graphButton.appendChild(graphButtonText);
+
+            cardBottom.appendChild(graphButton);
+        card.appendChild(cardBottom);
+    column.appendChild(card);
 }

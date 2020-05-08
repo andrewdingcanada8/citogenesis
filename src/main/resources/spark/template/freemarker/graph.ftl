@@ -18,8 +18,8 @@
 
     <style type="text/css">
         #mynetwork {
-            width: 600px;
-            height: 600px;
+            width: 800px;
+            height: 1000px;
             border: 1px solid lightgray;
         }
     </style>
