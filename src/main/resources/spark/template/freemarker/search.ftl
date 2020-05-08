@@ -6,7 +6,7 @@
 
             // check if input url matches wikipedia format
             if (/https:\/\/en\.wikipedia\.org\/wiki\/([\w%]+)/g.test(url)) {
-                alert("Invalid Wikipedia URL");
+                alert("Make sure to find a Wikipedia article first and copy its URL!");
                 return;
             }
 
@@ -20,13 +20,6 @@
 
             // window.location.href = "http://localhost:4567/socket-demo";
 
-        }
-        function graph(){
-            let url = $('#pageURL').val();
-            url = url.substr(url.lastIndexOf("/") - 4, url.length);
-            if (url !== "") {
-                window.location.href = "http://localhost:4567/graph/" + url;
-            }
         }
     </script>
 </#assign>

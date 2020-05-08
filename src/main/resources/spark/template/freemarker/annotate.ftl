@@ -63,14 +63,17 @@
             <div class="help left">
                 <i class="arrow left icon"></i>
                 <p>Each Wikipedia citation is displayed as a card.</p>
-                <a class="ui green circular label">3</a>
-                <p style="display: inline;">There's </p>
+                <a class="ui green circular label">5</a>
+                <p style="display: inline;">Multiple generating src</p>
                 <br>
-                <a class="ui green circular label">3</a>
-                <p style="display: inline;">There's </p>
+                <a class="ui blue circular label">1</a>
+                <p style="display: inline;">Single generating src</p>
                 <br>
-                <a class="ui green circular label">3</a>
-                <p style="display: inline;">There's </p>
+                <a class="ui yellow circular label">1</a>
+                <p style="display: inline;">Non-internet src</p>
+                <br>
+                <a class="ui red circular label">!</a>
+                <p style="display: inline;">Deprecated or timed out</p>
             </div>
             <div class="help center" style="float: right;">
                 <p>To use Citogenesis, simply input the url of an existing Wikipedia article and click annotate.</p>
