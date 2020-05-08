@@ -2,8 +2,8 @@
  * NOTE: These js lines have a custom code structure where each new indentation
  * describes the properties of the html tag above it.
  */
-function nullList (data) {
-    console.log("nullList is being created...");
+function nullListCard (data) {
+    console.log("nullListCard is being created...");
     let column = document.getElementById("annotation-column");
     let srcList = data.payload.jGenSources;
 

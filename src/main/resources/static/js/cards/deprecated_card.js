@@ -52,7 +52,7 @@ function deprecatedCard (data) {
             let crLabel =
                 document.createElement("h5");
                 crLabel.className = "ui red header";
-                crLabel.innerText = "Warning: citation source is deprecated.";
+                crLabel.innerText = "Warning: citation source " + data.citeId + " is deprecated.";
             cardBottom.appendChild(crLabel);
         card.appendChild(cardBottom);
     column.appendChild(card);

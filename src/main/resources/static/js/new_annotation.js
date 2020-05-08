@@ -23,28 +23,25 @@ function new_annotation(data) {
     // Logic for selecting card type
     switch (citeType) {
         case "Self":
-            citeTypeText = "Other";
+            console.log("***** NOTE: WIKIPEDIA HAS CITED ITSELF *****");
             break;
         case "Other":
-            citeTypeText = "Other";
+            otherCard(data);
             break;
         case "Time Out":
-            citeTypeText = "Other";
+            timeoutCard(data);
             break;
-        case "Non-HTML": // TODO: confirm if this is correct
-            citeTypeText = "Other";
+        case "Non-HTML":
+            deprecatedCard(data);
             break;
         case "Web":
             if ((srcList !== null) && (srcList.length > 0)) {
                 if (!isDeprecated(srcList)) {
-                    console.log("* Regular Card Created *");
                     regularCard(data);
                 } else {
-                    console.log("* Deprecated Card Created *");
                     deprecatedCard(data);
                 }
             } else {
-                console.log("* Null List Card Created *");
                 nullListCard(cardData, data);
             }
             break;
