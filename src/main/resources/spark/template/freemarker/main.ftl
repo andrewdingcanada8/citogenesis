@@ -28,15 +28,7 @@
                     <h1>CITO -</h1>
                     <h1>GENESIS</h1>
                 </div>
-                <div class="ui icon button" data-content="Add users to your feed" onclick="suggestion()">
-                    <i class="question icon"></i>
-                </div>
-                <script>function suggestion(){
-                    $('.boundary.example .button')
-                        .popup({
-                            boundary: '.boundary.example .segment'
-                        })
-                    ;}</script>
+
                 <div class="ui mini action input" id="search-bar">
                     <input type="text" placeholder="Search..." id="pageURL">
                     <button class="ui icon button" onclick="annotate()">
