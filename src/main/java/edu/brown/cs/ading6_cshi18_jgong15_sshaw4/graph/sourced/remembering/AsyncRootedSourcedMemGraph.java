@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -19,17 +21,23 @@ import java.util.stream.Collectors;
  */
 public abstract class AsyncRootedSourcedMemGraph<T, W> extends RootedSourcedMemGraph<T, W> {
 
+  public static final int NUM_THREADS = 3;
+  private ExecutorService pool;
+
   /**
    * Constructs a new AsyncRootedSourcedMemGraph.
-   * @param headVal stored value for root Vertex
+   *
+   * @param headVal  stored value for root Vertex
    * @param maxDepth maximum search depth
    */
   public AsyncRootedSourcedMemGraph(T headVal, int maxDepth) {
     super(headVal, maxDepth);
+    pool = Executors.newFixedThreadPool(NUM_THREADS);
   }
 
   /**
    * Concurrent BFS search algorithm.
+   *
    * @throws GraphException Exception while obtaining neighboring vertices and edges.
    */
   @Override
@@ -58,6 +66,7 @@ public abstract class AsyncRootedSourcedMemGraph<T, W> extends RootedSourcedMemG
 
   /**
    * Returns reference to results of asynchronous vertex exploration process.
+   *
    * @param v vertex of which to explore edges
    * @return reference to finished edge computation
    */
@@ -69,7 +78,7 @@ public abstract class AsyncRootedSourcedMemGraph<T, W> extends RootedSourcedMemG
         System.err.println("Graph exploration error: " + e.getMessage());
         return Collections.emptySet();
       }
-    });
+    }, pool);
 
   }
 }

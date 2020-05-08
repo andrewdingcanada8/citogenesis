@@ -43,7 +43,7 @@ function setup_socket () {
                 let id = data.payload.citeId;
                 let graph = data.payload.jGraph;
                 graphs[id] = graph;
-                console.log(graph); // TODO: Delete Later
+                // console.log(msg.data); // TODO: Delete Later
                 break;
         }
     };
@@ -66,8 +66,6 @@ function urlSubmit() {
  */
 function insertHTML(data) {
     let html = data.payload.html;
-    let htm = html.substr(0, 200);
-    console.log(htm);
     let div = document.getElementById("wiki-page");
     div.insertAdjacentHTML("beforeend", html);
 }

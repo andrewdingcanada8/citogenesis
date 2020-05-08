@@ -5,13 +5,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.CitoWorld;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.GraphSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.SourceSerializer;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.VertexSerializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Wiki;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.WikiQuery;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Graph;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.sourced.remembering.RootedSourcedMemGraph;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -24,11 +29,15 @@ import java.util.*;
 
 @WebSocket
 public class WikiCitationSocket {
-  private static final Gson GSON = new GsonBuilder().registerTypeAdapter(Source.class,
-          new SourceSerializer()).create();
+  private static final Gson GSON = new GsonBuilder()
+      .registerTypeAdapter(Source.class, new SourceSerializer())
+      .registerTypeAdapter(RootedSourcedMemGraph.class, new GraphSerializer())
+      .registerTypeAdapter(Vertex.class, new VertexSerializer())
+      .create();
   private static final HashMap<Integer, Session> SESSIONS = new HashMap();
   private static int nextId = 0;
-  private static final int TIME_LIMIT = 10;
+  private static final int WIKI_QUERY_TIMEOUT = 10;
+
 
   private static enum MESSAGE_TYPE {
     CONNECT,
@@ -40,6 +49,7 @@ public class WikiCitationSocket {
   /**
    * When WebSocket first connects, this method messages the client to let it know of the
    * connection, and supplies a Session ID.
+   *
    * @param session - Session Object
    * @throws IOException - IOException
    */
@@ -54,6 +64,7 @@ public class WikiCitationSocket {
     session.getRemote().sendString(GSON.toJson(message));
     nextId++;
   }
+
   @OnWebSocketClose
   public void closed(Session session, int statusCode, String reason) {
     System.out.println("[Server] INFO: Socket closed due to: " + reason);
@@ -65,6 +76,7 @@ public class WikiCitationSocket {
    * server. After the server sends a CONNECT message, the client sends back a URLSUBMISSION, which
    * can be used to initiate the Wiki object. This class will then sequentially send messages to the
    * client with information for the page like HTML, citation data etc.
+   *
    * @param session - Session object
    * @param message - JSON String that contains an MESSAGE_TYPE 'type' and JsonObject 'payload' in
    *                its top level
@@ -85,7 +97,7 @@ public class WikiCitationSocket {
     System.out.println("[SERVER] Recieved URL: " + url); // TODO: Delete Later
     String html = "";
     try {
-      wiki = new WikiQuery(TIME_LIMIT).query(url);
+      wiki = new WikiQuery(WIKI_QUERY_TIMEOUT).query(url);
       html = wiki.getContentHTML();
     } catch (QueryException e) {
       e.printStackTrace();
@@ -107,26 +119,34 @@ public class WikiCitationSocket {
     // Sending HTML message
     htmlToSend.add("payload", htmlPayload);
     String htmlToSendStr = GSON.toJson(htmlToSend);
-    System.out.println("tosend: " + htmlToSendStr); // TODO: Delete Later
     SESSIONS.get(id.getAsInt()).getRemote().sendString(htmlToSendStr);
 
 
     // Getting Citation ID
     Set<String> citationIDs = new HashSet<>();
     citationIDs = wiki.getCitationIDs();
-    Type type = new TypeToken<List<Source>>() { }.getType();
+    Type srcListType = new TypeToken<List<Source>>() {
+    }.getType();
+    Type srcGraphType =
+        new TypeToken<RootedSourcedMemGraph<Source, String>>() {
+        }.getType();
 
     // Sequentially building and sending citation information to client
-    for (String citationID: citationIDs) {
+    for (String citationID : citationIDs) {
       // Building Citation
-      Citation citation = wiki.getCitationFromID(citationID, 60, 3, 0.2);
-      List<Vertex<Source, String>> genVertices = citation.getGenSources();
+      Citation citation = wiki.getCitationFromID(citationID,
+          CitoWorld.getInstance().getTimeout(),
+          CitoWorld.getInstance().getDepth(),
+          CitoWorld.getInstance().getThresh());
+      List<Vertex<Source, String>> genVertices = citation.getGenSources(); // non-null value
       List<Source> genSources = new ArrayList<Source>();
-      for (Vertex<Source, String> vertex: genVertices) {
+      for (Vertex<Source, String> vertex : genVertices) {
         if (vertex != null) {
           genSources.add(vertex.getVal());
         }
       }
+      Graph<Source, String> graph = citation.getGraph();
+
       // Declaring fields in payload
       String citeRefText;
       String citeType;
@@ -135,19 +155,25 @@ public class WikiCitationSocket {
       String citeTitle;
       String citeURL;
       JsonElement jGenSources;
+      JsonElement jGraph;
       // Filling fields in payload
       citeRefText = citation.getReferenceText();
       citeType = citation.getType();
       citeId = citation.getId();
       hasCycles = citation.getHasCycles();
-      if ((citeType.equals("Web")) && citation.getInitialWebSource() != null) {
+
+      if ((citeType.equals("Web"))
+          && (citation.getInitialWebSource() != null)) {
+        // TODO: Add testing for timeout and notawebpage
         citeTitle = citation.getInitialWebSource().title();
         citeURL = citation.getInitialWebSource().getURL();
-        jGenSources = GSON.toJsonTree(genSources, type); // title, url
+        jGenSources = GSON.toJsonTree(genSources, srcListType); // title, url
+        jGraph = GSON.toJsonTree(graph, srcGraphType); // vertices, map
       } else {
         citeTitle = "";
         citeURL = "";
         jGenSources = null;
+        jGraph = null;
       }
       // Prepare Payload, append fields
       JsonObject citePayload = new JsonObject();
@@ -159,13 +185,21 @@ public class WikiCitationSocket {
       citePayload.addProperty("citeURL", citeURL);
       citePayload.addProperty("hasCycles", hasCycles);
       citePayload.add("jGenSources", jGenSources);
+
+      // TODO: @Seiji, you can make and re-assign the jGraph here if you want. citeID = "test-id"
+
+      citePayload.add("jGraph", jGraph);
+
       // Preparing ToSend object with payload and message type inside
       JsonObject citeToSend = new JsonObject();
       citeToSend.addProperty("type", MESSAGE_TYPE.CITATION.ordinal());
       citeToSend.add("payload", citePayload);
       // Sent ToSend to client
       String citeToSendStr = GSON.toJson(citeToSend);
-      System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
+//      System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
+      if (jGraph != null) {
+        System.out.println("tosend: " + citeToSendStr); // TODO: Delete Later
+      }
       SESSIONS.get(id.getAsInt()).getRemote().sendString(citeToSendStr);
     }
   }

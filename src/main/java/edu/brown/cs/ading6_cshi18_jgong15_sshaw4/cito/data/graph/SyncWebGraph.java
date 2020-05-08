@@ -5,7 +5,6 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.source.DummySource;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.Query;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
-import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Deadend;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Edge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
@@ -51,7 +50,7 @@ public class SyncWebGraph extends RootedSourcedMemGraph<Source, String> {
         System.err.println("adding... " + url);
       } catch (QueryException | IllegalArgumentException e) {
         // do nothing (i.e, don't attach anything to the source)
-        neighbors.add(new SourcedEdge<>(url, 0.0, vert, new Deadend<>(new DeadSource(url))));
+        neighbors.add(new SourcedEdge<>(url, 0.0, vert, this.getVertex(new DeadSource(url))));
         System.err.println("Graph search encountered error: " + e.getMessage());
       }
     }

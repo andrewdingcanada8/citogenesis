@@ -149,9 +149,7 @@ public class WebSource implements Source {
 
   @Override
   public String toString() {
-    return "WebSource{"
-        + "url='" + url + '\''
-        + '}';
+    return url;
   }
 
   @Override
