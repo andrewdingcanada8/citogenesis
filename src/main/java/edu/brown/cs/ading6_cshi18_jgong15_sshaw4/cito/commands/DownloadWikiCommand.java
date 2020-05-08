@@ -2,6 +2,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.commands;
 
 import com.google.common.base.Charsets;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.CitoWorld;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.MockServerUtils;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.Source;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.graph.GraphSaver;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.data.wiki.Citation;
@@ -22,6 +23,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
@@ -79,16 +83,29 @@ public class DownloadWikiCommand extends SimpleCommand {
 
           // override corresponding links in wikipedia html
           Elements links = doc.select(id).select(".external");
-          links.forEach(l -> l.attr("href", citeDirName + "source0.html"));
+          links.forEach(l -> l.attr("href",
+              MockServerUtils.PAGES_SERVER_PATH + citeDirName + "source0.html"));
 
         } else {
           // if citation isn't, don't save any graph, and link to an irrelevant deadend
           // page (like singleton)
           Elements links = doc.select(id).select(".external");
-          links.forEach(l -> l.attr("href", "singleton.html"));
+          links.forEach(l -> l.attr("href",
+              MockServerUtils.PAGES_SERVER_PATH + "singleton.html"));
         }
       }
 
+      // insret timestamp info
+      Calendar cal = wiki.getTimestamp();
+      if (cal == null) {
+        cal = new GregorianCalendar();
+      }
+      String timeStr = ((GregorianCalendar) cal).toZonedDateTime()
+          .format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+      doc.select("body").first()
+          .children()
+          .first()
+          .before("<p data-timestamp=\"" + timeStr + "\">timestring: " + timeStr + "</p>");
       // acquire modified html and save in the dummies directory
       String moddedWikiHtml = doc.html();
       String wikiFileName = wikiUrl.replace("https://en.wikipedia.org/wiki/", "");

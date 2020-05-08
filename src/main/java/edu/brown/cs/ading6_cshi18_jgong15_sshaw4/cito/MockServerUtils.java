@@ -50,7 +50,7 @@ public final class MockServerUtils {
       return;
     }
     stubFor(get(urlEqualTo("/?url="
-        + doc.baseUri() + filepath
+        + doc.baseUri() + filepath.replace("dummies/", "")
         + "&fl=timestamp&output=json&limit=1")).willReturn(aResponse()
         .withHeader("Content-type", "application/json")
         .withBody("[[\"timestamp\"],\n"
