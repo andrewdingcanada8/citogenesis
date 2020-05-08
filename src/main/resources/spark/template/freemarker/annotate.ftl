@@ -37,8 +37,8 @@
             <a class="item" href="javascript:history.back()"><i class="arrow left icon"></i></a>
             <a class="item" href="javascript:history.forward()"><i class="arrow right icon"></i></a>
             <div class="item" id="article-labels">
-                <a class="ui blue label" id="menu-citation-stat"><i class="globe icon"></i>50</a>
-                <a class="ui red label" id="menu-cr-stat"><i class="exclamation triangle icon"></i>CR Found</a>
+<#--                <a class="ui blue label" id="menu-citation-stat"><i class="globe icon"></i>50</a>-->
+<#--                <a class="ui red label" id="menu-cr-stat"><i class="exclamation triangle icon"></i>CR Found</a>-->
             </div>
 
             <div class="right item">
