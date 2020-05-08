@@ -26,24 +26,21 @@ function setup_socket () {
         const data = JSON.parse(msg.data);
         switch (data.type) {
             default:
-                console.log('Unknown message type!', data.type);
+                console.log('ERROR: Unknown message type: ', data.type);
                 break;
             case MESSAGE_TYPE.CONNECT:
                 myId = parseInt(data.payload.id, 10);
-                console.log("CONNECT MESSAGE RECIEVED: " + myId); // TODO: Delete Later
+                console.log("Connect Session ID: " + myId);
                 urlSubmit();
                 break;
             case MESSAGE_TYPE.HTML:
-                console.log("HTML MESSAGE RECIEVED"); // TODO: Delete Later
                 insertHTML(data);
                 break;
             case MESSAGE_TYPE.CITATION:
-                console.log("CITATION MESSAGE RECIEVED"); // TODO: Delete Later
                 new_annotation(data);
                 let id = data.payload.citeId;
                 let graph = data.payload.jGraph;
                 graphs[id] = graph;
-                // console.log(msg.data); // TODO: Delete Later
                 break;
         }
     };

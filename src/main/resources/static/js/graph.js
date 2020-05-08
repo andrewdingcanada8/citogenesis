@@ -5,7 +5,8 @@ function graph(id) {
     console.log("Graph Showed up");
 
     //let jGraph = graphs[id];
-    let jGraph = JSON.parse(dummy);
+    let jGraph = graphs[id];
+    // let jGraph = JSON.parse(dummy);
 
 
 
