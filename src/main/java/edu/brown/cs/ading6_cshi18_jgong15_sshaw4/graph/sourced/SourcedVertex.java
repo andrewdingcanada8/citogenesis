@@ -4,15 +4,28 @@ import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 
 import java.util.Objects;
 
+/**
+ * Implementation of a Vertex derived form an external resource.
+ * @param <T> type stored in Vertex
+ * @param <W> type stored in Edge
+ */
 public abstract class SourcedVertex<T, W> implements Vertex<T, W> {
   private T val;
   private SourcedGraph<T, W> graph;
 
+  /**
+   * Constructs a new SourcedVertex.
+   * @param val value to store in vertex
+   * @param graph SourcedGraph implementation
+   */
   public SourcedVertex(T val, SourcedGraph<T, W> graph) {
     this.val = val;
     this.graph = graph;
   }
 
+  /**
+   * @return Graph that contains this vertex
+   */
   protected SourcedGraph<T, W> getGraph() {
     return graph;
   }

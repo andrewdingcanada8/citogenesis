@@ -2,6 +2,7 @@ package edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.async;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.Main;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.cito.queries.CalendarDeserializer;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.exception.QueryException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.data.http.async.AsyncHttpQuery;
@@ -15,26 +16,30 @@ import java.util.concurrent.CompletableFuture;
 
 public class AsyncTimeStampQuery extends AsyncHttpQuery<String, Calendar> {
 
-  private static final Gson CAL_GSON;
-
-  static {
-    GsonBuilder gsonBuilder = new GsonBuilder();
-    gsonBuilder.registerTypeAdapter(Calendar.class, new CalendarDeserializer());
-    gsonBuilder.registerTypeAdapter(Calendar.class, new CalendarDeserializer());
-    CAL_GSON = gsonBuilder.create();
-  }
+  private final Gson gson;
 
   public AsyncTimeStampQuery(int timeOutInSec) {
     super(timeOutInSec, "cito_timestamp");
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(Calendar.class, new CalendarDeserializer());
+    gson = gsonBuilder.create();
   }
 
   @Override
   protected HttpRequest getQuery(String input, HttpClient src) throws QueryException {
     try {
+      String inStr;
+      if (!Main.isMocking()) {
+        inStr = "https://web.archive.org/cdx/search/cdx/?url="
+            + input
+            + "&fl=timestamp&output=json&limit=1";
+      } else {
+        inStr = Main.getMockUrl() + "/?url="
+            + input
+            +  "&fl=timestamp&output=json&limit=1";
+      }
       HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create("https://web.archive.org/cdx/search/cdx?url="
-              + input
-              + "&fl=timestamp&output=json&limit=1"))
+          .uri(URI.create(inStr))
           .build();
       return request;
     } catch (IllegalArgumentException e) {
@@ -46,6 +51,6 @@ public class AsyncTimeStampQuery extends AsyncHttpQuery<String, Calendar> {
   protected CompletableFuture<Calendar> processResult(
       CompletableFuture<HttpResponse<String>> result) {
     return result.thenCompose(res -> CompletableFuture.supplyAsync(
-        () -> CAL_GSON.fromJson(res.body(), Calendar.class)));
+        () -> gson.fromJson(res.body(), Calendar.class)));
   }
 }

@@ -1,0 +1,92 @@
+@font-face {
+    font-family: AXIS;
+    src: url("/assets/Axis_Extrabold.otf");
+}
+
+/*@font-face {*/
+/*    font-family: 'Lato', sans-serif;*/
+/*}*/
+
+html {
+    scroll-behavior: smooth;
+}
+
+.main-column {
+    padding-top: 6vw;
+    margin: auto;
+    width: 60vw;
+}
+.side-column {
+    position: fixed;
+    float: left;
+    width: 16vw;
+    margin-top: 16vw;
+    font-family: 'Lato', sans-serif;;
+    text-align: right;
+    font-size: 1.5vw;
+    font-weight: 300;
+}
+
+.link {
+    list-style: none;
+    margin-bottom: 0.5vw;
+}
+
+a {
+    color: black;
+}
+
+.content-block {
+    padding-top: 10vw;
+    padding-bottom: 10vw;
+
+}
+
+body {
+    background-image: radial-gradient(circle 80vw at center, #ffffff, #d4d8eb);
+    background-repeat: no-repeat;
+    background-color: #fbfbfb;
+}
+
+h1 {
+    letter-spacing: -0.65vw;
+    line-height: 6vw;
+    color: black;
+    font-size: 9vw;
+    font-family: AXIS, sans-serif;
+}
+
+h2 {
+    font-family: 'Lato', sans-serif;
+    margin-top: 1.1vw;
+    font-size: 2.8vw;
+    font-weight: 300;
+}
+
+#search-bar {
+    /*vertical-align: top;*/
+    margin-top: 2vw;
+}
+
+.title-box {
+    display: inline-block;
+    margin-right: 2.5vw;
+}
+.ui.action.button {
+    display: inline-block;
+}
+
+.info-box {
+    padding: 1vw;
+}
+.ui.statistic {
+    /*margin-left: 1vw;*/
+    display: inline-block;
+}
+
+#contact-buttons {
+    margin-top: 1.2vw;
+    margin-left: 3vw;
+    display: inline-block;
+    vertical-align: top;
+}

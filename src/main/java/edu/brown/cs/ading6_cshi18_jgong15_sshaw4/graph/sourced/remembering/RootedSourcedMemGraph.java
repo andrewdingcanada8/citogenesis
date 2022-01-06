@@ -13,38 +13,76 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
 
-
+/**
+ * An implementation of a self-exploring rooted graph using a synchronous BFS
+ * search algorithm.
+ * @param <T> type stored in Vertex
+ * @param <W> type stored in Edge
+ */
 public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> {
   // rather than extension, this behavior may be integrated by composition
   // I'll stick with this now, but will get back to it if there's time
 
-  private static final int MAX_DEPTH_DEFAULT = 1000;
+  private static final int MAX_DEPTH_DEFAULT = 10;
 
   private T headVal;
   private Vertex<T, W> head;
   private Map<T, Integer> depthMap;
   private int maxDepth;
 
+  /**
+   * Constructs a new RootedSourcedMemGraph with default timeout.
+   * @param headVal root value from which to conduct search
+   */
   public RootedSourcedMemGraph(T headVal) {
     this(headVal, MAX_DEPTH_DEFAULT);
   }
 
+  /**
+   * Constructs a new RootedSourcedMemGraph with specified timeout.
+   * @param headVal root value from which to conduct search
+   * @param maxDepth maximum depth of the graph
+   */
   public RootedSourcedMemGraph(T headVal, int maxDepth) {
     this.headVal = headVal;
     this.maxDepth = maxDepth;
     if (maxDepth < 0) {
-      throw new IllegalArgumentException("depth must be a non-negative integer");
+      maxDepth = 0;
     }
     depthMap = new HashMap<>();
+    head = this.getVertex(headVal);
   }
 
-  public Vertex<T, W> getHead() throws GraphException {
-    loadByBFS();
+  /**
+   * Start graph exploration process.
+   * @throws GraphException Exception while obtaining neighboring vertices and edges
+   */
+  public void load() throws GraphException {
+    this.loadByBFS();
+  }
+
+  /**
+   * Return root value.
+   * @return root value stored at root vertex
+   */
+  public Vertex<T, W> getHead() {
     return head;
   }
 
+  /**
+   * Given a specific vertex, return associated neighboring edges and vertices.
+   * @param vert vertex to process
+   * @return neighboring edges
+   * @throws GraphException Exception while parsing source
+   */
   public abstract Set<Edge<T, W>> getAllEdges(SourcedVertex<T, W> vert) throws GraphException;
 
+  /**
+   * If within depth, return vertex edges, otherwise returns empty set.
+   * @param vert vertex to process
+   * @return set of edges if under depth limit, empty set otherwise
+   * @throws GraphException Exception while parsing source
+   */
   @Override
   public Set<Edge<T, W>> getEdges(SourcedVertex<T, W> vert) throws GraphException {
     // when encountering an element on the limit depth, cut
@@ -56,23 +94,33 @@ public abstract class RootedSourcedMemGraph<T, W> extends SourcedMemGraph<T, W> 
     }
   }
 
+  /**
+   * @return head value stored in root vertex
+   */
   public T getHeadVal() {
     return headVal;
   }
 
-  public void setHeadVal(T headVal) {
-    this.headVal = headVal;
+  /**
+   * @return max depth
+   */
+  protected int getMaxDepth() {
+    return maxDepth;
   }
 
   /**
-   * Initial BFS load-in to properly assign depth numbers.
-   *
-   * @throws GraphException in the case of erroneous output
+   * @return map containing depth of each vertex
    */
-  private void loadByBFS() throws GraphException {
-    Set<Vertex<T, W>> visited = new HashSet<>();
-    head = this.getVertex(headVal);
+  protected Map<T, Integer> getDepthMap() {
+    return depthMap;
+  }
 
+  /**
+   * Synchronous BFS load in vertices.
+   * @throws GraphException Exception while obtaining neighboring edges
+   */
+  protected void loadByBFS() throws GraphException {
+    Set<Vertex<T, W>> visited = new HashSet<>();
     Deque<Vertex<T, W>> queue = new LinkedList<>();
     queue.addLast(head);
     depthMap.put(headVal, 0);

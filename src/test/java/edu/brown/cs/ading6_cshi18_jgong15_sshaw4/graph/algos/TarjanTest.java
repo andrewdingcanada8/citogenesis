@@ -6,14 +6,17 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.Vertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.exception.GraphException;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.obj.GraphUtils;
+import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.obj.SimpleEdge;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.obj.SimpleVertex;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.obj.SimpleVertexGenerator;
 import edu.brown.cs.ading6_cshi18_jgong15_sshaw4.graph.search.segment.Tarjan;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -63,6 +66,20 @@ public class TarjanTest {
     int sumComps = comps.stream().mapToInt(Set::size).sum();
 
     assertEquals(union.size(), sumComps);
+  }
+
+  @Test
+  public void threeCycleTest() throws GraphException {
+    SimpleVertex v1 = new SimpleVertex("A");
+    SimpleVertex v2 = new SimpleVertex("B");
+    SimpleVertex v3 = new SimpleVertex("C");
+    v1.setEdges(Set.of(new SimpleEdge(0, v1, v2)));
+    v2.setEdges(Set.of(new SimpleEdge(0, v2, v3)));
+    v3.setEdges(Set.of(new SimpleEdge(0, v3, v1)));
+    List<Set<Vertex>> res = new Tarjan<>().search((Vertex)v1);
+    assertEquals(res.size(), 1);
+    assertTrue(res.get(0).containsAll(Set.of(v1, v2, v3)));
+    assertTrue(Set.of(v1, v2, v3).containsAll(res.get(0)));
   }
 
 }

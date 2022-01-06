@@ -27,6 +27,7 @@ public class RootedSourcedMemGraphTest {
                                        @Size(min = MAT_SIZE, max = MAT_SIZE) [] mat)
       throws GraphException {
     MatrixRootedMemGraph graph = new MatrixRootedMemGraph(mat, 0, 10);
+    graph.load();
     Vertex head = graph.getHead();
     Map<Vertex, Integer> dist = new HashMap<>();
     GraphUtils.distBfs(head, dist);
@@ -41,6 +42,7 @@ public class RootedSourcedMemGraphTest {
                         @Size(min = MAT_SIZE, max = MAT_SIZE) []
                         @Size(min = MAT_SIZE, max = MAT_SIZE) [] mat) throws GraphException {
     MatrixRootedMemGraph graph = new MatrixRootedMemGraph(mat, 1, 0);
+    graph.load();
     Vertex head = graph.getHead();
     assertTrue(head.getEdges().isEmpty());
   }
